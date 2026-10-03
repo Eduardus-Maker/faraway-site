@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Админ-панель · Arizona Faraway — 26</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+  :root{
+    --bg-0:#03060f;
+    --card:#0b1e3d;
+    --card-2:#0f2a54;
+    --border:#173a6e;
+    --border-2:#1f4a8a;
+    --accent:#3b82f6;
+    --accent-2:#60a5fa;
+    --accent-3:#93c5fd;
+    --glow:rgba(59,130,246,.45);
+    --text:#e8effa;
+    --text-2:#b3c4dd;
+    --dim:#7d93b5;
+    --green:#34d399;
+    --red:#f87171;
+    --yellow:#fbbf24;
+    --violet:#a78bfa;
+    --tg:#229ED9;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Inter','Segoe UI',system-ui,sans-serif;
+    background:var(--bg-0);
+    color:var(--text);
+    line-height:1.6;
+    min-height:100vh;
+    background-image:
+      radial-gradient(900px 500px at 50% -10%, #0e2a56 0%, transparent 55%),
+      radial-gradient(700px 400px at 90% 100%, #0a1f42 0%, transparent 60%);
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:32px 22px 100px}
+
+  /* ===== HEADER ===== */
+  .head{
+    display:flex;align-items:center;gap:14px;
+    margin-bottom:28px;padding-bottom:20px;
+    border-bottom:1px solid var(--border);
+  }
+  .head .logo{
+    width:46px;height:46px;
+    background:linear-gradient(135deg,var(--accent),var(--violet));
+    border-radius:13px;display:grid;place-items:center;
+    font-size:22px;box-shadow:0 0 22px var(--glow);
+  }
+  .head .t{font-size:20px;font-weight:800;letter-spacing:-.4px}
+  .head .s{font-size:12.5px;color:var(--dim)}
+  .head .status{
+    margin-left:auto;font-size:12px;font-weight:600;
+    padding:6px 14px;border-radius:999px;
+    display:inline-flex;align-items:center;gap:7px;
+  }
+  .status.on{background:rgba(52,211,153,.12);color:var(--green);border:1px solid rgba(52,211,153,.4)}
+  .status.off{background:rgba(248,113,113,.12);color:var(--red);border:1px solid rgba(248,113,113,.4)}
+  .status .dot{width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor}
+
+  /* ===== PANELS ===== */
+  .panel{
+    background:linear-gradient(160deg,var(--card),rgba(8,22,50,.6));
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:24px;
+    margin-bottom:20px;
+  }
+  .panel h2{
+    font-size:16px;font-weight:700;
+    letter-spacing:-.2px;margin-bottom:16px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .panel h2 .ic{
+    width:30px;height:30px;border-radius:9px;
+    background:rgba(59,130,246,.12);
+    border:1px solid rgba(59,130,246,.3);
+    display:grid;place-items:center;font-size:14px;
+  }
+  .panel .hint{
+    font-size:12.5px;color:var(--dim);
+    margin-bottom:14px;line-height:1.5;
+  }
+  .panel .hint a{color:var(--accent-2);text-decoration:none;border-bottom:1px dashed var(--accent-2)}
+  .panel .hint code{
+    font-family:'JetBrains Mono',monospace;
+    background:rgba(255,255,255,.06);
+    padding:1px 6px;border-radius:4px;font-size:11.5px;
+    color:var(--accent-3);
+  }
+
+  /* ===== FORM ===== */
+  .form-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:14px;
+    margin-bottom:14px;
+  }
+  .form-grid .full{grid-column:1/-1}
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field label{font-size:12px;font-weight:600;color:var(--text-2);letter-spacing:.2px}
+  .field input,.field select,.field textarea{
+    background:rgba(3,6,15,.6);
+    border:1px solid var(--border);
+    color:var(--text);
+    padding:10px 13px;
+    border-radius:10px;
+    font-size:13.5px;
+    font-family:inherit;
+    outline:none;
+    transition:.2s;
+    width:100%;
+  }
+  .field input:focus,.field select:focus,.field textarea:focus{
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(59,130,246,.15);
+    background:rgba(15,42,84,.6);
+  }
+  .field textarea{resize:vertical;min-height:70px;font-family:inherit}
+  .field select{cursor:pointer}
+  .field select option{background:#0b1e3d;color:var(--text)}
+
+  /* ===== DIFFS EDITOR ===== */
+  .diffs-box{
+    background:rgba(3,6,15,.35);
+    border:1px dashed var(--border-2);
+    border-radius:12px;padding:14px;margin-bottom:14px;
+  }
+  .diffs-box .dh{
+    font-size:12.5px;font-weight:700;
+    color:var(--text-2);margin-bottom:10px;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:10px;flex-wrap:wrap;
+  }
+  .diff-item{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr 36px;
+    gap:8px;margin-bottom:8px;
+  }
+  .diff-item input{
+    background:rgba(11,30,61,.7);
+    border:1px solid var(--border);
+    color:var(--text);
+    padding:8px 11px;border-radius:8px;
+    font-size:12.5px;font-family:inherit;outline:none;
+    transition:.2s;
+  }
+  .diff-item input:focus{
+    border-color:var(--accent);
+    background:rgba(15,42,84,.7);
+  }
+  .diff-item .rm{
+    background:rgba(248,113,113,.12);
+    border:1px solid rgba(248,113,113,.35);
+    color:var(--red);
+    border-radius:8px;
+    cursor:pointer;font-size:14px;
+    transition:.2s;
+  }
+  .diff-item .rm:hover{background:rgba(248,113,113,.25)}
+
+  /* ===== BUTTONS ===== */
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:10px 18px;
+    border-radius:11px;
+    font-size:13.5px;font-weight:700;
+    font-family:inherit;cursor:pointer;border:none;
+    transition:.25s;text-decoration:none;
+    white-space:nowrap;
+  }
+  .btn-primary{
+    background:linear-gradient(135deg,var(--accent),var(--violet));
+    color:#fff;box-shadow:0 6px 22px var(--glow);
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px var(--glow)}
+  .btn-ghost{
+    background:rgba(11,30,61,.7);
+    border:1px solid var(--border-2);
+    color:var(--text);
+  }
+  .btn-ghost:hover{border-color:var(--accent);background:rgba(15,42,84,.9)}
+  .btn-tg{
+    background:linear-gradient(135deg,var(--tg),#1c7fb3);
+    color:#fff;
+  }
+  .btn-tg:hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(34,158,217,.4)}
+  .btn-green{
+    background:linear-gradient(135deg,var(--green),#059669);
+    color:#fff;
+    box-shadow:0 6px 22px rgba(52,211,153,.3);
+  }
+  .btn-green:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(52,211,153,.4)}
+  .btn-red{
+    background:rgba(248,113,113,.12);
+    border:1px solid rgba(248,113,113,.4);
+    color:var(--red);
+  }
+  .btn-red:hover{background:rgba(248,113,113,.22)}
+  .btn-sm{padding:6px 12px;font-size:12px}
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+
+  /* ===== ITEM LIST ===== */
+  .items-list{display:flex;flex-direction:column;gap:8px}
+  .item-row{
+    background:rgba(3,6,15,.4);
+    border:1px solid var(--border);
+    border-left:3px solid var(--accent);
+    border-radius:10px;
+    padding:11px 14px;
+    display:flex;align-items:center;gap:12px;
+    transition:.2s;
+  }
+  .item-row:hover{border-color:var(--border-2);background:rgba(15,42,84,.5)}
+  .item-row.t-nerf{border-left-color:var(--red)}
+  .item-row.t-buff{border-left-color:var(--green)}
+  .item-row.t-fix{border-left-color:var(--yellow)}
+  .item-row.t-add{border-left-color:var(--accent)}
+  .item-row.t-change{border-left-color:var(--violet)}
+  .item-row .iid{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;color:var(--accent-2);
+    background:rgba(59,130,246,.1);
+    border:1px solid rgba(59,130,246,.25);
+    padding:2px 8px;border-radius:6px;
+    font-weight:600;flex-shrink:0;
+  }
+  .item-row .ititle{
+    flex:1;font-size:13.5px;font-weight:600;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+    min-width:0;
+  }
+  .item-row .iacts{display:flex;gap:6px;flex-shrink:0}
+
+  .empty{
+    text-align:center;padding:30px;
+    color:var(--dim);font-size:13px;
+  }
+
+  /* ===== JSON PREVIEW ===== */
+  .json-preview{
+    background:rgba(3,6,15,.7);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px;
+    font-family:'JetBrains Mono','Consolas',monospace;
+    font-size:11.5px;
+    color:var(--text-2);
+    max-height:280px;
+    overflow:auto;
+    white-space:pre;
+    line-height:1.55;
+  }
+  .json-preview .k{color:var(--accent-3)}
+  .json-preview .s{color:var(--green)}
+  .json-preview .n{color:var(--yellow)}
+
+  /* ===== TOAST ===== */
+  .toast{
+    position:fixed;bottom:28px;left:50%;
+    transform:translateX(-50%) translateY(100px);
+    background:rgba(11,30,61,.98);
+    border:1px solid var(--green);
+    color:var(--green);
+    padding:12px 22px;border-radius:12px;
+    font-size:13.5px;font-weight:600;
+    box-shadow:0 20px 50px rgba(0,0,0,.6), 0 0 30px rgba(52,211,153,.2);
+    z-index:200;opacity:0;pointer-events:none;
+    transition:.4s cubic-bezier(.4,0,.2,1);
+    backdrop-filter:blur(14px);
+    max-width:90vw;
+  }
+  .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+  .toast.err{border-color:var(--red);color:var(--red);box-shadow:0 20px 50px rgba(0,0,0,.6), 0 0 30px rgba(248,113,113,.2)}
+
+  /* ===== LOGIN GATE ===== */
+  .gate{
+    position:fixed;inset:0;z-index:100;
+    background:rgba(3,6,15,.96);
+    backdrop-filter:blur(20px);
+    display:grid;place-items:center;padding:22px;
+    transition:.4s;
+  }
+  .gate.hidden{opacity:0;pointer-events:none;visibility:hidden}
+  .gate-card{
+    max-width:440px;width:100%;
+    background:linear-gradient(160deg,var(--card),rgba(8,22,50,.8));
+    border:1px solid var(--border-2);
+    border-radius:22px;
+    padding:34px 30px;
+    text-align:center;
+    box-shadow:0 30px 80px rgba(0,0,0,.7);
+  }
+  .gate-card .g-icon{
+    width:70px;height:70px;
+    margin:0 auto 20px;
+    background:linear-gradient(135deg,var(--accent),var(--violet));
+    border-radius:20px;
+    display:grid;place-items:center;
+    font-size:32px;
+    box-shadow:0 0 40px var(--glow);
+  }
+  .gate-card h2{font-size:22px;font-weight:800;margin-bottom:8px;letter-spacing:-.5px}
+  .gate-card p{color:var(--text-2);font-size:13.5px;margin-bottom:22px;line-height:1.55}
+  .gate-card .tg-note{
+    background:rgba(251,191,36,.08);
+    border:1px solid rgba(251,191,36,.3);
+    border-radius:10px;padding:11px 14px;
+    font-size:12px;color:var(--yellow);
+    text-align:left;margin-bottom:18px;
+    line-height:1.55;
+  }
+  .gate-card .divider{
+    display:flex;align-items:center;gap:12px;
+    color:var(--dim);font-size:11px;
+    text-transform:uppercase;letter-spacing:1px;
+    margin:18px 0;
+  }
+  .gate-card .divider::before,.gate-card .divider::after{
+    content:'';flex:1;height:1px;background:var(--border);
+  }
+
+  @media (max-width:640px){
+    .form-grid{grid-template-columns:1fr}
+    .diff-item{grid-template-columns:1fr 1fr;gap:6px}
+    .diff-item .rm{grid-column:1/-1;padding:6px}
+    .head .status{display:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN GATE -->
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <div class="g-icon">🔐</div>
+    <h2>Админ-панель</h2>
+    <p>Войди, чтобы управлять списком обновлений Arizona Faraway — 26.</p>
+
+    <div class="tg-note">
+      ⚠️ <b>Про Telegram-вход:</b> для полноценной авторизации через Telegram нужен небольшой бэкенд (Cloudflare Worker / Vercel Function), который проверит хеш с бот-токеном. Кнопка ниже — демонстрация интерфейса.<br><br>
+      <b>Рабочий вариант сейчас</b> — вход по GitHub Personal Access Token. Он сохраняется только в твоём браузере и не отправляется никуда, кроме api.github.com.
+    </div>
+
+    <button class="btn btn-tg" style="width:100%;justify-content:center;margin-bottom:12px" onclick="alert('Для работы Telegram-входа нужен бэкенд. Смотри инструкцию в комментариях admin.html.')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
+      Войти через Telegram
+    </button>
+
+    <div class="divider">или</div>
+
+    <div class="field" style="text-align:left;margin-bottom:12px">
+      <label>GitHub Personal Access Token</label>
+      <input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+    </div>
+
+    <div class="btn-row" style="justify-content:center">
+      <button class="btn btn-primary" id="loginGh">Войти через GitHub</button>
+      <button class="btn btn-ghost" id="loginDemo">Демо-режим (без коммита)</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="wrap">
+
+  <div class="head">
+    <div class="logo">⚙️</div>
+    <div>
+      <div class="t">Админ-панель</div>
+      <div class="s">Arizona Faraway — 26 · управление обновлениями</div>
+    </div>
+    <div class="status off" id="status"><span class="dot"></span><span id="statusText">Не авторизован</span></div>
+  </div>
+
+  <!-- ADD FORM -->
+  <div class="panel">
+    <h2><span class="ic">➕</span>Добавить / изменить обновление</h2>
+    <div class="hint">Заполни поля и нажми «Добавить в список». Потом нажми «Закоммитить в GitHub» — файл <code>data/updates.json</code> обновится в репозитории.</div>
+
+    <div class="form-grid">
+      <div class="field">
+        <label>ID</label>
+        <input type="text" id="f_id" placeholder="10005 или 10235–10246">
+      </div>
+      <div class="field">
+        <label>Файл (опционально)</label>
+        <input type="text" id="f_file" placeholder="items/10005.md">
+      </div>
+      <div class="field full">
+        <label>Название</label>
+        <input type="text" id="f_title" placeholder="Сертификат 12CILINDRI">
+      </div>
+      <div class="field">
+        <label>Тип</label>
+        <select id="f_type">
+          <option value="nerf">Нерф</option>
+          <option value="buff">Бафф</option>
+          <option value="fix">Фикс</option>
+          <option value="add">Добавлено</option>
+          <option value="change">Изменено</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Категория</label>
+        <select id="f_category">
+          <option value="bonus">Бонусы такси</option>
+          <option value="type">Типы предметов</option>
+          <option value="text">Исправления текста</option>
+          <option value="value">Стоимость и награды</option>
+          <option value="transfer">Межсерверная непереносимость</option>
+          <option value="accessory">Аксессуары</option>
+          <option value="other">Прочие файлы</option>
+        </select>
+      </div>
+      <div class="field full">
+        <label>Описание</label>
+        <textarea id="f_desc" placeholder="Краткое описание изменения…"></textarea>
+      </div>
+      <div class="field full">
+        <label>Примечание (опционально)</label>
+        <textarea id="f_note" placeholder="Дополнительная информация…"></textarea>
+      </div>
+    </div>
+
+    <div class="diffs-box">
+      <div class="dh">
+        <span>Изменения «было → стало»</span>
+        <button class="btn btn-ghost btn-sm" id="addDiff">+ Добавить поле</button>
+      </div>
+      <div id="diffsList"></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" id="saveItem">💾 Добавить в список</button>
+      <button class="btn btn-ghost" id="clearForm">Очистить форму</button>
+    </div>
+  </div>
+
+  <!-- ITEMS LIST -->
+  <div class="panel">
+    <h2><span class="ic">📋</span>Текущий список (<span id="countItems">0</span>)</h2>
+    <div class="items-list" id="itemsList"></div>
+  </div>
+
+  <!-- EXPORT -->
+  <div class="panel">
+    <h2><span class="ic">📤</span>Экспорт и публикация</h2>
+    <div class="hint">Скачай JSON и положи в папку <code>data/</code> рядом с <code>updates.html</code>, либо закоммить напрямую в GitHub.</div>
+    <div class="btn-row">
+      <button class="btn btn-green" id="commitGh">🚀 Закоммитить в GitHub</button>
+      <button class="btn btn-primary" id="downloadJson">📥 Скачать updates.json</button>
+      <button class="btn btn-ghost" id="copyJson">📋 Скопировать JSON</button>
+      <button class="btn btn-ghost" id="loadFromGh">⬇️ Загрузить из GitHub</button>
+      <button class="btn btn-red" id="logout">Выйти</button>
+    </div>
+  </div>
+
+  <!-- JSON PREVIEW -->
+  <div class="panel">
+    <h2><span class="ic">🔍</span>Предпросмотр JSON</h2>
+    <div class="json-preview" id="jsonPreview">[]</div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   НАСТРОЙКИ — ЗАМЕНИ НА СВОИ
+   ============================================================ */
+const REPO_OWNER = "your-github-username";       // ← твой ник на GitHub
+const REPO_NAME  = "azfw26";                     // ← название репозитория
+const REPO_PATH  = "data/updates.json";          // ← путь к файлу в репо
+const REPO_BRANCH = "main";                      // ← ветка (обычно main)
+const STORAGE_KEY = "azfw26_gh_token";
+
+/* ============================================================
+   СОСТОЯНИЕ
+   ============================================================ */
+let items = [];
+let ghToken = localStorage.getItem(STORAGE_KEY) || "";
+let commitSha = null; // sha текущего файла в репо
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+const toastEl = document.getElementById('toast');
+let toastTimer;
+function toast(msg, isError){
+  toastEl.textContent = msg;
+  toastEl.classList.toggle('err', !!isError);
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastEl.classList.remove('show'), 3000);
+}
+
+/* ============================================================
+   GATE / LOGIN
+   ============================================================ */
+const gateEl = document.getElementById('gate');
+const statusEl = document.getElementById('status');
+const statusText = document.getElementById('statusText');
+
+function setAuth(on, label){
+  if(on){
+    gateEl.classList.add('hidden');
+    statusEl.classList.remove('off'); statusEl.classList.add('on');
+    statusText.textContent = label || "Авторизован";
+  } else {
+    gateEl.classList.remove('hidden');
+    statusEl.classList.remove('on'); statusEl.classList.add('off');
+    statusText.textContent = "Не авторизован";
+  }
+}
+
+document.getElementById('loginGh').addEventListener('click', async () => {
+  const tok = document.getElementById('ghToken').value.trim();
+  if(!tok){ toast('Введи токен', true); return; }
+
+  try{
+    const r = await fetch('https://api.github.com/user', {
+      headers: { 'Authorization': 'Bearer ' + tok }
+    });
+    if(!r.ok) throw new Error('Токен не подошёл');
+    const user = await r.json();
+
+    ghToken = tok;
+    localStorage.setItem(STORAGE_KEY, tok);
+    setAuth(true, '@' + user.login);
+    toast('Вошёл как @' + user.login);
+    loadFromGitHub();
+  }catch(e){
+    toast('Ошибка: ' + e.message, true);
+  }
+});
+
+document.getElementById('loginDemo').addEventListener('click', () => {
+  setAuth(true, 'Демо-режим');
+  toast('Демо-режим. Коммит в GitHub будет недоступен.');
+  loadLocalDraft();
+});
+
+document.getElementById('logout').addEventListener('click', () => {
+  ghToken = "";
+  localStorage.removeItem(STORAGE_KEY);
+  setAuth(false);
+  toast('Вышел');
+});
+
+/* Автологин если токен уже сохранён */
+if(ghToken){
+  (async () => {
+    try{
+      const r = await fetch('https://api.github.com/user', {
+        headers: { 'Authorization': 'Bearer ' + ghToken }
+      });
+      if(r.ok){
+        const user = await r.json();
+        setAuth(true, '@' + user.login);
+        loadFromGitHub();
+      } else {
+        localStorage.removeItem(STORAGE_KEY);
+        ghToken = "";
+      }
+    }catch{}
+  })();
+}
+
+/* ============================================================
+   DIFFS EDITOR
+   ============================================================ */
+const diffsList = document.getElementById('diffsList');
+
+function makeDiffRow(field = "", oldV = "", newV = ""){
+  const row = document.createElement('div');
+  row.className = 'diff-item';
+  row.innerHTML = `
+    <input type="text" placeholder="Поле" value="${escapeAttr(field)}">
+    <input type="text" placeholder="Было" value="${escapeAttr(oldV)}">
+    <input type="text" placeholder="Стало" value="${escapeAttr(newV)}">
+    <button class="rm" title="Удалить">✕</button>
+  `;
+  row.querySelector('.rm').addEventListener('click', () => row.remove());
+  diffsList.appendChild(row);
+}
+function escapeAttr(s){return String(s).replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
+
+document.getElementById('addDiff').addEventListener('click', () => makeDiffRow());
+makeDiffRow();
+
+function collectDiffs(){
+  return [...diffsList.querySelectorAll('.diff-item')].map(r => {
+    const [f, o, n] = r.querySelectorAll('input');
+    return { field: f.value.trim(), old: o.value.trim(), new: n.value.trim() };
+  }).filter(d => d.field || d.old || d.new);
+}
+
+/* ============================================================
+   FORM ACTIONS
+   ============================================================ */
+document.getElementById('saveItem').addEventListener('click', () => {
+  const id = document.getElementById('f_id').value.trim();
+  const title = document.getElementById('f_title').value.trim();
+
+  if(!id || !title){ toast('Заполни ID и название', true); return; }
+
+  const item = {
+    id,
+    file: document.getElementById('f_file').value.trim() || undefined,
+    title,
+    type: document.getElementById('f_type').value,
+    category: document.getElementById('f_category').value,
+    desc: document.getElementById('f_desc').value.trim() || undefined,
+    diffs: collectDiffs(),
+    note: document.getElementById('f_note').value.trim() || undefined
+  };
+
+  // убрать undefined
+  Object.keys(item).forEach(k => item[k] === undefined && delete item[k]);
+
+  items.push(item);
+  renderItems();
+  updatePreview();
+  clearForm();
+  saveLocalDraft();
+  toast('Добавлено: ' + title);
+});
+
+document.getElementById('clearForm').addEventListener('click', clearForm);
+
+function clearForm(){
+  ['f_id','f_file','f_title','f_desc','f_note'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f_type').value = 'nerf';
+  document.getElementById('f_category').value = 'bonus';
+  diffsList.innerHTML = '';
+  makeDiffRow();
+}
+
+/* ============================================================
+   ITEMS LIST
+   ============================================================ */
+const itemsListEl = document.getElementById('itemsList');
+const countItemsEl = document.getElementById('countItems');
+
+function renderItems(){
+  countItemsEl.textContent = items.length;
+  if(items.length === 0){
+    itemsListEl.innerHTML = '<div class="empty">Пока пусто. Добавь первое обновление.</div>';
+    return;
+  }
+  itemsListEl.innerHTML = items.map((it, i) => `
+    <div class="item-row t-${it.type}">
+      <span class="iid">${escapeAttr(it.id)}</span>
+      <span class="ititle">${escapeAttr(it.title)}</span>
+      <span class="iacts">
+        <button class="btn btn-ghost btn-sm" data-act="up" data-i="${i}">↑</button>
+        <button class="btn btn-ghost btn-sm" data-act="down" data-i="${i}">↓</button>
+        <button class="btn btn-ghost btn-sm" data-act="edit" data-i="${i}">✎</button>
+        <button class="btn btn-red btn-sm" data-act="del" data-i="${i}">✕</button>
+      </span>
+    </div>
+  `).join("");
+}
+
+itemsListEl.addEventListener('click', e => {
+  const btn = e.target.closest('button[data-act]');
+  if(!btn) return;
+  const i = +btn.dataset.i;
+  const act = btn.dataset.act;
+
+  if(act === 'del'){
+    if(confirm('Удалить «' + items[i].title + '»?')){
+      items.splice(i, 1);
+      renderItems(); updatePreview(); saveLocalDraft();
+      toast('Удалено');
+    }
+  } else if(act === 'up' && i > 0){
+    [items[i-1], items[i]] = [items[i], items[i-1]];
+    renderItems(); updatePreview(); saveLocalDraft();
+  } else if(act === 'down' && i < items.length - 1){
+    [items[i+1], items[i]] = [items[i], items[i+1]];
+    renderItems(); updatePreview(); saveLocalDraft();
+  } else if(act === 'edit'){
+    loadToForm(items[i]);
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+});
+
+function loadToForm(item){
+  document.getElementById('f_id').value = item.id || '';
+  document.getElementById('f_file').value = item.file || '';
+  document.getElementById('f_title').value = item.title || '';
+  document.getElementById('f_type').value = item.type || 'nerf';
+  document.getElementById('f_category').value = item.category || 'bonus';
+  document.getElementById('f_desc').value = item.desc || '';
+  document.getElementById('f_note').value = item.note || '';
+  diffsList.innerHTML = '';
+  (item.diffs || []).forEach(d => makeDiffRow(d.field, d.old, d.new));
+  if(!item.diffs || !item.diffs.length) makeDiffRow();
+  // удалить старую запись после редактирования
+  const idx = items.indexOf(item);
+  if(idx > -1){
+    items.splice(idx, 1);
+    renderItems(); updatePreview();
+  }
+  toast('Редактирование: ' + item.title);
+}
+
+/* ============================================================
+   PREVIEW
+   ============================================================ */
+const previewEl = document.getElementById('jsonPreview');
+
+function updatePreview(){
+  const json = JSON.stringify(items, null, 2);
+  previewEl.textContent = json;
+}
+
+/* ============================================================
+   LOCAL DRAFT
+   ============================================================ */
+function saveLocalDraft(){
+  try{ localStorage.setItem('azfw26_draft', JSON.stringify(items)); }catch{}
+}
+function loadLocalDraft(){
+  try{
+    const d = localStorage.getItem('azfw26_draft');
+    if(d){ items = JSON.parse(d); renderItems(); updatePreview(); }
+  }catch{}
+}
+
+/* ============================================================
+   DOWNLOAD / COPY
+   ============================================================ */
+document.getElementById('downloadJson').addEventListener('click', () => {
+  const payload = {
+    meta: {
+      version: "1",
+      updated: new Date().toISOString(),
+      source: "https://t.me/arizona_faraway26"
+    },
+    items
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'updates.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('Скачано. Положи в data/updates.json');
+});
+
+document.getElementById('copyJson').addEventListener('click', async () => {
+  const payload = { meta:{ version:"1", updated:new Date().toISOString() }, items };
+  try{
+    await navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
+    toast('JSON скопирован в буфер');
+  }catch{ toast('Не удалось скопировать', true); }
+});
+
+/* ============================================================
+   GITHUB API
+   ============================================================ */
+function b64EncodeUnicode(str){
+  return btoa(unescape(encodeURIComponent(str)));
+}
+function b64DecodeUnicode(str){
+  return decodeURIComponent(escape(atob(str.replace(/\s/g, ''))));
+}
+
+async function loadFromGitHub(){
+  if(!ghToken) return;
+  try{
+    const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${REPO_PATH}?ref=${REPO_BRANCH}`;
+    const r = await fetch(url, { headers: { 'Authorization': 'Bearer ' + ghToken } });
+    if(r.status === 404){
+      toast('Файл ещё не создан — будет создан при первом коммите');
+      loadLocalDraft();
+      return;
+    }
+    if(!r.ok) throw new Error('Не удалось загрузить файл');
+    const data = await r.json();
+    commitSha = data.sha;
+    const content = b64DecodeUnicode(data.content);
+    const parsed = JSON.parse(content);
+    items = parsed.items || parsed || [];
+    renderItems(); updatePreview();
+    toast('Загружено из GitHub: ' + items.length + ' элементов');
+  }catch(e){
+    toast('Ошибка загрузки: ' + e.message, true);
+  }
+}
+
+document.getElementById('loadFromGh').addEventListener('click', loadFromGitHub);
+
+document.getElementById('commitGh').addEventListener('click', async () => {
+  if(!ghToken){ toast('Войди через GitHub', true); return; }
+  if(items.length === 0){ toast('Список пуст', true); return; }
+
+  const payload = {
+    meta: {
+      version: "1",
+      updated: new Date().toISOString(),
+      source: "https://t.me/arizona_faraway26"
+    },
+    items
+  };
+  const content = b64EncodeUnicode(JSON.stringify(payload, null, 2));
+
+  try{
+    const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${REPO_PATH}`;
+    const body = {
+      message: `Update changelog (${items.length} items) via admin panel`,
+      content,
+      branch: REPO_BRANCH
+    };
+    if(commitSha) body.sha = commitSha;
+
+    const r = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Authorization': 'Bearer ' + ghToken,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+    if(!r.ok){
+      const err = await r.json().catch(() => ({}));
+      throw new Error(err.message || 'Ошибка коммита');
+    }
+    const res = await r.json();
+    commitSha = res.content.sha;
+    toast('✓ Закоммичено: ' + items.length + ' элементов');
+  }catch(e){
+    toast('Ошибка: ' + e.message, true);
+  }
+});
+
+/* ============================================================
+   СТАРТ
+   ============================================================ */
+renderItems();
+updatePreview();
+</script>
+
+</body>
+</html>

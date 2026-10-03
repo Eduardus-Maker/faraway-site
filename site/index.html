@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arizona Faraway — игровой сервер Arizona RP</title>
+<meta name="description" content="Arizona Faraway — один из серверов проекта Arizona RP. Новости, обновления и всё о сервере.">
+<style>
+  :root{
+    --bg-0:#03060f;
+    --card:#0b1e3d;
+    --card-2:#0f2a54;
+    --border:#173a6e;
+    --border-2:#1f4a8a;
+    --accent:#3b82f6;
+    --accent-2:#60a5fa;
+    --accent-3:#93c5fd;
+    --glow:rgba(59,130,246,.45);
+    --text:#e8effa;
+    --text-2:#b3c4dd;
+    --dim:#7d93b5;
+    --green:#34d399;
+    --violet:#a78bfa;
+    --tg:#229ED9;
+    --gold:#f59e0b;
+    --gold-2:#fbbf24;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:90px}
+
+  body{
+    font-family:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;
+    background:var(--bg-0);
+    color:var(--text);
+    line-height:1.65;
+    min-height:100vh;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ===== CURSOR GLOW ===== */
+  #cursorGlow{
+    position:fixed;
+    top:0;left:0;
+    width:600px;height:600px;
+    margin:-300px 0 0 -300px;
+    background:radial-gradient(circle, rgba(59,130,246,.09) 0%, rgba(167,139,250,.05) 35%, transparent 65%);
+    pointer-events:none;
+    z-index:1;
+    will-change:transform;
+    mix-blend-mode:screen;
+  }
+  @media (max-width:720px){
+    #cursorGlow{display:none}
+  }
+
+  /* ===== BG ===== */
+  .bg-layer{
+    position:fixed;inset:0;z-index:-1;overflow:hidden;
+    background:
+      radial-gradient(1400px 700px at 50% -20%, #0e2a56 0%, transparent 55%),
+      radial-gradient(900px 500px at 90% 100%, #0a1f42 0%, transparent 60%),
+      radial-gradient(700px 400px at 0% 60%, #071b3d 0%, transparent 60%),
+      var(--bg-0);
+  }
+  .bg-layer::before{
+    content:'';position:absolute;inset:0;
+    background-image:
+      linear-gradient(rgba(59,130,246,.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,130,246,.035) 1px, transparent 1px);
+    background-size:64px 64px;
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 40%, #000 40%, transparent 80%);
+    -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 40%, #000 40%, transparent 80%);
+  }
+  .orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.32;animation:float 26s ease-in-out infinite}
+  .orb.o1{width:480px;height:480px;background:#1e40af;top:-140px;left:-120px}
+  .orb.o2{width:380px;height:380px;background:#0ea5e9;bottom:6%;right:-110px;animation-delay:-9s}
+  .orb.o3{width:320px;height:320px;background:#7c3aed;top:48%;left:38%;animation-delay:-16s}
+  @keyframes float{
+    0%,100%{transform:translate(0,0) scale(1)}
+    33%{transform:translate(50px,-40px) scale(1.1)}
+    66%{transform:translate(-40px,40px) scale(.92)}
+  }
+
+  .wrap{max-width:1180px;margin:0 auto;padding:0 22px 100px;position:relative;z-index:2}
+
+  /* ===== ANNOUNCE ===== */
+  .announce{
+    background:linear-gradient(90deg,rgba(34,158,217,.12),rgba(59,130,246,.12),rgba(167,139,250,.12));
+    border-bottom:1px solid rgba(34,158,217,.35);
+    padding:9px 20px;font-size:13px;text-align:center;
+    position:relative;z-index:60;
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  }
+  .announce-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+  .announce a{color:var(--tg);text-decoration:none;font-weight:700;display:inline-flex;align-items:center;gap:6px;padding:2px 6px;border-radius:6px;transition:.2s}
+  .announce a:hover{background:rgba(34,158,217,.15);color:#4cb8ef}
+  .announce .label{color:var(--text-2)}
+  .announce .dot-live{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green);animation:pulse-dot 1.8s ease-in-out infinite}
+  @keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+
+  /* ===== NAV ===== */
+  .nav{
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    background:rgba(5,14,31,.82);
+    border-bottom:1px solid var(--border);
+    margin:0 -22px;
+    padding:14px 22px;
+  }
+  .nav-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:22px}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:700;font-size:15px;text-decoration:none;color:var(--text)}
+  .brand .logo{
+    width:38px;height:38px;
+    background:linear-gradient(135deg,var(--accent),var(--violet));
+    border-radius:11px;display:grid;place-items:center;font-size:19px;
+    box-shadow:0 0 22px var(--glow);
+    transition:.3s;
+  }
+  .brand:hover .logo{transform:rotate(-8deg) scale(1.06)}
+  .brand-text{display:flex;flex-direction:column;line-height:1.15}
+  .brand-text .t{font-size:14.5px;font-weight:800;letter-spacing:-.2px}
+  .brand-text .s{font-size:11px;color:var(--dim);font-weight:500}
+
+  .nav-links{display:flex;gap:6px;margin-left:auto;align-items:center;flex-wrap:wrap}
+  .nav-links a{
+    color:var(--text-2);text-decoration:none;font-size:13.5px;font-weight:600;
+    padding:8px 14px;border-radius:9px;transition:.2s;
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .nav-links a:hover{color:#fff;background:rgba(59,130,246,.12)}
+  .nav-links a.active{color:#fff;background:rgba(59,130,246,.18);border:1px solid rgba(59,130,246,.35)}
+
+  .nav-cta{
+    background:linear-gradient(135deg,var(--tg),#1c7fb3);
+    color:#fff !important;
+    padding:8px 16px !important;
+    border-radius:9px !important;
+    font-weight:700 !important;
+    display:inline-flex !important;align-items:center;gap:7px !important;
+    box-shadow:0 0 20px rgba(34,158,217,.3);
+    transition:.3s !important;
+  }
+  .nav-cta:hover{
+    background:linear-gradient(135deg,#4cb8ef,#229ED9) !important;
+    transform:translateY(-1px);
+    box-shadow:0 0 30px rgba(34,158,217,.5);
+  }
+
+  .burger{
+    display:none;background:rgba(11,30,61,.85);
+    border:1px solid var(--border);color:var(--text);
+    width:40px;height:40px;border-radius:10px;
+    cursor:pointer;font-size:18px;transition:.2s;
+  }
+  .burger:hover{border-color:var(--accent)}
+
+  /* ===== HERO ===== */
+  .hero{padding:70px 0 40px;text-align:center;position:relative}
+
+  .server-badge{
+    display:inline-flex;align-items:center;gap:10px;
+    background:rgba(59,130,246,.1);
+    border:1px solid rgba(59,130,246,.4);
+    color:var(--accent-3);
+    font-size:12.5px;font-weight:700;letter-spacing:1.4px;
+    text-transform:uppercase;
+    padding:8px 20px;border-radius:999px;
+    margin-bottom:26px;
+    animation:pulse-border 3s ease-in-out infinite;
+  }
+  @keyframes pulse-border{
+    0%,100%{box-shadow:0 0 24px rgba(59,130,246,.15)}
+    50%{box-shadow:0 0 36px rgba(59,130,246,.35)}
+  }
+  .server-badge .dot{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green);animation:pulse-dot 1.8s ease-in-out infinite}
+
+  .hero-logo{
+    width:110px;height:110px;
+    margin:0 auto 26px;
+    background:linear-gradient(135deg,var(--accent),var(--violet));
+    border-radius:30px;
+    display:grid;place-items:center;
+    font-size:58px;
+    box-shadow:0 20px 60px var(--glow), inset 0 1px 0 rgba(255,255,255,.15);
+    animation:bob 4s ease-in-out infinite;
+    position:relative;
+  }
+  .hero-logo::after{
+    content:'';
+    position:absolute;inset:-6px;
+    border-radius:36px;
+    background:conic-gradient(from 0deg, var(--accent), var(--violet), #0ea5e9, var(--accent));
+    opacity:.35;z-index:-1;filter:blur(24px);
+    animation:spin 8s linear infinite;
+  }
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  h1.hero-title{
+    font-size:clamp(42px,8vw,86px);
+    font-weight:900;
+    letter-spacing:-3px;
+    line-height:1;
+    background:linear-gradient(135deg,#fff 0%,#60a5fa 45%,#a78bfa 100%);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    margin-bottom:8px;
+  }
+
+  .hero-tagline{
+    font-size:clamp(16px,2.2vw,22px);
+    color:var(--accent-2);
+    font-weight:600;letter-spacing:.5px;
+    margin-bottom:20px;
+  }
+
+  .hero-desc{
+    color:var(--text-2);font-size:16px;
+    max-width:600px;margin:0 auto 38px;
+    line-height:1.7;
+  }
+  .hero-desc b{color:var(--text);font-weight:600}
+
+  /* ===== BUTTONS ===== */
+  .hero-cta{
+    display:flex;gap:14px;justify-content:center;flex-wrap:wrap;
+    margin-bottom:52px;
+  }
+
+  .btn{
+    display:inline-flex;align-items:center;gap:11px;
+    padding:16px 30px;
+    border-radius:15px;
+    font-size:16px;font-weight:700;
+    font-family:inherit;
+    text-decoration:none;cursor:pointer;border:none;
+    transition:transform .3s cubic-bezier(.4,0,.2,1), box-shadow .3s, background .3s, border-color .3s;
+    position:relative;overflow:hidden;
+    will-change:transform;
+  }
+
+  .btn-primary{
+    background:linear-gradient(135deg,var(--accent),var(--violet));
+    color:#fff;
+    box-shadow:0 12px 40px var(--glow);
+    padding:18px 36px;
+    font-size:17px;
+  }
+  .btn-primary:hover{
+    transform:translateY(-3px) scale(1.03);
+    box-shadow:0 22px 60px var(--glow), 0 0 0 1px rgba(96,165,250,.6);
+  }
+  .btn-primary:active{transform:translateY(-1px) scale(.99)}
+  .btn-primary::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(135deg,transparent 30%, rgba(255,255,255,.25), transparent 70%);
+    transform:translateX(-100%);transition:.75s;
+  }
+  .btn-primary:hover::after{transform:translateX(100%)}
+
+  .btn-ghost{
+    background:rgba(11,30,61,.7);
+    border:1px solid var(--border-2);
+    color:var(--text);
+  }
+  .btn-ghost:hover{
+    border-color:var(--accent);
+    background:rgba(15,42,84,.9);
+    transform:translateY(-3px) scale(1.03);
+    box-shadow:0 14px 40px rgba(0,0,0,.5), 0 0 0 1px rgba(59,130,246,.4);
+  }
+  .btn-ghost:active{transform:translateY(-1px) scale(.99)}
+
+  /* ===== QUICK INFO ===== */
+  .quick-info{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:14px;max-width:900px;margin:0 auto;
+    padding-top:44px;border-top:1px solid var(--border);
+  }
+  .qi{
+    background:rgba(11,30,61,.5);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:18px 16px;text-align:center;
+    transition:.3s;
+  }
+  .qi:hover{
+    border-color:var(--border-2);
+    transform:translateY(-3px);
+    background:rgba(15,42,84,.6);
+  }
+  .qi .icon{font-size:22px;margin-bottom:8px;display:block}
+  .qi .t{font-size:13px;color:var(--text-2);font-weight:600;letter-spacing:.2px}
+  .qi .d{font-size:11.5px;color:var(--dim);margin-top:3px}
+
+  /* ===== SECTION HEADS ===== */
+  .sec-head{text-align:center;margin:80px auto 40px;max-width:640px}
+  .sec-head .kicker{
+    color:var(--accent-2);font-size:12px;font-weight:700;
+    text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;
+  }
+  .sec-head h2{
+    font-size:clamp(26px,4vw,40px);font-weight:800;
+    letter-spacing:-1px;line-height:1.15;margin-bottom:12px;
+  }
+  .sec-head h2 span{
+    background:linear-gradient(135deg,var(--accent-2),var(--violet));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  }
+  .sec-head p{color:var(--text-2);font-size:15px}
+
+  /* ===== BIG CARDS ===== */
+  .big-cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:18px;
+  }
+
+  .big-card{
+    position:relative;
+    background:linear-gradient(160deg,var(--card) 0%,rgba(8,22,50,.7) 100%);
+    border:1px solid var(--border);
+    border-radius:22px;
+    padding:30px 28px;
+    text-decoration:none;color:inherit;
+    overflow:hidden;
+    transition:transform .4s cubic-bezier(.4,0,.2,1), border-color .3s, box-shadow .3s;
+    display:flex;flex-direction:column;
+    min-height:280px;
+    will-change:transform;
+  }
+
+  .big-card::before{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(circle at var(--mx,50%) var(--my,0%), rgba(59,130,246,.18), transparent 60%);
+    opacity:0;transition:.4s;pointer-events:none;
+  }
+  .big-card:hover{
+    transform:translateY(-6px);
+    border-color:var(--border-2);
+    box-shadow:0 24px 70px rgba(0,0,0,.55), 0 0 0 1px rgba(59,130,246,.2);
+  }
+  .big-card:hover::before{opacity:1}
+
+  /* TG */
+  .big-card.tg-card{
+    background:linear-gradient(160deg,rgba(34,158,217,.16),rgba(11,30,61,.85));
+    border-color:rgba(34,158,217,.4);
+  }
+  .big-card.tg-card:hover{
+    border-color:var(--tg);
+    box-shadow:0 24px 70px rgba(0,0,0,.55), 0 0 0 1px rgba(34,158,217,.4), 0 0 50px rgba(34,158,217,.2);
+  }
+  .big-card.tg-card::before{
+    background:radial-gradient(circle at var(--mx,50%) var(--my,0%), rgba(34,158,217,.22), transparent 60%);
+  }
+
+  /* RakBot */
+  .big-card.rak-card{
+    background:linear-gradient(160deg,rgba(52,211,153,.12),rgba(11,30,61,.85));
+    border-color:rgba(52,211,153,.35);
+  }
+  .big-card.rak-card:hover{
+    border-color:var(--green);
+    box-shadow:0 24px 70px rgba(0,0,0,.55), 0 0 0 1px rgba(52,211,153,.4), 0 0 50px rgba(52,211,153,.15);
+  }
+  .big-card.rak-card::before{
+    background:radial-gradient(circle at var(--mx,50%) var(--my,0%), rgba(52,211,153,.2), transparent 60%);
+  }
+
+  /* Forum */
+  .big-card.forum-card{
+    background:linear-gradient(160deg,rgba(245,158,11,.12),rgba(11,30,61,.85));
+    border-color:rgba(245,158,11,.35);
+  }
+  .big-card.forum-card:hover{
+    border-color:var(--gold-2);
+    box-shadow:0 24px 70px rgba(0,0,0,.55), 0 0 0 1px rgba(245,158,11,.4), 0 0 50px rgba(245,158,11,.15);
+  }
+  .big-card.forum-card::before{
+    background:radial-gradient(circle at var(--mx,50%) var(--my,0%), rgba(245,158,11,.2), transparent 60%);
+  }
+
+  .big-icon{
+    width:64px;height:64px;
+    border-radius:18px;
+    display:grid;place-items:center;
+    margin-bottom:20px;
+    position:relative;z-index:1;
+    transition:.4s;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.1);
+  }
+  .big-card.tg-card .big-icon{
+    background:linear-gradient(135deg,var(--tg),#1c7fb3);
+    color:#fff;
+    box-shadow:0 12px 36px rgba(34,158,217,.5);
+  }
+  .big-card.rak-card .big-icon{
+    background:linear-gradient(135deg,var(--green),#059669);
+    color:#fff;
+    box-shadow:0 12px 36px rgba(52,211,153,.4);
+  }
+  .big-card.forum-card .big-icon{
+    background:linear-gradient(135deg,var(--gold),#b45309);
+    color:#fff;
+    box-shadow:0 12px 36px rgba(245,158,11,.4);
+  }
+  .big-card:hover .big-icon{transform:scale(1.08) rotate(-6deg)}
+
+  .big-card h3{
+    font-size:21px;font-weight:800;
+    letter-spacing:-.4px;margin-bottom:10px;
+    position:relative;z-index:1;
+  }
+
+  .big-card p{
+    color:var(--text-2);font-size:14px;
+    line-height:1.6;flex:1;
+    position:relative;z-index:1;
+    margin-bottom:16px;
+  }
+
+  .big-card .big-link{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:13.5px;font-weight:700;
+    position:relative;z-index:1;
+    padding-top:14px;
+    border-top:1px solid rgba(255,255,255,.08);
+    transition:.3s;
+  }
+  .big-card.tg-card .big-link{color:var(--tg)}
+  .big-card.rak-card .big-link{color:var(--green)}
+  .big-card.forum-card .big-link{color:var(--gold-2)}
+  .big-card .big-link .arr{transition:.3s;margin-left:auto}
+  .big-card:hover .big-link .arr{transform:translate(3px,-3px)}
+
+  /* ===== UPDATES BANNER ===== */
+  .updates-banner{
+    margin:26px 0 0;
+    background:
+      radial-gradient(circle at 15% 30%, rgba(59,130,246,.2), transparent 55%),
+      radial-gradient(circle at 85% 70%, rgba(167,139,250,.18), transparent 55%),
+      linear-gradient(160deg,rgba(11,30,61,.9),rgba(8,22,50,.7));
+    border:1px solid rgba(59,130,246,.4);
+    border-radius:22px;
+    padding:34px 32px;
+    display:flex;align-items:center;gap:26px;
+    position:relative;overflow:hidden;
+    text-decoration:none;color:inherit;
+    transition:transform .35s cubic-bezier(.4,0,.2,1), border-color .3s, box-shadow .3s;
+    will-change:transform;
+  }
+  .updates-banner::before{
+    content:'';position:absolute;inset:0;
+    background-image:
+      linear-gradient(rgba(59,130,246,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,130,246,.05) 1px, transparent 1px);
+    background-size:32px 32px;
+    mask-image:radial-gradient(ellipse 70% 70% at 30% 50%, #000 30%, transparent 80%);
+    -webkit-mask-image:radial-gradient(ellipse 70% 70% at 30% 50%, #000 30%, transparent 80%);
+    pointer-events:none;
+  }
+  .updates-banner::after{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(96,165,250,.18), transparent 55%);
+    opacity:0;transition:.4s;pointer-events:none;
+  }
+  .updates-banner:hover{
+    transform:translateY(-4px);
+    border-color:var(--accent);
+    box-shadow:0 20px 60px rgba(0,0,0,.5), 0 0 0 1px rgba(59,130,246,.4), 0 0 60px rgba(59,130,246,.15);
+  }
+  .updates-banner:hover::after{opacity:1}
+
+  .ub-icon{
+    width:80px;height:80px;flex-shrink:0;
+    background:linear-gradient(135deg,var(--accent),var(--violet));
+    border-radius:22px;
+    display:grid;place-items:center;
+    font-size:38px;
+    box-shadow:0 12px 40px var(--glow);
+    position:relative;z-index:1;
+    transition:.4s;
+  }
+  .updates-banner:hover .ub-icon{transform:rotate(-8deg) scale(1.06)}
+
+  .ub-content{flex:1;position:relative;z-index:1}
+  .ub-content .ub-badge{
+    display:inline-block;
+    background:rgba(52,211,153,.15);
+    border:1px solid rgba(52,211,153,.4);
+    color:var(--green);
+    font-size:10.5px;font-weight:700;
+    text-transform:uppercase;letter-spacing:.8px;
+    padding:3px 10px;border-radius:999px;
+    margin-bottom:10px;
+    animation:pulse-dot 2s ease-in-out infinite;
+  }
+  .ub-content h3{
+    font-size:24px;font-weight:800;
+    letter-spacing:-.5px;margin-bottom:6px;
+  }
+  .ub-content p{
+    color:var(--text-2);font-size:14px;line-height:1.55;
+  }
+  .ub-content p b{color:var(--accent-2);font-weight:600}
+
+  .ub-btn{
+    flex-shrink:0;
+    background:linear-gradient(135deg,var(--accent),var(--violet));
+    color:#fff;
+    padding:16px 26px;border-radius:14px;
+    font-weight:700;font-size:15px;
+    display:inline-flex;align-items:center;gap:9px;
+    box-shadow:0 10px 34px var(--glow);
+    position:relative;z-index:1;
+    transition:transform .3s, box-shadow .3s;
+    white-space:nowrap;
+  }
+  .updates-banner:hover .ub-btn{
+    transform:translateX(4px);
+    box-shadow:0 14px 44px var(--glow);
+  }
+
+  /* ===== FEATURES ===== */
+  .features-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:16px;
+  }
+
+  .feat{
+    background:linear-gradient(160deg,var(--card),rgba(8,22,50,.5));
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:24px 22px;
+    transition:.3s;
+    position:relative;overflow:hidden;
+  }
+  .feat::before{
+    content:'';position:absolute;
+    top:0;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,transparent,var(--accent),transparent);
+    opacity:0;transition:.3s;
+  }
+  .feat:hover{
+    border-color:var(--border-2);
+    transform:translateY(-4px);
+    box-shadow:0 16px 44px rgba(0,0,0,.5);
+  }
+  .feat:hover::before{opacity:1}
+  .feat .fic{
+    width:48px;height:48px;border-radius:13px;
+    display:grid;place-items:center;font-size:22px;
+    background:linear-gradient(135deg,rgba(59,130,246,.15),rgba(167,139,250,.08));
+    border:1px solid var(--border-2);
+    margin-bottom:14px;
+  }
+  .feat h4{font-size:15.5px;font-weight:700;margin-bottom:7px;letter-spacing:-.2px}
+  .feat p{font-size:13px;color:var(--text-2);line-height:1.6}
+
+  footer{
+    margin-top:80px;padding-top:40px;
+    border-top:1px solid var(--border);
+  }
+  .foot-grid{
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr;
+    gap:40px;margin-bottom:36px;
+  }
+  .foot-brand .brand{margin-bottom:14px}
+  .foot-brand p{
+    color:var(--dim);font-size:13px;
+    max-width:360px;line-height:1.6;
+  }
+  .foot-col h5{
+    font-size:12px;font-weight:700;
+    text-transform:uppercase;letter-spacing:1px;
+    color:var(--text-2);margin-bottom:14px;
+  }
+  .foot-col ul{list-style:none}
+  .foot-col ul li{margin-bottom:9px}
+  .foot-col ul a{
+    color:var(--dim);font-size:13.5px;
+    text-decoration:none;transition:.2s;
+    display:inline-flex;align-items:center;gap:7px;
+  }
+  .foot-col ul a:hover{color:var(--accent-2)}
+  .foot-bottom{
+    padding-top:26px;
+    border-top:1px solid var(--border);
+    display:flex;justify-content:space-between;
+    align-items:center;gap:16px;flex-wrap:wrap;
+    color:var(--dim);font-size:12.5px;
+  }
+  .foot-bottom .heart{color:var(--accent-2);animation:beat 1.6s ease-in-out infinite;display:inline-block}
+  @keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
+
+  #toTop{
+    position:fixed;bottom:26px;right:26px;
+    width:48px;height:48px;border-radius:14px;
+    background:linear-gradient(135deg,var(--accent),var(--violet));
+    color:#fff;border:none;font-size:19px;cursor:pointer;
+    opacity:0;pointer-events:none;
+    transition:.3s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 8px 30px var(--glow);z-index:40;
+  }
+  #toTop.show{opacity:1;pointer-events:auto}
+  #toTop:hover{transform:translateY(-4px) scale(1.05);box-shadow:0 12px 40px var(--glow)}
+
+  @media (max-width:900px){
+    .foot-grid{grid-template-columns:1fr;gap:32px}
+    .updates-banner{flex-direction:column;text-align:center;padding:30px 24px;gap:20px}
+    .ub-icon{margin:0 auto}
+    .ub-btn{width:100%;justify-content:center}
+  }
+  @media (max-width:720px){
+    .nav-links{
+      display:none;
+      position:absolute;top:calc(100% + 8px);right:22px;left:22px;
+      flex-direction:column;
+      background:rgba(5,14,31,.98);
+      border:1px solid var(--border-2);
+      border-radius:14px;padding:10px;
+      box-shadow:0 20px 60px rgba(0,0,0,.6);
+      backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    }
+    .nav-links.open{display:flex}
+    .nav-links a{width:100%;justify-content:flex-start}
+    .burger{display:grid;place-items:center;margin-left:auto}
+    .hero{padding:50px 0 30px}
+    .hero-logo{width:90px;height:90px;font-size:46px;border-radius:24px}
+    .hero-cta .btn{width:100%;justify-content:center}
+    .hero-cta{flex-direction:column;align-items:stretch}
+    .foot-bottom{justify-content:center;text-align:center}
+    .nav{padding:12px 22px}
+  }
+</style>
+</head>
+<body>
+
+<div id="cursorGlow"></div>
+
+<div class="bg-layer">
+  <div class="orb o1"></div>
+  <div class="orb o2"></div>
+  <div class="orb o3"></div>
+</div>
+
+<div class="announce">
+  <div class="announce-inner">
+    <span class="dot-live"></span>
+    <span class="label">Новости сервера каждый день —</span>
+    <a href="https://t.me/arizona_faraway26" target="_blank" rel="noopener">
+      Arizona Faraway — 26
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+    </a>
+  </div>
+</div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#top">
+      <span class="logo">⚡</span>
+      <span class="brand-text">
+        <span class="t">Arizona Faraway — 26</span>
+        <span class="s">игровой сервер · новости · обновления</span>
+      </span>
+    </a>
+    <button class="burger" id="burger" aria-label="Меню">☰</button>
+    <div class="nav-links" id="navLinks">
+      <a href="#about">О сервере</a>
+      <a href="#features">Особенности</a>
+      <a href="updates.html">📋 Обновления</a>
+      <a class="nav-cta" href="https://t.me/arizona_faraway26" target="_blank" rel="noopener">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
+        Telegram
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap" id="top">
+
+  <header class="hero">
+    <div class="server-badge"><span class="dot"></span>Сервер проекта Arizona RP</div>
+
+    <div class="hero-logo">⚡</div>
+
+    <h1 class="hero-title">Arizona Faraway</h1>
+    <div class="hero-tagline">26-й игровой сервер Аризоны</div>
+
+    <p class="hero-desc">
+      Добро пожаловать на <b>Arizona Faraway</b> — один из самых атмосферных серверов проекта.
+      Здесь ты найдёшь всё, что нужно для комфортной игры: стабильный онлайн, живое сообщество,
+      свежие ивенты и постоянные обновления.
+    </p>
+
+    <div class="hero-cta">
+      <a href="updates.html" class="btn btn-primary">
+        📋 Перейти к обновлениям
+      </a>
+      <a href="https://t.me/arizona_faraway26" class="btn btn-ghost" target="_blank" rel="noopener">
+        📢 Новости сервера
+      </a>
+    </div>
+
+    <div class="quick-info">
+      <div class="qi">
+        <span class="icon">🎮</span>
+        <div class="t">Игровой сервер</div>
+        <div class="d">Arizona RP · Faraway #26</div>
+      </div>
+      <div class="qi">
+        <span class="icon">📢</span>
+        <div class="t">Живые новости</div>
+        <div class="d">Ежедневно в Telegram</div>
+      </div>
+      <div class="qi">
+        <span class="icon">🛡️</span>
+        <div class="t">Чистая игра</div>
+        <div class="d">Активная борьба с читами</div>
+      </div>
+      <div class="qi">
+        <span class="icon">💬</span>
+        <div class="t">Форум 26-го</div>
+        <div class="d">Общение и обсуждения</div>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <div class="sec-head">
+      <div class="kicker">Полезное</div>
+      <h2>Что тебе нужно <span>знать</span></h2>
+      <p>Три основных источника — новости, защита от ракботов и форум сервера.</p>
+    </div>
+
+    <div class="big-cards">
+
+      <a class="big-card tg-card" href="https://t.me/arizona_faraway26" target="_blank" rel="noopener">
+        <div class="big-icon">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
+        </div>
+        <h3>Telegram-канал</h3>
+        <p>
+          Главный источник новостей Arizona Faraway: анонсы ивентов, розыгрыши,
+          изменения в игре, важные объявления для игроков.
+        </p>
+        <span class="big-link">
+          @arizona_faraway26
+          <span class="arr">↗</span>
+        </span>
+      </a>
+
+      <a class="big-card rak-card" href="https://rakbot.ru" target="_blank" rel="noopener">
+        <div class="big-icon">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+        </div>
+        <h3>RakBot — защита от RakBot</h3>
+        <p>
+          Официальный сайт проекта по борьбе с ракботом. Здесь можно снять
+          ракбот, проверить статус аккаунта и так далее.
+        </p>
+        <span class="big-link">
+          Перейти на сайт
+          <span class="arr">↗</span>
+        </span>
+      </a>
+
+      <a class="big-card forum-card" href="https://forum.arizona-rp.com/forums/2905/" target="_blank" rel="noopener">
+        <div class="big-icon">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            <path d="M8 9h8M8 13h5"/>
+          </svg>
+        </div>
+        <h3>Форум 26-го сервера</h3>
+        <p>
+          Официальный форум Arizona Faraway. Обсуждения, жалобы, предложения,
+          заявки во фракции и общение с администрацией сервера.
+        </p>
+        <span class="big-link">
+          forum.arizona-rp.com
+          <span class="arr">↗</span>
+        </span>
+      </a>
+
+    </div>
+
+    <a class="updates-banner" href="updates.html" id="updatesBanner">
+      <div class="ub-icon">📋</div>
+      <div class="ub-content">
+        <span class="ub-badge">live</span>
+        <h3>Обновления сервера</h3>
+        <p>
+          Полный разбор последнего патча: <b>279 файлов</b>, <b>281 изменение</b>.
+          Всё в формате «было / стало», с фильтрами и экспортом.
+        </p>
+      </div>
+      <div class="ub-btn">
+        Смотреть список →
+      </div>
+    </a>
+
+  </section>
+
+  <section id="about">
+    <div class="sec-head">
+      <div class="kicker">О сервере</div>
+      <h2>Почему <span>Arizona Faraway</span></h2>
+      <p>Сервер для тех, кто ценит атмосферу, стабильность и живое сообщество.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feat">
+        <div class="fic">🏙️</div>
+        <h4>Атмосфера штата</h4>
+        <p>Классическая Arizona RP с продуманной экономикой, работой, бизнесом и криминалом.</p>
+      </div>
+      <div class="feat">
+        <div class="fic">👥</div>
+        <h4>Живое сообщество</h4>
+        <p>Активные фракции, семьи, мафии и просто хорошие люди — всегда есть с кем поиграть.</p>
+      </div>
+      <div class="feat">
+        <div class="fic">🛡️</div>
+        <h4>Честная игра</h4>
+        <p>Постоянная работа с читерами и нарушителями — играть комфортно и безопасно.</p>
+      </div>
+      <div class="feat">
+        <div class="fic">🎉</div>
+        <h4>Ивенты и движ</h4>
+        <p>Регулярные мероприятия, конкурсы и активности — скучать не приходится.</p>
+      </div>
+      <div class="feat">
+        <div class="fic">⚙️</div>
+        <h4>Стабильность</h4>
+        <p>Сервер работает без лагов и крашей, а обновления приходят вовремя.</p>
+      </div>
+      <div class="feat">
+        <div class="fic">🆕</div>
+        <h4>Постоянное развитие</h4>
+        <p>Новые механики, транспорт, аксессуары и события — контент не застаивается.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="#top">
+          <span class="logo">⚡</span>
+          <span class="brand-text">
+            <span class="t">Arizona Faraway — 26</span>
+            <span class="s">игровой сервер Arizona RP</span>
+          </span>
+        </a>
+        <p>Фан-сайт игрового сервера Arizona Faraway. Все материалы публикуются в информационных целях и не являются официальной позицией администрации проекта.</p>
+      </div>
+
+      <div class="foot-col">
+        <h5>Разделы</h5>
+        <ul>
+          <li><a href="#about">🏙️ О сервере</a></li>
+          <li><a href="#features">⚙️ Особенности</a></li>
+          <li><a href="updates.html">📋 Обновления</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h5>Ссылки</h5>
+        <ul>
+          <li><a href="https://t.me/arizona_faraway26" target="_blank" rel="noopener">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
+            Telegram-канал
+          </a></li>
+          <li><a href="https://rakbot.ru" target="_blank" rel="noopener">🛡️ RakBot</a></li>
+          <li><a href="https://forum.arizona-rp.com/forums/2905/" target="_blank" rel="noopener">💬 Форум 26-го</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <span>© 2026 · Arizona Faraway — 26 · фан-сайт сервера</span>
+      <span>Сделано с <span class="heart">♥</span> для игроков</span>
+    </div>
+  </footer>
+
+</div>
+
+<button id="toTop" title="Наверх">↑</button>
+
+<script>
+  (function(){
+    const glow = document.getElementById('cursorGlow');
+    if(!glow) return;
+    let mx = window.innerWidth / 2;
+    let my = window.innerHeight / 3;
+    let cx = mx, cy = my;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX;
+      my = e.clientY;
+    });
+
+    function tick(){
+      cx += (mx - cx) * 0.12;
+      cy += (my - cy) * 0.12;
+      glow.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
+      requestAnimationFrame(tick);
+    }
+    tick();
+  })();
+
+  const toTop = document.getElementById('toTop');
+  window.addEventListener('scroll', () => {
+    toTop.classList.toggle('show', window.scrollY > 500);
+  });
+  toTop.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+
+  const burger = document.getElementById('burger');
+  const navLinks = document.getElementById('navLinks');
+  burger.addEventListener('click', e => {
+    e.stopPropagation();
+    navLinks.classList.toggle('open');
+  });
+  document.addEventListener('click', e => {
+    if(!navLinks.contains(e.target) && e.target !== burger){
+      navLinks.classList.remove('open');
+    }
+  });
+  navLinks.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => navLinks.classList.remove('open'));
+  });
+
+  document.querySelectorAll('.big-card, .updates-banner').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = ((e.clientX - r.left) / r.width) * 100;
+      const y = ((e.clientY - r.top) / r.height) * 100;
+      card.style.setProperty('--mx', x + '%');
+      card.style.setProperty('--my', y + '%');
+    });
+  });
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href');
+      if(id === '#' || id.length < 2) return;
+      const el = document.querySelector(id);
+      if(el){
+        e.preventDefault();
+        const top = el.getBoundingClientRect().top + window.scrollY - 90;
+        window.scrollTo({top, behavior:'smooth'});
+      }
+    });
+  });
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.style.animation = 'fadeUp .6s ease forwards';
+        io.unobserve(e.target);
+      }
+    });
+  }, {threshold:.08});
+
+  document.querySelectorAll('.feat, .qi, .big-card, .updates-banner').forEach(el => {
+    el.style.opacity = '0';
+    io.observe(el);
+  });
+
+  const style = document.createElement('style');
+  style.textContent = '@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}';
+  document.head.appendChild(style);
+</script>
+
+</body>
+</html>

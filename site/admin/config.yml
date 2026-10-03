@@ -1,0 +1,135 @@
+backend:
+  name: github
+  repo: ваш_логин/ваш_репозиторий
+  branch: main
+  base_url: https://api.netlify.com
+
+media_folder: "img"
+public_folder: "/img"
+
+locale: ru
+publish_mode: simple
+
+collections:
+
+  # ==================================================
+  # 1. Реестр всех обновлений (data/index.json)
+  # ==================================================
+  - name: "updates_index"
+    label: "📑 Список обновлений (каталог)"
+    files:
+      - name: "index"
+        label: "Index — реестр всех обнов"
+        file: "data/index.json"
+        fields:
+          - label: "Обновления"
+            name: "updates"
+            widget: "list"
+            summary: "{{fields.date}} — {{fields.title}}"
+            fields:
+              - { label: "ID (YYYY-MM-DD)", name: "id", widget: "string", hint: "Например: 2026-10-03" }
+              - { label: "Дата", name: "date", widget: "datetime", format: "YYYY-MM-DD", time_format: false }
+              - { label: "Заголовок", name: "title", widget: "string" }
+              - { label: "Краткое описание", name: "summary", widget: "text" }
+              - { label: "Имя файла", name: "file", widget: "string", hint: "Например: 2026-10-03.json" }
+              - { label: "Хэш коммита", name: "commit_hash", widget: "string", required: false }
+              - label: "Статистика"
+                name: "stats"
+                widget: "object"
+                fields:
+                  - { label: "Файлов", name: "files", widget: "number", default: 0, value_type: "int" }
+                  - { label: "Добавлений", name: "additions", widget: "number", default: 0, value_type: "int" }
+                  - { label: "Удалений", name: "deletions", widget: "number", default: 0, value_type: "int" }
+                  - { label: "Коммитов", name: "commits", widget: "number", default: 1, value_type: "int" }
+
+  # ==================================================
+  # 2. Содержимое каждого обновления (data/updates/*.json)
+  # ==================================================
+  - name: "updates"
+    label: "📋 Обновления (содержимое)"
+    label_singular: "Обновление"
+    folder: "data/updates"
+    create: true
+    delete: true
+    slug: "{{fields.id}}"
+    extension: "json"
+    format: "json"
+    identifier_field: "id"
+    summary: "{{id}} · {{title}}"
+    fields:
+      - { label: "ID (YYYY-MM-DD)", name: "id", widget: "string", hint: "Должен совпадать с ID в реестре" }
+      - { label: "Дата", name: "date", widget: "datetime", format: "YYYY-MM-DD", time_format: false }
+      - { label: "Заголовок", name: "title", widget: "string" }
+      - { label: "Краткое описание", name: "summary", widget: "text" }
+      - { label: "Хэш коммита", name: "commit_hash", widget: "string", required: false }
+      - { label: "Дисклеймер", name: "disclaimer", widget: "text", required: false }
+      - label: "Список изменений"
+        name: "items"
+        widget: "list"
+        summary: "{{fields.id}} · {{fields.title}}"
+        fields:
+          - { label: "ID", name: "id", widget: "string" }
+          - { label: "Файл", name: "file", widget: "string", required: false }
+          - { label: "Название", name: "title", widget: "string" }
+          - label: "Тип"
+            name: "type"
+            widget: "select"
+            options:
+              - { label: "📉 Нерф",      value: "nerf" }
+              - { label: "📈 Бафф",      value: "buff" }
+              - { label: "🔧 Фикс",      value: "fix" }
+              - { label: "➕ Добавлено", value: "add" }
+              - { label: "🔄 Изменено",  value: "change" }
+          - label: "Категория"
+            name: "category"
+            widget: "select"
+            options:
+              - { label: "🚕 Бонусы такси",         value: "bonus" }
+              - { label: "🏷️ Типы предметов",       value: "type" }
+              - { label: "✏️ Текст",                 value: "text" }
+              - { label: "💰 Стоимость и награды",  value: "value" }
+              - { label: "🌐 Непреносимость",       value: "transfer" }
+              - { label: "✨ Аксессуары",           value: "accessory" }
+              - { label: "📦 Прочее",               value: "other" }
+          - { label: "Описание", name: "desc", widget: "text", required: false }
+          - { label: "Примечание (можно HTML)", name: "note", widget: "text", required: false }
+
+          - label: "Diff (было / стало)"
+            name: "diffs"
+            widget: "list"
+            required: false
+            summary: "{{fields.field}}: {{fields.old}} → {{fields.new}}"
+            fields:
+              - { label: "Поле", name: "field", widget: "string" }
+              - { label: "Было", name: "old", widget: "string" }
+              - { label: "Стало", name: "new", widget: "string" }
+
+          - label: "Файлы (ID)"
+            name: "files"
+            widget: "list"
+            required: false
+            field: { label: "ID", name: "id", widget: "string" }
+
+          - label: "Компании"
+            name: "companies"
+            widget: "list"
+            required: false
+            field: { label: "Название", name: "name", widget: "string" }
+
+          - label: "Культуры"
+            name: "crops"
+            widget: "list"
+            required: false
+            field: { label: "Название", name: "name", widget: "string" }
+
+          - label: "Монеты"
+            name: "coins"
+            widget: "list"
+            required: false
+            field: { label: "Название", name: "name", widget: "string" }
+
+          - label: "Предметы (список)"
+            name: "subitems"
+            widget: "list"
+            required: false
+            field: { label: "Название", name: "name", widget: "string" }
