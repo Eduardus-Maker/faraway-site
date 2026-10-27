@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Обновления · Arizona Faraway — 26</title>
-<meta name="description" content="Обновления сайта, новости игрового сервера и посты сообщества Arizona Faraway — 26.">
+<meta name="description" content="Обновления мода, новости игрового сервера и посты сообщества Arizona Faraway — 26.">
 <link rel="stylesheet" href="theme.css">
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
@@ -237,7 +237,7 @@
 
   <div class="tabs" id="tabs">
     <button class="tab active" data-tab="updates">
-      📋 Обновления сайта <span class="tab-count" id="tabCountUpdates">0</span>
+      📋 Обновления игрового мода <span class="tab-count" id="tabCountUpdates">0</span>
     </button>
     <button class="tab" data-tab="news">
       📰 Новости игровые <span class="tab-count" id="tabCountNews">0</span>
@@ -348,9 +348,6 @@ tabsEl.addEventListener('click', e => {
   }
 })();
 
-/* ============================================================
-   ОБНОВЛЕНИЯ САЙТА
-   ============================================================ */
 async function loadUpdates(){
   const list = document.getElementById('updatesList');
   try {
