@@ -1,0 +1,166 @@
+{
+  "id": "2026-10-27",
+  "date": "2026-10-27",
+  "title": "Обновление PC-лаунчера до v0.0.144",
+  "summary": "Система динамических тем оформления, новый экран загрузки игры, обновлённый дизайн окна лаунчера и внутренние правки Electron-кода.",
+  "commit_hash": "e3b8e90ad548a7fef2939e6d11a543c937b2e85824531b92d9347e19e1e61918",
+  "disclaimer": "Часть изменений касается скомпилированного Electron-кода (build/*.js, static/*/bundle.js) и может быть не полностью покрыта описанием. Воспринимайте как справочную информацию.",
+  "items": [
+    {
+      "id": "0.0.144",
+      "file": "package.json",
+      "title": "Новая версия лаунчера",
+      "type": "change",
+      "category": "other",
+      "desc": "Обновление версии лаунчера с v0.0.143 до v0.0.144. Прошлую версию скачали 91 017 раз.",
+      "diffs": [
+        { "field": "Версия", "old": "v0.0.143", "new": "v0.0.144" },
+        { "field": "Размер", "old": "245.57 MB", "new": "—" }
+      ],
+      "files": ["package.json", "last_version.txt"]
+    },
+    {
+      "id": "theme-assets",
+      "file": "build/main.js (модуль 7298)",
+      "title": "Система динамических тем оформления",
+      "type": "add",
+      "category": "other",
+      "desc": "Новый модуль загрузки и кеширования ассетов темы. Лаунчер тянет theme.json с CDN, скачивает картинки (bg, character, logo, loaderBg, loaderLogo) и кеширует их локально в userData/theme-assets. Обновление — раз в 30 минут.",
+      "diffs": [
+        { "field": "Источник темы", "old": "—", "new": "https://pc.rod-ins.com/resource/pc-launcher/theme/theme.json" },
+        { "field": "Резервный CDN", "old": "—", "new": "https://rod-pc.react-group.tech/resource/pc-launcher/theme/theme.json" },
+        { "field": "Кеш", "old": "—", "new": "userData/theme-assets/manifest.json" },
+        { "field": "Интервал обновления", "old": "—", "new": "30 минут" }
+      ],
+      "note": "Поддерживаются расширения: .png, .jpg, .jpeg, .webp, .avif, .gif, .svg. Файлы проверяются по content-type (image/*) и переименовываются в md5-хеш + расширение. При неудаче загрузки используется предыдущий манифест."
+    },
+    {
+      "id": "theme-assets-ipc",
+      "file": "build/main.js + build/preload.js",
+      "title": "Мосты темы: IPC-события",
+      "type": "add",
+      "category": "other",
+      "desc": "В лаунчер добавлены IPC-методы и события для работы с ассетами темы. Рендерер получает обновления в реальном времени.",
+      "diffs": [
+        { "field": "IPC handle", "old": "—", "new": "theme-assets:get" },
+        { "field": "IPC on", "old": "—", "new": "theme-assets:update" },
+        { "field": "API лаунчера", "old": "—", "new": "getThemeAssets(), handleThemeAssetsUpdate()" }
+      ]
+    },
+    {
+      "id": "theme-container-removed",
+      "file": "static/app/bundle.css",
+      "title": "Удалён старый стиль character-фона",
+      "type": "change",
+      "category": "other",
+      "desc": "Из CSS убрано правило `.theme-container[data-theme=arizona] .theme-container__character` — теперь фон с персонажем управляется через тему (переменные CSS: --global-bg-img, --global-bg-character).",
+      "diffs": [
+        { "field": "Удалено", "old": ".theme-container__character { background-size: cover; width: 100vw; bottom: 0 }", "new": "—" }
+      ]
+    },
+    {
+      "id": "loader-bg-logo",
+      "file": "static/loader/bundle.js",
+      "title": "Экран загрузки игры принимает bg и logo",
+      "type": "add",
+      "category": "other",
+      "desc": "Загрузчик игры теперь читает query-параметры `bg` и `logo`. Если открывать загрузчик отдельно (не через лаунчер), можно передать кастомный фон и логотип.",
+      "diffs": [
+        { "field": "Параметр bg", "old": "—", "new": "URL фона загрузчика" },
+        { "field": "Параметр logo", "old": "—", "new": "URL логотипа, либо 'none'" },
+        { "field": "API Svelte-компонента", "old": "GameId", "new": "GameId, bg, logo, duration" }
+      ]
+    },
+    {
+      "id": "loader-visual",
+      "file": "static/loader/bundle.js",
+      "title": "Обновлённый визуал экрана загрузки",
+      "type": "change",
+      "category": "other",
+      "desc": "Переработанное окно загрузки: SVG-mask с эффектом «проявления» (feTurbulence + feDisplacementMap), анимация reveal, отдельные слои dark/bright, сменный logo и поддержка `sweep-gradient`.",
+      "diffs": [
+        { "field": "SVG-фильтры", "old": "—", "new": "tex-*, dim-*, reveal-*" },
+        { "field": "Слои изображения", "old": "game-loader-window__stage (один layer)", "new": "game-loader-window__dark + game-loader-window__bright" },
+        { "field": "Анимация reveal", "old": "—", "new": "game-loader-window__reveal--on" },
+        { "field": "Карточка окна", "old": "статичная", "new": "--sweep-gradient управляет цветом полосы" }
+      ]
+    },
+    {
+      "id": "loader-cleanup",
+      "file": "static/loader/bundle.js",
+      "title": "Оптимизация и чистка кода загрузчика",
+      "type": "change",
+      "category": "other",
+      "desc": "Внутренние изменения: переименованы вспомогательные функции Svelte-runtime, убраны неиспользуемые плейсхолдеры, оптимизирован ре-рендер.",
+      "diffs": [
+        { "field": "Функции DOM", "old": "_(e)", "new": "v(e)" },
+        { "field": "Функции анимации", "old": "f(), g()", "new": "g(), f()" },
+        { "field": "Стили (keyframes)", "old": "z()", "new": "M()" }
+      ]
+    },
+    {
+      "id": "preload-api",
+      "file": "build/preload.js",
+      "title": "Дополнено API лаунчера в preload",
+      "type": "add",
+      "category": "other",
+      "desc": "В bridge добавлены два метода для работы с темой, а в validateAndStartGame поправлен порядок параметров (a и t).",
+      "diffs": [
+        { "field": "getThemeAssets()", "old": "—", "new": "IPC invoke 'theme-assets:get'" },
+        { "field": "handleThemeAssetsUpdate()", "old": "—", "new": "IPC on 'theme-assets:update'" },
+        { "field": "validateAndStartGame()", "old": "(e, i, n, a, o, r, t)", "new": "(e, i, n, a, o, t, r)" }
+      ]
+    },
+    {
+      "id": "main-window-refactor",
+      "file": "build/main.js",
+      "title": "Рефакторинг окна лаунчера и трея",
+      "type": "change",
+      "category": "other",
+      "desc": "Большая часть правок в build/main.js — переименование внутренних переменных, пересортировка clearInterval при закрытии и подключение модуля 7298 (theme assets).",
+      "diffs": [
+        { "field": "Трей-иконка", "old": "ue (rodina.ico)", "new": "he (rodina.ico)" },
+        { "field": "Окно лаунчера", "old": "de", "new": "me" },
+        { "field": "Интервал проверки обновлений", "old": "fe, me, ge, ve", "new": "ve, ye, be, xe, we" },
+        { "field": "Подключение модуля темы", "old": "—", "new": "n(7298): initThemeAssets, refreshThemeAssets, getThemeAssets" }
+      ]
+    },
+    {
+      "id": "tray-icons",
+      "file": "build/main.js",
+      "title": "Правильная иконка в трее",
+      "type": "fix",
+      "category": "other",
+      "desc": "Исправлена путаница между фавиконом лаунчера и иконкой Rodina при создании контекстного меню трея.",
+      "diffs": [
+        { "field": "Иконка окон", "old": "favicon.ico / rodina.ico перемешаны", "new": "he = rodina.ico (трей), Ae = favicon.ico (окно)" }
+      ]
+    },
+    {
+      "id": "bundle-app",
+      "file": "static/app/bundle.js",
+      "title": "Интеграция темы в рендерер лаунчера",
+      "type": "change",
+      "category": "other",
+      "desc": "Svelte-приложение лаунчера теперь читает ассеты темы через `launcherAPI.getThemeAssets()`, подписывается на `theme-assets:update` и устанавливает CSS-переменные --global-bg-img и --global-bg-character.",
+      "diffs": [
+        { "field": "Фон окна", "old": "static assets", "new": "CSS var --global-bg-img" },
+        { "field": "Персонаж", "old": "theme-container__character", "new": "CSS var --global-bg-character" },
+        { "field": "Подписка на обновления", "old": "—", "new": "handleThemeAssetsUpdate" }
+      ],
+      "note": "Именно поэтому из bundle.css убрали старые правила .theme-container__character — их место заняли CSS-переменные."
+    },
+    {
+      "id": "build-pack",
+      "file": "package.json + last_version.txt",
+      "title": "Синхронизация last_version",
+      "type": "fix",
+      "category": "other",
+      "desc": "Версия в `last_version.txt` и `package.json` теперь совпадает — обе выставлены в 0.0.144. Раньше файл last_version мог отставать от package.json.",
+      "diffs": [
+        { "field": "last_version.txt", "old": "v0.0.143", "new": "v0.0.144" },
+        { "field": "package.json version", "old": "0.0.143", "new": "0.0.144" }
+      ]
+    }
+  ]
+}
