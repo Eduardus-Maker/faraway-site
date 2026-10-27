@@ -1,0 +1,14 @@
+{
+  "id": "2026-09-19",
+  "date": "2026-09-19",
+  "title": "Mobile: v17.4.1 (1741)",
+  "kind": "site",
+  "platforms": ["mobile"],
+  "stats": { "files": 1, "commits": 1 },
+  "disclaimer": "Часть значений может быть взята с тестового сервера и не совпадать с боевыми. Воспринимайте как справочную информацию.",
+  "items": [
+    { "id": "mobile-1741", "title": "Mobile: v17.4.1 (build 1741)", "type": "change", "category": "other", "platform": "mobile",
+      "diffs": [{ "field": "Версия", "old": "v17.4.0", "new": "v17.4.1 (1741)" }],
+      "note": "beepycompare/arizonamobile — <code>01209d0…fb1cbf5</code>" }
+  ]
+}

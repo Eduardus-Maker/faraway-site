@@ -1,18 +1,107 @@
 {
   "updates": [
     {
+      "id": "2026-09-08",
+      "date": "2026-09-08",
+      "title": "Обновление от 8 сентября 2026",
+      "summary": "Переименование Bugatti → Bellatti (35 предметов) + PC-кеш (frontend, _chat.asi, items.zip).",
+      "kind": "mixed",
+      "platforms": ["game", "pc"],
+      "file": "2026-09-08.json",
+      "commit_hash": "b4fbc0c...d9ddd6f",
+      "stats": { "files": 40, "additions": 0, "deletions": 0, "commits": 2 }
+    },
+    {
+      "id": "2026-09-10",
+      "date": "2026-09-10",
+      "title": "Обновление от 10 сентября 2026",
+      "summary": "Mobile: v17.3.9 (1739).",
+      "kind": "site",
+      "platforms": ["mobile"],
+      "file": "2026-09-10.json",
+      "stats": { "files": 1, "additions": 0, "deletions": 0, "commits": 1 }
+    },
+    {
+      "id": "2026-09-17",
+      "date": "2026-09-17",
+      "title": "Обновление от 17 сентября 2026",
+      "summary": "Исправление опечаток + Mobile v17.4.0 + PC v0.0.143.",
+      "kind": "mixed",
+      "platforms": ["game", "mobile", "pc"],
+      "file": "2026-09-17.json",
+      "stats": { "files": 4, "additions": 0, "deletions": 0, "commits": 3 }
+    },
+    {
+      "id": "2026-09-19",
+      "date": "2026-09-19",
+      "title": "Обновление от 19 сентября 2026",
+      "summary": "Mobile: v17.4.1 (1741).",
+      "kind": "site",
+      "platforms": ["mobile"],
+      "file": "2026-09-19.json",
+      "stats": { "files": 1, "additions": 0, "deletions": 0, "commits": 1 }
+    },
+    {
+      "id": "2026-09-30",
+      "date": "2026-09-30",
+      "title": "Обновление от 30 сентября 2026",
+      "summary": "Mobile: v17.5.3 (1753).",
+      "kind": "site",
+      "platforms": ["mobile"],
+      "file": "2026-09-30.json",
+      "stats": { "files": 1, "additions": 0, "deletions": 0, "commits": 1 }
+    },
+    {
+      "id": "2026-10-01",
+      "date": "2026-10-01",
+      "title": "Обновление от 1 октября 2026",
+      "summary": "Street-коллекции (43 новых предмета) + Mobile кеш + исправление шрифта + PC полное обновление.",
+      "kind": "mixed",
+      "platforms": ["game", "mobile", "pc"],
+      "file": "2026-10-01.json",
+      "commit_hash": "3e75c9a...250effe",
+      "stats": { "files": 115, "additions": 52, "deletions": 4, "commits": 4 }
+    },
+    {
+      "id": "2026-10-02",
+      "date": "2026-10-02",
+      "title": "Обновление от 2 октября 2026",
+      "summary": "PC: обновление crashes.asi, arizona_configurator.asi, core.asi, arizona.asi.",
+      "kind": "site",
+      "platforms": ["pc"],
+      "file": "2026-10-02.json",
+      "stats": { "files": 4, "additions": 0, "deletions": 0, "commits": 1 }
+    },
+    {
       "id": "2026-10-03",
       "date": "2026-10-03",
       "title": "Обновление от 3 октября 2026",
-      "summary": "Массовое обновление карточек предметов и README. Разбор 279 файлов.",
+      "summary": "Mobile кеш (peds) + PC кеш + новый предмет (Стоник, ID 10476).",
+      "kind": "mixed",
+      "platforms": ["mobile", "pc", "game"],
       "file": "2026-10-03.json",
-      "commit_hash": "7314728cf80469f7dd8047675d6eb11ff5e8e8d7b5de9",
-      "stats": {
-        "files": 279,
-        "additions": 281,
-        "deletions": 281,
-        "commits": 1
-      }
+      "commit_hash": "d9ddd6f...dbc5e94",
+      "stats": { "files": 15, "additions": 1, "deletions": 0, "commits": 3 }
+    },
+    {
+      "id": "2026-10-05",
+      "date": "2026-10-05",
+      "title": "Обновление от 5 октября 2026",
+      "summary": "PC кеш + переименование предмета Стоник → Спортик (ID 10476).",
+      "kind": "mixed",
+      "platforms": ["pc", "game"],
+      "file": "2026-10-05.json",
+      "stats": { "files": 5, "additions": 0, "deletions": 0, "commits": 2 }
+    },
+    {
+      "id": "2026-10-07",
+      "date": "2026-10-07",
+      "title": "Обновление от 7 октября 2026",
+      "summary": "PC: обновление vorbisFile.dll.",
+      "kind": "site",
+      "platforms": ["pc"],
+      "file": "2026-10-07.json",
+      "stats": { "files": 1, "additions": 0, "deletions": 0, "commits": 1 }
     },
     {
       "id": "2026-10-27",

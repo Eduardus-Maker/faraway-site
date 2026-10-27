@@ -1,0 +1,14 @@
+{
+  "id": "2026-09-30",
+  "date": "2026-09-30",
+  "title": "Mobile: v17.5.3 (1753)",
+  "kind": "site",
+  "platforms": ["mobile"],
+  "stats": { "files": 1, "commits": 1 },
+  "disclaimer": "Часть значений может быть взята с тестового сервера и не совпадать с боевыми. Воспринимайте как справочную информацию.",
+  "items": [
+    { "id": "mobile-1753", "title": "Mobile: v17.5.3 (build 1753)", "type": "change", "category": "other", "platform": "mobile",
+      "diffs": [{ "field": "Версия", "old": "v17.4.1", "new": "v17.5.3 (1753)" }],
+      "note": "beepycompare/arizonamobile — <code>fb1cbf5…1d25080</code>" }
+  ]
+}

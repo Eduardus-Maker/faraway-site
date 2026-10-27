@@ -333,6 +333,7 @@
     <h1 class="hero-title" id="heroTitle">Загрузка…</h1>
     <p class="hero-sub" id="heroSub"></p>
 
+    <div class="filters" id="platformBadges" style="margin:0 0 18px"></div>
     <div class="stats" id="statsRow"></div>
     <div class="commit-bar" id="commitBar" style="display:none">
       <span class="icon">🔗</span>
@@ -502,6 +503,10 @@ function renderCard(card, idx){
   if(card.coins) listHTML += `<div class="note"><span class="ico">🪙</span><span><b>Монеты:</b> ${card.coins.map(escapeHTML).join(", ")}</span></div>`;
   if(card.items) listHTML += `<div class="note"><span class="ico">📦</span><span><b>Предметы:</b> ${card.items.map(escapeHTML).join(", ")}</span></div>`;
 
+  const platBadge = card.platform ? `<span class="uc-stat" data-plat="${card.platform}">${
+    { game: '🎮', pc: '🖥', mobile: '📱' }[card.platform] || ''
+  } ${card.platform}</span>` : '';
+
   return `
     <article class="card t-${t.cls}" style="animation-delay:${Math.min(idx * 25, 400)}ms">
       <div class="card-head">
@@ -584,6 +589,14 @@ function renderMeta(){
     ${s.deletions ? `<div class="stat"><span class="num">${s.deletions}</span><span class="lbl">Удалений</span></div>` : ""}
     ${s.commits ? `<div class="stat"><span class="num">${s.commits}</span><span class="lbl">Коммит</span></div>` : ""}
   `;
+
+  const platforms = META.platforms || [];
+  document.getElementById("platformBadges").innerHTML = platforms
+    .map(p => {
+    const map = { game: ['🎮 Игровое', 'var(--violet)'], pc: ['🖥 PC', 'var(--accent-2)'], mobile: ['📱 Mobile', 'var(--green)'] };
+    const [label, color] = map[p] || [p, 'var(--dim)'];
+    return `<span class="uc-stat" style="color:${color};border-color:${color}33;background:${color}1a">${label}</span>`;
+  }).join("");
 
   if(META.commit_hash){
     document.getElementById("commitBar").style.display = "flex";

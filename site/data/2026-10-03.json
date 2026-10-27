@@ -1,0 +1,37 @@
+{
+  "id": "2026-10-03",
+  "date": "2026-10-03",
+  "title": "Mobile кеш + PC кеш + новый предмет Стоник",
+  "kind": "mixed",
+  "platforms": ["mobile", "pc", "game"],
+  "commit_hash": "d9ddd6f...dbc5e94",
+  "stats": { "files": 15, "additions": 1, "commits": 3 },
+  "disclaimer": "Часть значений может быть взята с тестового сервера и не совпадать с боевыми. Воспринимайте как справочную информацию.",
+  "items": [
+    { "id": "chg-peds-toc", "title": "/files/texdb/peds.etc.toc", "type": "change", "category": "other", "platform": "mobile",
+      "diffs": [{ "field": "Размер", "old": "10.94 KB", "new": "10.96 KB (+20 B)" }] },
+    { "id": "chg-peds-dat", "title": "/files/texdb/peds.etc.dat", "type": "change", "category": "other", "platform": "mobile",
+      "diffs": [{ "field": "Размер", "old": "222.54 MB", "new": "222.72 MB (+181.48 KB)" }] },
+    { "id": "chg-peds-tmb", "title": "/files/texdb/peds.etc.tmb", "type": "change", "category": "other", "platform": "mobile",
+      "diffs": [{ "field": "Размер", "old": "134.09 KB", "new": "134.33 KB (+240 B)" }] },
+    { "id": "chg-peds-txt", "title": "/files/texdb/peds.txt", "type": "change", "category": "other", "platform": "mobile",
+      "diffs": [{ "field": "Размер", "old": "133.65 KB", "new": "133.88 KB (+230 B)" }] },
+    { "id": "chg-peds-img", "title": "/files/models/peds_2.img", "type": "change", "category": "other", "platform": "mobile",
+      "diffs": [{ "field": "Размер", "old": "56.16 MB", "new": "56.38 MB (+228 KB)" }] },
+    { "id": "chg-samp-ide", "title": "/files/SAMP/SAMP.ide", "type": "change", "category": "other", "platform": "mobile",
+      "diffs": [{ "field": "Размер", "old": "200.15 KB", "new": "200.31 KB (+161 B)" }] },
+
+    { "id": "chg-peds-pc", "title": "/models/peds_2.img", "type": "change", "category": "other", "platform": "pc",
+      "diffs": [{ "field": "Размер", "old": "226.24 MB", "new": "227.22 MB (+1000 KB)" }] },
+    { "id": "chg-items-zip", "title": "/arizona/items.zip", "type": "change", "category": "other", "platform": "pc",
+      "diffs": [{ "field": "Размер", "old": "58.13 MB", "new": "58.18 MB (+48.67 KB)" }] },
+    { "id": "chg-limits", "title": "/arizona/LauncherLimits.ini", "type": "change", "category": "other", "platform": "pc",
+      "diffs": [{ "field": "Размер", "old": "9.84 KB", "new": "9.84 KB" }] },
+    { "id": "chg-samp-ide-pc", "title": "/SAMP/SAMP.ide", "type": "change", "category": "other", "platform": "pc",
+      "diffs": [{ "field": "Размер", "old": "200.15 KB", "new": "200.31 KB (+161 B)" }] },
+    { "id": "compare-items", "title": "Сравнение items на GitHub", "type": "change", "category": "other", "platform": "pc",
+      "note": "beepycompare/arizonaitems — <code>d9ddd6f…dbc5e94</code>" },
+
+    { "id": "10476", "file": "10476", "title": "Стоник", "type": "add", "category": "other", "platform": "game" }
+  ]
+}

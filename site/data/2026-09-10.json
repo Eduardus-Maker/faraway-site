@@ -1,0 +1,15 @@
+{
+  "id": "2026-09-10",
+  "date": "2026-09-10",
+  "title": "Mobile: v17.3.9 (1739)",
+  "kind": "site",
+  "platforms": ["mobile"],
+  "stats": { "files": 1, "commits": 1 },
+  "disclaimer": "Часть значений может быть взята с тестового сервера и не совпадать с боевыми. Воспринимайте как справочную информацию.",
+  "items": [
+    { "id": "mobile-1739", "title": "Mobile: v17.3.9 (build 1739)", "type": "change", "category": "other", "platform": "mobile",
+      "desc": "Новая версия мобильного клиента Arizona RP.",
+      "diffs": [{ "field": "Версия", "old": "—", "new": "v17.3.9 (1739)" }],
+      "note": "beepycompare/arizonamobile — <code>2b9d56d…01209d0</code>" }
+  ]
+}

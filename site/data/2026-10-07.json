@@ -1,0 +1,13 @@
+{
+  "id": "2026-10-07",
+  "date": "2026-10-07",
+  "title": "PC: обновление vorbisFile.dll",
+  "kind": "site",
+  "platforms": ["pc"],
+  "stats": { "files": 1, "commits": 1 },
+  "disclaimer": "Часть значений может быть взята с тестового сервера и не совпадать с боевыми. Воспринимайте как справочную информацию.",
+  "items": [
+    { "id": "chg-vorbis", "title": "/vorbisFile.dll", "type": "change", "category": "other", "platform": "pc",
+      "diffs": [{ "field": "Размер", "old": "1.49 MB", "new": "1.50 MB (+11.01 KB)" }] }
+  ]
+}
