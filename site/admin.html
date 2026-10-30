@@ -203,6 +203,13 @@
     </div>
 
     <div class="panel">
+      <h2><span class="ic">📋</span>Текущий список обновлений</h2>
+      <div class="hint">Управление через GitHub CMS во вкладке «GitHub CMS».</div>
+      <!-- ВОТ СЮДА ДОБАВЛЕН ID="itemsList" -->
+      <div class="items-list" id="itemsList"><div class="empty">Загрузка…</div></div>
+    </div>
+
+    <div class="panel">
       <h2><span class="ic">📤</span>Публикация</h2>
       <div class="hint">Скачай JSON и положи в <code>data/updates.json</code>.</div>
       <div class="btn-row">
@@ -246,7 +253,6 @@
     <div class="panel">
       <h2><span class="ic">🤖</span>Генерация промпта для ИИ</h2>
       <div class="hint">Заполни поля — получишь готовый промпт для нейросети.</div>
-      <div class="hint">Для чего ? - Если пришло обновление скидываете список в любом виде и берете промт, скидываете куда угодно (Например: https://chat.deepseek.com, https://chatgpt.com, https://gemini.google.com)</div>
       <div class="form-grid">
         <div class="field"><label>Дата</label><input type="date" id="aiDate"></div>
         <div class="field"><label>Заголовок</label><input type="text" id="aiTitle" placeholder="Обновление от..."></div>
@@ -300,7 +306,7 @@
     </div>
   </div>
 
-  <!-- ROLES (Теперь видна всем, но API не даст сохранить) -->
+  <!-- ROLES -->
   <div class="tab-content" id="tab-roles">
     <div class="panel">
       <h2><span class="ic">👑</span>Управление ролями</h2>
@@ -350,15 +356,15 @@ function toast(msg, isError){
 }
 
 /* ============================================================
-   API helper (с глобальной обработкой 403)
+   API helper
    ============================================================ */
 async function api(path, opts){
   opts = opts || {};
   opts.headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
   if(adminToken) opts.headers['Authorization'] = 'Bearer ' + adminToken;
+  
   const r = await fetch(API_BASE + path, opts);
   
-  // Если сессия истекла или права отозваны
   if (r.status === 401) {
     adminToken = '';
     localStorage.removeItem(STORAGE_KEY);
@@ -371,9 +377,7 @@ async function api(path, opts){
   try { data = text ? JSON.parse(text) : {}; } catch(e){ data = { raw: text }; }
   
   if(!r.ok){
-    if (r.status === 403) {
-      toast('Братан, у тебя нет прав!', true);
-    }
+    if (r.status === 403) toast('Братан, у тебя нет прав!', true);
     const err = new Error(data.error || ('HTTP ' + r.status));
     err.status = r.status;
     err.data = data;
@@ -397,7 +401,6 @@ function setAuth(on, label, roleStr){
   if(on){
     statusEl.classList.remove('off'); statusEl.classList.add('on');
     statusText.textContent = 'Онлайн';
-    
     const roleNames = { 'founder': '👑 ОСНОВАТЕЛЬ', 'admin': '🛡 АДМИН', 'helper': '🛠 ХЕЛПЕР' };
     userBadge.textContent = `${roleNames[roleStr] || roleStr.toUpperCase()} | ${label}`;
   } else {
@@ -408,7 +411,7 @@ function setAuth(on, label, roleStr){
 }
 
 /* ============================================================
-   LOGIN
+   LOGIN & LOGOUT
    ============================================================ */
 const loginBtn = document.getElementById('loginBtn');
 loginBtn.addEventListener('click', async () => {
@@ -416,10 +419,7 @@ loginBtn.addEventListener('click', async () => {
   const password = document.getElementById('loginPass').value.trim();
   const admin_code = document.getElementById('adminCode').value.trim();
 
-  if (!login_code || !password || !admin_code) {
-    toast('Заполните все поля', true);
-    return;
-  }
+  if (!login_code || !password || !admin_code) return toast('Заполните все поля', true);
 
   loginBtn.disabled = true;
   loginBtn.textContent = 'Загрузка...';
@@ -431,17 +431,14 @@ loginBtn.addEventListener('click', async () => {
       body: JSON.stringify({ login_code, password, admin_code })
     });
     const data = await res.json();
-    
     if (!res.ok) throw new Error(data.error || 'Ошибка входа');
 
     adminToken = data.token;
     localStorage.setItem(STORAGE_KEY, adminToken);
-    
     showMain();
     setAuth(true, data.username, data.role);
     await loadAll();
     toast('Добро пожаловать!');
-    
   } catch (e) {
     toast(e.message, true);
   } finally {
@@ -450,9 +447,6 @@ loginBtn.addEventListener('click', async () => {
   }
 });
 
-/* ============================================================
-   LOGOUT
-   ============================================================ */
 async function doLogout() {
   try { await api('/api/auth/logout', { method: 'POST' }); } catch(e){}
   adminToken = '';
@@ -474,9 +468,7 @@ document.getElementById('logoutHeader').addEventListener('click', doLogout);
     setAuth(true, me.username, me.role);
     showMain();
     await loadAll();
-  } catch(e){
-    showGate();
-  }
+  } catch(e){ showGate(); }
 })();
 
 /* ============================================================
@@ -490,7 +482,7 @@ async function loadAll(){
   await loadGhFiles();
   await loadConfig();
   await loadModApps();
-  await loadRoles(); // Загружаем всегда, если нет прав - просто будет пусто/ошибка
+  await loadRoles();
 }
 
 async function loadStats(){
@@ -504,12 +496,32 @@ async function loadStats(){
 document.getElementById('refreshStats').addEventListener('click', loadStats);
 
 async function loadItems(){
+  const itemsListEl = document.getElementById('itemsList');
+  const previewEl = document.getElementById('jsonPreview');
+  
+  if (!itemsListEl) return;
+
   try {
     const data = await api('/api/admin/updates');
     items = data.items || [];
-    renderItems();
-    updatePreview();
-  } catch(e){ toast('Не загрузить обновления: ' + e.message, true); }
+    
+    if(!items.length){ 
+      itemsListEl.innerHTML = '<div class="empty">Пока пусто.</div>'; 
+    } else {
+      itemsListEl.innerHTML = items.map(it => `
+        <div class="item-row t-${it.type || 'change'}">
+          <span class="iid">${escapeAttr(it.id)}</span>
+          <span class="ititle">${escapeAttr(it.title)}</span>
+        </div>
+      `).join('');
+    }
+    
+    if(previewEl) previewEl.textContent = JSON.stringify(items, null, 2);
+    
+  } catch(e){ 
+    toast('Не загрузить обновления: ' + e.message, true); 
+    itemsListEl.innerHTML = '<div class="empty" style="color:var(--red)">Ошибка загрузки обновлений</div>';
+  }
 }
 
 async function loadMaint(){
@@ -540,9 +552,6 @@ document.getElementById('toggleMaintOff').addEventListener('click', async () => 
   } catch(e){ toast(e.message, true); }
 });
 
-/* ============================================================
-   СМЕНА ПАРОЛЯ
-   ============================================================ */
 document.getElementById('changePassBtn').addEventListener('click', async () => {
   const pass = document.getElementById('newPass').value.trim();
   if(pass.length < 4) return toast('Пароль слишком короткий', true);
@@ -555,7 +564,7 @@ document.getElementById('changePassBtn').addEventListener('click', async () => {
 });
 
 /* ============================================================
-   ОСТАЛЬНЫЕ ФУНКЦИИ (Без изменений)
+   ОСТАЛЬНЫЕ ФУНКЦИИ
    ============================================================ */
 async function loadModeration(){
   const el = document.getElementById('modList');
@@ -750,23 +759,6 @@ document.getElementById('copyPrompt').addEventListener('click', async () => {
   try { await navigator.clipboard.writeText(text); toast('Скопировано'); }
   catch { toast('Не удалось', true); }
 });
-
-const itemsListEl = document.getElementById('itemsList');
-const previewEl = document.getElementById('jsonPreview');
-
-function renderItems(){
-  if(!items.length){ itemsListEl.innerHTML = '<div class="empty">Пока пусто.</div>'; return; }
-  itemsListEl.innerHTML = items.map(it => `
-    <div class="item-row t-${it.type || 'change'}">
-      <span class="iid">${escapeAttr(it.id)}</span>
-      <span class="ititle">${escapeAttr(it.title)}</span>
-    </div>
-  `).join('');
-}
-
-function updatePreview(){
-  if(previewEl) previewEl.textContent = JSON.stringify(items, null, 2);
-}
 
 document.getElementById('downloadJson').addEventListener('click', () => {
   const payload = { meta: { version: "1", updated: new Date().toISOString(), source: "https://t.me/arizona_faraway26" }, items };

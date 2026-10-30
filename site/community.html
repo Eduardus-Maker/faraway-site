@@ -87,10 +87,11 @@
   <div class="feed" id="feed"><div class="loading">Загружаем посты…</div></div>
 </div>
 
+<!-- Вставь этот код в самый низ community.html, заменив старый скрипт <script>...</script> перед theme.js -->
+
 <script>
-const API_BASE = location.hostname === 'localhost' || location.hostname === '127.0.0.1'
-  ? 'http://localhost:8787'
-  : '';
+// ВОТ ТУТ ИЗМЕНЕНИЕ: теперь API указывает на твой Воркер
+const API_BASE = "https://azfw26-api.eduardusmaker.workers.dev";
 const TG_KEY = 'azfw26_tg_user';
 
 function getTgUser(){
@@ -205,6 +206,12 @@ document.getElementById('postBtn').addEventListener('click', async () => {
 renderAuth();
 loadPosts();
 </script>
+
+<script src="theme.js"></script>
+</body>
+</html>
+
+
 
 <script src="theme.js"></script>
 </body>
