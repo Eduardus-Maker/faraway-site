@@ -16,11 +16,21 @@
     transition:background .4s, color .4s;
   }
   .wrap{max-width:1080px;margin:0 auto;padding:32px 22px 100px}
-  .head{display:flex;align-items:center;gap:14px;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+  
+  .head{display:flex;align-items:center;gap:14px;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border);flex-wrap:wrap}
   .head .logo{width:46px;height:46px;background:linear-gradient(135deg,var(--accent),var(--violet));border-radius:13px;display:grid;place-items:center;font-size:22px;box-shadow:0 0 22px var(--glow)}
   .head .t{font-size:20px;font-weight:800;letter-spacing:-.4px}
   .head .s{font-size:12.5px;color:var(--dim)}
-  .head .status{margin-left:auto;font-size:12px;font-weight:600;padding:6px 14px;border-radius:999px;display:inline-flex;align-items:center;gap:7px}
+  
+  .user-badge { 
+    display: inline-flex; align-items: center; gap: 8px; 
+    background: color-mix(in srgb, var(--accent) 15%, transparent); 
+    border: 1px solid var(--accent); color: var(--accent-2); 
+    padding: 4px 12px; border-radius: 99px; 
+    font-size: 12px; font-weight: 700; 
+    margin-left: auto; margin-right: 15px; 
+  }
+  .status{font-size:12px;font-weight:600;padding:6px 14px;border-radius:999px;display:inline-flex;align-items:center;gap:7px}
   .status.on{background:color-mix(in srgb, var(--green) 12%, transparent);color:var(--green);border:1px solid color-mix(in srgb, var(--green) 40%, transparent)}
   .status.off{background:color-mix(in srgb, var(--red) 12%, transparent);color:var(--red);border:1px solid color-mix(in srgb, var(--red) 40%, transparent)}
   .status .dot{width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor}
@@ -94,6 +104,7 @@
   @media (max-width:640px){
     .form-grid{grid-template-columns:1fr}
     .head .status{display:none}
+    .user-badge { margin-left: 0; margin-top: 10px; width: 100%; justify-content: center; }
   }
 </style>
 </head>
@@ -140,6 +151,7 @@
       <div class="t">Админ-панель</div>
       <div class="s">Arizona Faraway — 26 · управление сайтом</div>
     </div>
+    <div class="user-badge" id="userBadge">Загрузка...</div>
     <div class="status off" id="status"><span class="dot"></span><span id="statusText">Не авторизован</span></div>
   </div>
 
@@ -294,10 +306,8 @@
 /* ============================================================
    КОНФИГ
    ============================================================ */
-const API_BASE = location.hostname === 'localhost' || location.hostname === '127.0.0.1'
-  ? 'http://localhost:8787'
-  : '';
-
+// ЖЕСТКО ПРИВЯЗЫВАЕМ К ТВОЕМУ ВОРКЕРУ, ЧТОБЫ НЕ БЫЛО ОШИБОК
+const API_BASE = "https://azfw26-api.eduardusmaker.workers.dev";
 const STORAGE_KEY = 'azfw26_admin_token';
 
 let adminToken = localStorage.getItem(STORAGE_KEY) || '';
@@ -344,16 +354,21 @@ const gateEl = document.getElementById('gate');
 const mainWrap = document.getElementById('mainWrap');
 const statusEl = document.getElementById('status');
 const statusText = document.getElementById('statusText');
+const userBadge = document.getElementById('userBadge');
 
 function showGate(){ gateEl.classList.remove('hidden'); mainWrap.style.display = 'none'; }
 function showMain(){ gateEl.classList.add('hidden'); mainWrap.style.display = 'block'; }
-function setAuth(on, label){
+function setAuth(on, label, roleStr){
   if(on){
     statusEl.classList.remove('off'); statusEl.classList.add('on');
-    statusText.textContent = label || 'Авторизован';
+    statusText.textContent = 'Онлайн';
+    
+    const roleNames = { 'founder': '👑 ОСНОВАТЕЛЬ', 'admin': '🛡 АДМИН', 'helper': '🛠 ХЕЛПЕР' };
+    userBadge.textContent = `${roleNames[roleStr] || roleStr.toUpperCase()} | ${label}`;
   } else {
     statusEl.classList.remove('on'); statusEl.classList.add('off');
     statusText.textContent = 'Не авторизован';
+    userBadge.textContent = 'Гость';
   }
 }
 
@@ -388,7 +403,7 @@ loginBtn.addEventListener('click', async () => {
     localStorage.setItem(STORAGE_KEY, adminToken);
     
     showMain();
-    setAuth(true, data.username + ' · ' + data.role);
+    setAuth(true, data.username, data.role);
     await loadAll();
     toast('Добро пожаловать!');
     
@@ -421,28 +436,24 @@ document.getElementById('logout').addEventListener('click', async () => {
     const me = await api('/api/admin/me');
     currentRole = me.role;
     
-    // Показываем вкладку ролей только Основателю (founder)
     if (currentRole === 'founder') {
       document.getElementById('tab-btn-roles').style.display = 'block';
     }
 
-    setAuth(true, me.username + ' · ' + me.role);
+    setAuth(true, me.username, me.role);
     showMain();
     await loadAll();
   } catch(e){
     if(e.status === 401){
       adminToken = '';
       localStorage.removeItem(STORAGE_KEY);
-      showGate();
-    } else {
-      toast('Ошибка сессии: ' + e.message, true);
-      showGate();
     }
+    showGate();
   }
 })();
 
 /* ============================================================
-   LOAD / RENDER
+   LOAD FUNCTIONS
    ============================================================ */
 async function loadAll(){
   await loadItems();
@@ -452,7 +463,6 @@ async function loadAll(){
   await loadConfig();
   await loadModApps();
   
-  // Загружаем роли только если это основатель
   if (currentRole === 'founder') {
     await loadRoles();
   }
