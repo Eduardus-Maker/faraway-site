@@ -51,21 +51,11 @@
   .field select{cursor:pointer}
   .field select option{background:var(--card);color:var(--text)}
 
-  .diffs-box{background:color-mix(in srgb, var(--bg-0) 35%, transparent);border:1px dashed var(--border-2);border-radius:12px;padding:14px;margin-bottom:14px}
-  .diffs-box .dh{font-size:12.5px;font-weight:700;color:var(--text-2);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-  .diff-item{display:grid;grid-template-columns:1fr 1fr 1fr 36px;gap:8px;margin-bottom:8px}
-  .diff-item input{background:color-mix(in srgb, var(--card) 70%, transparent);border:1px solid var(--border);color:var(--text);padding:8px 11px;border-radius:8px;font-size:12.5px;font-family:inherit;outline:none;transition:.2s}
-  .diff-item input:focus{border-color:var(--accent);background:color-mix(in srgb, var(--card-2) 70%, transparent)}
-  .diff-item .rm{background:color-mix(in srgb, var(--red) 12%, transparent);border:1px solid color-mix(in srgb, var(--red) 35%, transparent);color:var(--red);border-radius:8px;cursor:pointer;font-size:14px;transition:.2s}
-  .diff-item .rm:hover{background:color-mix(in srgb, var(--red) 25%, transparent)}
-
   .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:11px;font-size:13.5px;font-weight:700;font-family:inherit;cursor:pointer;border:none;transition:.25s;text-decoration:none;white-space:nowrap}
   .btn-primary{background:linear-gradient(135deg,var(--accent),var(--violet));color:#fff;box-shadow:0 6px 22px var(--glow)}
   .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px var(--glow)}
   .btn-ghost{background:color-mix(in srgb, var(--card) 70%, transparent);border:1px solid var(--border-2);color:var(--text)}
   .btn-ghost:hover{border-color:var(--accent);background:color-mix(in srgb, var(--card-2) 90%, transparent)}
-  .btn-tg{background:linear-gradient(135deg,var(--tg),#1c7fb3);color:#fff}
-  .btn-tg:hover{transform:translateY(-2px);box-shadow:0 8px 26px color-mix(in srgb, var(--tg) 40%, transparent)}
   .btn-green{background:linear-gradient(135deg,var(--green),#059669);color:#fff;box-shadow:0 6px 22px color-mix(in srgb, var(--green) 30%, transparent)}
   .btn-green:hover{transform:translateY(-2px)}
   .btn-red{background:color-mix(in srgb, var(--red) 12%, transparent);border:1px solid color-mix(in srgb, var(--red) 40%, transparent);color:var(--red)}
@@ -76,11 +66,6 @@
   .items-list{display:flex;flex-direction:column;gap:8px}
   .item-row{background:color-mix(in srgb, var(--bg-0) 40%, transparent);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:10px;padding:11px 14px;display:flex;align-items:center;gap:12px;transition:.2s}
   .item-row:hover{border-color:var(--border-2);background:color-mix(in srgb, var(--card-2) 50%, transparent)}
-  .item-row.t-nerf{border-left-color:var(--red)}
-  .item-row.t-buff{border-left-color:var(--green)}
-  .item-row.t-fix{border-left-color:var(--yellow)}
-  .item-row.t-add{border-left-color:var(--accent)}
-  .item-row.t-change{border-left-color:var(--violet)}
   .item-row .iid{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--accent-2);background:color-mix(in srgb, var(--accent) 10%, transparent);border:1px solid color-mix(in srgb, var(--accent) 25%, transparent);padding:2px 8px;border-radius:6px;font-weight:600;flex-shrink:0}
   .item-row .ititle{flex:1;font-size:13.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
   .item-row .iacts{display:flex;gap:6px;flex-shrink:0}
@@ -98,20 +83,6 @@
   .gate-card .g-icon{width:70px;height:70px;margin:0 auto 20px;background:linear-gradient(135deg,var(--accent),var(--violet));border-radius:20px;display:grid;place-items:center;font-size:32px;box-shadow:0 0 40px var(--glow)}
   .gate-card h2{font-size:22px;font-weight:800;margin-bottom:8px;letter-spacing:-.5px}
   .gate-card > p{color:var(--text-2);font-size:13.5px;margin-bottom:22px;line-height:1.55}
-  .tg-note{background:color-mix(in srgb, var(--yellow) 8%, transparent);border:1px solid color-mix(in srgb, var(--yellow) 30%, transparent);border-radius:10px;padding:11px 14px;font-size:12px;color:var(--yellow);text-align:left;margin-bottom:18px;line-height:1.55}
-  .divider{display:flex;align-items:center;gap:12px;color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin:18px 0}
-  .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
-  .tg-widget{display:flex;justify-content:center;margin:6px 0 14px;min-height:50px}
-  .tg-user{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:color-mix(in srgb, var(--tg) 8%, transparent);border:1px solid color-mix(in srgb, var(--tg) 30%, transparent);margin-bottom:14px}
-  .tg-user .av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--tg),#1c7fb3);color:#fff;display:grid;place-items:center;font-weight:800;font-size:16px;flex-shrink:0;overflow:hidden}
-  .tg-user .av img{width:100%;height:100%;object-fit:cover}
-  .tg-user .info{flex:1;min-width:0;text-align:left}
-  .tg-user .info b{font-size:13.5px;display:block}
-  .tg-user .info span{font-size:11.5px;color:var(--dim)}
-  .code-input{display:flex;gap:8px;justify-content:center;margin:16px 0}
-  .code-input input{width:48px;height:56px;background:color-mix(in srgb, var(--bg-0) 60%, transparent);border:1px solid var(--border-2);border-radius:12px;text-align:center;font-size:22px;font-weight:800;color:var(--text);font-family:'JetBrains Mono',monospace;outline:none;transition:.2s}
-  .code-input input:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);transform:translateY(-2px)}
-  .ip-warn{background:color-mix(in srgb, var(--red) 8%, transparent);border:1px solid color-mix(in srgb, var(--red) 35%, transparent);color:var(--red);border-radius:10px;padding:11px 14px;font-size:12px;text-align:left;margin-bottom:14px;line-height:1.55}
 
   .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; padding: 8px; background: color-mix(in srgb, var(--card) 60%, transparent); border: 1px solid var(--border); border-radius: 14px; }
   .tab { padding: 8px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; border: none; background: transparent; color: var(--text-2); cursor: pointer; transition: .2s; }
@@ -122,8 +93,6 @@
 
   @media (max-width:640px){
     .form-grid{grid-template-columns:1fr}
-    .diff-item{grid-template-columns:1fr 1fr;gap:6px}
-    .diff-item .rm{grid-column:1/-1;padding:6px}
     .head .status{display:none}
   }
 </style>
@@ -134,71 +103,30 @@
 <div class="gate" id="gate">
   <div class="gate-card">
     <div class="g-icon">🔐</div>
-    <h2>Админ-панель</h2>
-    <p id="gateSub">Вход только для администраторов. Авторизация через Telegram.</p>
-
-    <div id="tgWebAppBlock" style="display:none;margin-bottom:14px">
-      <div class="tg-user" id="tgWebAppUser">
-        <div class="av" id="tgWebAppAv">T</div>
-        <div class="info">
-          <b id="tgWebAppName">Telegram User</b>
-          <span id="tgWebAppUser2">@username</span>
-        </div>
-      </div>
-      <button class="btn btn-tg" style="width:100%;justify-content:center" id="loginTgWebApp">
-        Продолжить как <span id="tgWebAppBtnName">@user</span>
-      </button>
-      <div class="divider">или</div>
-    </div>
-
-    <div class="tg-note">
-      ⚠️ Вход в админку только через Telegram. Пароль (если задан) — дополнительный фактор.
-    </div>
-
-    <div id="tgLoginBlock">
-      <div class="tg-widget" id="tgWidgetHolder">
-        <div id="tgWidgetFallback" style="font-size:12px;color:var(--dim);text-align:center;line-height:1.5">
-          Виджет Telegram появится здесь, если указать имя бота.<br>
-          <button class="btn btn-ghost btn-sm" id="setupTgBot" style="margin-top:8px">⚙️ Настроить бота</button>
-        </div>
-      </div>
-      <div class="divider">или</div>
-    </div>
+    <h2>Вход в админ-панель</h2>
+    <p>Введите данные, которые выдал вам Telegram-бот.</p>
 
     <div class="field" style="text-align:left;margin-bottom:12px">
-      <label>Админ-пароль (если задан)</label>
-      <input type="password" id="adminPass" placeholder="••••••••" autocomplete="off">
+      <label>Логин-код</label>
+      <input type="text" id="loginCode" placeholder="azfw_xxxxxx" autocomplete="off">
+    </div>
+    
+    <div class="field" style="text-align:left;margin-bottom:12px">
+      <label>Пароль</label>
+      <input type="password" id="loginPass" placeholder="••••••••" autocomplete="off">
     </div>
 
-    <div class="btn-row" style="justify-content:center">
-      <button class="btn btn-primary" id="loginManual">Войти по коду от бота</button>
-    </div>
-  </div>
-</div>
-
-<!-- CODE STEP -->
-<div class="gate hidden" id="codeGate">
-  <div class="gate-card">
-    <div class="g-icon">📨</div>
-    <h2>Введи код из бота</h2>
-    <p>Бот отправил тебе 6-значный код. Введи его ниже.</p>
-
-    <div class="ip-warn" id="ipWarn" style="display:none">
-      ⚠️ IP-адрес изменился. Требуется повторное подтверждение.
+    <div class="field" style="text-align:left;margin-bottom:18px">
+      <label>Админ-код</label>
+      <input type="text" id="adminCode" placeholder="0000" maxlength="4" autocomplete="off">
     </div>
 
-    <div class="code-input" id="codeInput">
-      <input type="text" maxlength="1" inputmode="numeric" autocomplete="one-time-code">
-      <input type="text" maxlength="1" inputmode="numeric">
-      <input type="text" maxlength="1" inputmode="numeric">
-      <input type="text" maxlength="1" inputmode="numeric">
-      <input type="text" maxlength="1" inputmode="numeric">
-      <input type="text" maxlength="1" inputmode="numeric">
-    </div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center" id="loginBtn">
+      🚀 Войти
+    </button>
 
-    <div class="btn-row" style="justify-content:center">
-      <button class="btn btn-primary" id="confirmCode">Подтвердить</button>
-      <button class="btn btn-ghost" id="resendCode">Отправить снова</button>
+    <div style="margin-top: 20px; font-size: 13px; color: var(--dim);">
+      Нет доступа? <a href="https://t.me/arizona_faraway26" target="_blank" style="color:var(--accent-2)">Напиши боту</a>
     </div>
   </div>
 </div>
@@ -220,7 +148,7 @@
     <button class="tab" data-tab="github">🐙 GitHub CMS</button>
     <button class="tab" data-tab="sections">🧩 Разделы</button>
     <button class="tab" data-tab="moderators">📝 Модераторы</button>
-    <button class="tab" data-tab="roles">👑 Роли</button>
+    <button class="tab" id="tab-btn-roles" data-tab="roles" style="display:none;">👑 Роли</button>
   </div>
 
   <!-- DASHBOARD -->
@@ -371,11 +299,8 @@ const API_BASE = location.hostname === 'localhost' || location.hostname === '127
   : '';
 
 const STORAGE_KEY = 'azfw26_admin_token';
-const TG_BOT_KEY = 'azfw26_tg_bot';
 
 let adminToken = localStorage.getItem(STORAGE_KEY) || '';
-let tempToken = '';
-let tgUser = null;
 let items = [];
 let maintOn = false;
 let currentRole = null;
@@ -416,14 +341,12 @@ async function api(path, opts){
    GATE
    ============================================================ */
 const gateEl = document.getElementById('gate');
-const codeGateEl = document.getElementById('codeGate');
 const mainWrap = document.getElementById('mainWrap');
 const statusEl = document.getElementById('status');
 const statusText = document.getElementById('statusText');
 
-function showGate(){ gateEl.classList.remove('hidden'); codeGateEl.classList.add('hidden'); mainWrap.style.display = 'none'; }
-function showCodeGate(){ gateEl.classList.add('hidden'); codeGateEl.classList.remove('hidden'); mainWrap.style.display = 'none'; }
-function showMain(){ gateEl.classList.add('hidden'); codeGateEl.classList.add('hidden'); mainWrap.style.display = 'block'; }
+function showGate(){ gateEl.classList.remove('hidden'); mainWrap.style.display = 'none'; }
+function showMain(){ gateEl.classList.add('hidden'); mainWrap.style.display = 'block'; }
 function setAuth(on, label){
   if(on){
     statusEl.classList.remove('off'); statusEl.classList.add('on');
@@ -435,149 +358,46 @@ function setAuth(on, label){
 }
 
 /* ============================================================
-   TG WEBAPP
+   LOGIN (3 поля)
    ============================================================ */
-const tgWa = window.Telegram && window.Telegram.WebApp;
-if(tgWa && tgWa.initDataUnsafe && tgWa.initDataUnsafe.user){
-  const u = tgWa.initDataUnsafe.user;
-  tgUser = u;
-  document.getElementById('tgWebAppBlock').style.display = 'block';
-  document.getElementById('tgWebAppName').textContent =
-    (u.first_name || '') + (u.last_name ? ' ' + u.last_name : '') || 'Telegram User';
-  const uname = u.username ? '@' + u.username : ('id ' + u.id);
-  document.getElementById('tgWebAppUser2').textContent = uname;
-  document.getElementById('tgWebAppBtnName').textContent = uname;
-  const av = document.getElementById('tgWebAppAv');
-  if(u.photo_url) av.innerHTML = '<img src="' + u.photo_url + '" alt="">';
-  else av.textContent = (u.first_name || 'T').charAt(0).toUpperCase();
+const loginBtn = document.getElementById('loginBtn');
+loginBtn.addEventListener('click', async () => {
+  const login_code = document.getElementById('loginCode').value.trim();
+  const password = document.getElementById('loginPass').value.trim();
+  const admin_code = document.getElementById('adminCode').value.trim();
 
-  document.getElementById('loginTgWebApp').addEventListener('click', () => {
-    startTgAuth({ initData: tgWa.initData });
-  });
-}
-
-/* ============================================================
-   TG WIDGET
-   ============================================================ */
-const botUsername = localStorage.getItem(TG_BOT_KEY) || "";
-if(botUsername){
-  const holder = document.getElementById('tgWidgetHolder');
-  holder.innerHTML = '<div id="tgWidgetMount"></div>';
-  const s = document.createElement('script');
-  s.async = true;
-  s.src = 'https://telegram.org/js/telegram-widget.js?22';
-  s.setAttribute('data-telegram-login', botUsername);
-  s.setAttribute('data-size', 'large');
-  s.setAttribute('data-radius', '10');
-  s.setAttribute('data-userpic', 'true');
-  s.setAttribute('data-request-access', 'write');
-  s.setAttribute('data-onauth', 'onTelegramAuth(user)');
-  document.getElementById('tgWidgetMount').appendChild(s);
-} else {
-  const btn = document.getElementById('setupTgBot');
-  if(btn) btn.addEventListener('click', () => {
-    const name = prompt('Username бота (без @). Пример: my_admin_bot');
-    if(name && /^[A-Za-z0-9_]{4,32}$/.test(name)){
-      localStorage.setItem(TG_BOT_KEY, name);
-      toast('Бот сохранён: @' + name);
-      setTimeout(() => location.reload(), 700);
-    } else if(name !== null){
-      toast('Некорректное имя бота', true);
-    }
-  });
-}
-
-window.onTelegramAuth = function(user){
-  startTgAuth({ tgUser: user });
-};
-
-/* ============================================================
-   TG AUTH
-   ============================================================ */
-async function startTgAuth(payload){
-  try {
-    const res = await fetch(API_BASE + '/api/auth/tg-verify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        initData: payload.initData || null,
-        user: payload.tgUser || null,
-        password: document.getElementById('adminPass').value.trim() || null
-      })
-    });
-    const data = await res.json();
-    if(!res.ok) throw new Error(data.error || ('HTTP ' + res.status));
-
-    if(data.status === 'code_sent'){
-      tempToken = data.temp_token;
-      showCodeGate();
-      toast('Код отправлен в Telegram');
-      setTimeout(() => document.querySelector('#codeInput input').focus(), 100);
-    } else if(data.status === 'ok'){
-      adminToken = data.token;
-      localStorage.setItem(STORAGE_KEY, adminToken);
-      showMain();
-      setAuth(true, '@' + (data.username || 'admin') + ' · ' + (data.role || ''));
-      await loadAll();
-    } else {
-      throw new Error(data.error || 'Неизвестный ответ сервера');
-    }
-  } catch(e){
-    toast('Ошибка: ' + e.message, true);
+  if (!login_code || !password || !admin_code) {
+    toast('Заполните все поля', true);
+    return;
   }
-}
 
-document.getElementById('loginManual').addEventListener('click', () => {
-  toast('Введи свой Telegram username в бота, чтобы получить код', true);
-  window.open('https://t.me/arizona_faraway26', '_blank', 'noopener');
-});
+  loginBtn.disabled = true;
+  loginBtn.textContent = 'Загрузка...';
 
-/* ============================================================
-   CODE INPUT
-   ============================================================ */
-const codeInputs = [...document.querySelectorAll('#codeInput input')];
-codeInputs.forEach((inp, i) => {
-  inp.addEventListener('input', e => {
-    const v = e.target.value.replace(/\D/g, '');
-    e.target.value = v.slice(0, 1);
-    if(v && i < codeInputs.length - 1) codeInputs[i + 1].focus();
-  });
-  inp.addEventListener('keydown', e => {
-    if(e.key === 'Backspace' && !e.target.value && i > 0) codeInputs[i - 1].focus();
-  });
-  inp.addEventListener('paste', e => {
-    e.preventDefault();
-    const text = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 6);
-    text.split('').forEach((ch, k) => { if(codeInputs[k]) codeInputs[k].value = ch; });
-    if(text.length) codeInputs[Math.min(text.length, 5)].focus();
-  });
-});
-
-document.getElementById('confirmCode').addEventListener('click', async () => {
-  const code = codeInputs.map(i => i.value).join('');
-  if(code.length !== 6){ toast('Введи 6 цифр', true); return; }
   try {
-    const res = await fetch(API_BASE + '/api/auth/tg-confirm', {
+    const res = await fetch(API_BASE + '/api/auth/admin-login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ temp_token: tempToken, code })
+      body: JSON.stringify({ login_code, password, admin_code })
     });
     const data = await res.json();
-    if(!res.ok) throw new Error(data.error || 'Неверный код');
+    
+    if (!res.ok) throw new Error(data.error || 'Ошибка входа');
 
     adminToken = data.token;
     localStorage.setItem(STORAGE_KEY, adminToken);
+    
     showMain();
-    setAuth(true, '@' + (data.username || 'admin') + ' · ' + (data.role || ''));
+    setAuth(true, data.username + ' · ' + data.role);
     await loadAll();
     toast('Добро пожаловать!');
-  } catch(e){
-    toast('Ошибка: ' + e.message, true);
+    
+  } catch (e) {
+    toast(e.message, true);
+  } finally {
+    loginBtn.disabled = false;
+    loginBtn.textContent = '🚀 Войти';
   }
-});
-
-document.getElementById('resendCode').addEventListener('click', async () => {
-  try { await startTgAuth({}); } catch(e){ toast(e.message, true); }
 });
 
 /* ============================================================
@@ -600,7 +420,13 @@ document.getElementById('logout').addEventListener('click', async () => {
   try {
     const me = await api('/api/admin/me');
     currentRole = me.role;
-    setAuth(true, '@' + (me.username || 'admin') + ' · ' + (me.role || ''));
+    
+    // Показываем вкладку ролей только Основателю (founder)
+    if (currentRole === 'founder') {
+      document.getElementById('tab-btn-roles').style.display = 'block';
+    }
+
+    setAuth(true, me.username + ' · ' + me.role);
     showMain();
     await loadAll();
   } catch(e){
@@ -625,7 +451,11 @@ async function loadAll(){
   await loadGhFiles();
   await loadConfig();
   await loadModApps();
-  await loadRoles();
+  
+  // Загружаем роли только если это основатель
+  if (currentRole === 'founder') {
+    await loadRoles();
+  }
 }
 
 async function loadItems(){
