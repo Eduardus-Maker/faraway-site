@@ -157,8 +157,8 @@
 
   <div class="tabs" id="tabs">
     <button class="tab active" data-tab="dashboard">📊 Обзор</button>
-    <button class="tab" data-tab="github">🐙 GitHub CMS</button>
-    <button class="tab" data-tab="sections">🧩 Разделы</button>
+    <button class="tab" data-tab="github" id="btn-tab-github">🐙 GitHub CMS</button>
+    <button class="tab" data-tab="sections" id="btn-tab-sections">🧩 Разделы</button>
     <button class="tab" data-tab="moderators">📝 Модераторы</button>
     <button class="tab" id="tab-btn-roles" data-tab="roles" style="display:none;">👑 Роли</button>
   </div>
@@ -194,6 +194,15 @@
         <button class="btn btn-ghost" id="copyJson">📋 Скопировать JSON</button>
         <button class="btn btn-red" id="logout">Выйти</button>
       </div>
+    </div>
+
+    <div class="panel" style="border-color:var(--yellow)">
+      <h2><span class="ic" style="background:rgba(251,191,36,.15); border-color:rgba(251,191,36,.3)">🔒</span>Смена пароля</h2>
+      <div class="hint">Обнови свой пароль для входа в панель.</div>
+      <div class="form-grid" style="grid-template-columns:1fr">
+        <div class="field"><label>Новый пароль</label><input type="password" id="newPassInput" placeholder="Минимум 4 символа"></div>
+      </div>
+      <button class="btn btn-primary" id="btnChangePass">💾 Обновить пароль</button>
     </div>
 
     <div class="panel">
@@ -306,7 +315,6 @@
 /* ============================================================
    КОНФИГ
    ============================================================ */
-// ЖЕСТКО ПРИВЯЗЫВАЕМ К ТВОЕМУ ВОРКЕРУ, ЧТОБЫ НЕ БЫЛО ОШИБОК
 const API_BASE = "https://azfw26-api.eduardusmaker.workers.dev";
 const STORAGE_KEY = 'azfw26_admin_token';
 
@@ -436,7 +444,13 @@ document.getElementById('logout').addEventListener('click', async () => {
     const me = await api('/api/admin/me');
     currentRole = me.role;
     
-    if (currentRole === 'founder') {
+    // Скрываем / Показываем вкладки в зависимости от роли
+    if (currentRole === 'helper') {
+      document.getElementById('btn-tab-github').style.display = 'none';
+      document.getElementById('btn-tab-sections').style.display = 'none';
+    } else if (currentRole === 'admin') {
+      document.getElementById('tab-btn-roles').style.display = 'none';
+    } else if (currentRole === 'founder') {
       document.getElementById('tab-btn-roles').style.display = 'block';
     }
 
@@ -672,6 +686,25 @@ document.getElementById('saveRole').addEventListener('click', async () => {
     toast('Роль сохранена');
     loadRoles();
   } catch(e){ toast(e.message, true); }
+});
+
+/* ============================================================
+   CHANGE PASSWORD (FROM ADMIN)
+   ============================================================ */
+document.getElementById('btnChangePass').addEventListener('click', async () => {
+  const newPass = document.getElementById('newPassInput').value.trim();
+  if (newPass.length < 4) return toast('Пароль слишком короткий', true);
+  
+  try {
+    await api('/api/admin/change-pass', {
+      method: 'POST',
+      body: JSON.stringify({ password: newPass })
+    });
+    toast('Пароль успешно изменен!');
+    document.getElementById('newPassInput').value = '';
+  } catch(e) {
+    toast('Ошибка: ' + e.message, true);
+  }
 });
 
 /* ============================================================
