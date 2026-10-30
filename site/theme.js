@@ -452,16 +452,15 @@
 
 /* ===== ПЛАШКА ВЕРСИИ САЙТА ===== */
 (function() {
-  // Делаем запрос к твоему воркеру
   fetch('https://azfw26-api.eduardusmaker.workers.dev/api/site?t=' + Date.now())
     .then(r => r.json())
     .then(data => {
       if (data && data.version) {
         const el = document.createElement('div');
-        // Стили плашки
-        el.style.cssText = 'position:fixed;bottom:12px;left:12px;background:rgba(0,0,0,0.65);color:#a3a3a3;padding:4px 10px;border-radius:8px;font-size:11px;font-family:monospace;z-index:9999;backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.1);pointer-events:none;transition:0.3s;';
+        // Позиционируем по центру снизу или в правом нижнем углу, чтобы не мешать
+        el.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.65);color:#a3a3a3;padding:4px 12px;border-radius:99px;font-size:11px;font-family:monospace;z-index:9999;backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.1);pointer-events:none;transition:0.3s;';
         el.textContent = 'v' + data.version;
         document.body.appendChild(el);
       }
-    }).catch(e => console.log('Version load error:', e));
+    }).catch(e => console.log('Version error:', e));
 })();
