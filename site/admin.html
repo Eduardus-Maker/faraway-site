@@ -83,7 +83,7 @@
   .empty{text-align:center;padding:30px;color:var(--dim);font-size:13px}
   .json-preview{background:color-mix(in srgb, var(--bg-0) 70%, transparent);border:1px solid var(--border);border-radius:12px;padding:14px;font-family:'JetBrains Mono','Consolas',monospace;font-size:11.5px;color:var(--text-2);max-height:280px;overflow:auto;white-space:pre;line-height:1.55}
 
-  .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(100px);background:color-mix(in srgb, var(--card) 98%, transparent);border:1px solid var(--green);color:var(--green);padding:12px 22px;border-radius:12px;font-size:13.5px;font-weight:600;box-shadow:0 20px 50px rgba(0,0,0,.6), 0 0 30px color-mix(in srgb, var(--green) 20%, transparent);z-index:200;opacity:0;pointer-events:none;transition:.4s cubic-bezier(.4,0,.2,1);backdrop-filter:blur(14px);max-width:90vw}
+  .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(100px);background:color-mix(in srgb, var(--card) 98%, transparent);border:1px solid var(--green);color:var(--green);padding:12px 22px;border-radius:12px;font-size:13.5px;font-weight:600;box-shadow:0 20px 50px rgba(0,0,0,.6), 0 0 30px color-mix(in srgb, var(--green) 20%, transparent);z-index:200;opacity:0;pointer-events:none;transition:.4s cubic-bezier(.4,0,.2,1);backdrop-filter:blur(14px);max-width:90vw;text-align:center}
   .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
   .toast.err{border-color:var(--red);color:var(--red);box-shadow:0 20px 50px rgba(0,0,0,.6), 0 0 30px color-mix(in srgb, var(--red) 20%, transparent)}
 
@@ -100,6 +100,11 @@
   .tab.active { color: #fff; background: linear-gradient(135deg, var(--accent), var(--violet)); box-shadow: 0 4px 14px var(--glow); }
   .tab-content { display: none; }
   .tab-content.active { display: block; }
+
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 14px; }
+  .stat-box { background: color-mix(in srgb, var(--bg-0) 50%, transparent); border: 1px solid var(--border); border-radius: 12px; padding: 16px; text-align: center; }
+  .stat-box .val { font-size: 24px; font-weight: 800; color: var(--accent); }
+  .stat-box .lbl { font-size: 12px; color: var(--dim); font-weight: 600; text-transform: uppercase; margin-top: 4px; }
 
   @media (max-width:640px){
     .form-grid{grid-template-columns:1fr}
@@ -153,18 +158,29 @@
     </div>
     <div class="user-badge" id="userBadge">Загрузка...</div>
     <div class="status off" id="status"><span class="dot"></span><span id="statusText">Не авторизован</span></div>
+    <button class="btn btn-red btn-sm" id="logoutHeader" style="margin-left: 10px;">Выйти 🚪</button>
   </div>
 
   <div class="tabs" id="tabs">
     <button class="tab active" data-tab="dashboard">📊 Обзор</button>
-    <button class="tab" data-tab="github" id="btn-tab-github">🐙 GitHub CMS</button>
-    <button class="tab" data-tab="sections" id="btn-tab-sections">🧩 Разделы</button>
+    <button class="tab" data-tab="github">🐙 GitHub CMS</button>
+    <button class="tab" data-tab="sections">🧩 Разделы</button>
     <button class="tab" data-tab="moderators">📝 Модераторы</button>
-    <button class="tab" id="tab-btn-roles" data-tab="roles" style="display:none;">👑 Роли</button>
+    <button class="tab" data-tab="roles">👑 Роли</button>
   </div>
 
   <!-- DASHBOARD -->
   <div class="tab-content active" id="tab-dashboard">
+    <div class="panel">
+      <h2><span class="ic">📊</span>Статистика сайта</h2>
+      <div class="stat-grid" id="statsGrid">
+        <div class="stat-box"><div class="val" id="statPosts">-</div><div class="lbl">Постов</div></div>
+        <div class="stat-box"><div class="val" id="statApps">-</div><div class="lbl">Заявок</div></div>
+        <div class="stat-box"><div class="val" id="statAdmins">-</div><div class="lbl">Админов</div></div>
+      </div>
+      <button class="btn btn-ghost btn-sm" id="refreshStats">🔄 Обновить данные</button>
+    </div>
+
     <div class="panel">
       <h2><span class="ic">🛠️</span>Техническое обслуживание</h2>
       <div class="hint">Включи тех.режим — обычные посетители увидят заглушку, а админы продолжат работу.</div>
@@ -175,15 +191,15 @@
     </div>
 
     <div class="panel">
-      <h2><span class="ic">📋</span>Текущий список обновлений</h2>
-      <div class="hint">Управление через GitHub CMS во вкладке «GitHub CMS».</div>
-      <div class="items-list" id="itemsList"></div>
-    </div>
-
-    <div class="panel">
-      <h2><span class="ic">👥</span>Посты сообщества</h2>
-      <div class="hint">Удаление оскорбительных постов.</div>
-      <div class="items-list" id="modList"><div class="empty">Загрузка…</div></div>
+      <h2><span class="ic">🔑</span>Смена пароля</h2>
+      <div class="hint">Обнови свой пароль. После смены пароля старые сессии будут сброшены.</div>
+      <div class="form-grid">
+        <div class="field full">
+          <label>Новый пароль</label>
+          <input type="password" id="newPass" placeholder="Мин. 4 символа">
+        </div>
+      </div>
+      <button class="btn btn-primary" id="changePassBtn">💾 Сменить пароль</button>
     </div>
 
     <div class="panel">
@@ -192,22 +208,18 @@
       <div class="btn-row">
         <button class="btn btn-green" id="downloadJson">📥 Скачать updates.json</button>
         <button class="btn btn-ghost" id="copyJson">📋 Скопировать JSON</button>
-        <button class="btn btn-red" id="logout">Выйти</button>
       </div>
-    </div>
-
-    <div class="panel" style="border-color:var(--yellow)">
-      <h2><span class="ic" style="background:rgba(251,191,36,.15); border-color:rgba(251,191,36,.3)">🔒</span>Смена пароля</h2>
-      <div class="hint">Обнови свой пароль для входа в панель.</div>
-      <div class="form-grid" style="grid-template-columns:1fr">
-        <div class="field"><label>Новый пароль</label><input type="password" id="newPassInput" placeholder="Минимум 4 символа"></div>
-      </div>
-      <button class="btn btn-primary" id="btnChangePass">💾 Обновить пароль</button>
     </div>
 
     <div class="panel">
       <h2><span class="ic">🔍</span>Предпросмотр JSON</h2>
       <div class="json-preview" id="jsonPreview">[]</div>
+    </div>
+
+    <div class="panel" style="border-color: #5865F2; background: color-mix(in srgb, #5865F2 5%, transparent);">
+      <h2><span class="ic" style="color:#5865F2; background:color-mix(in srgb, #5865F2 10%, transparent); border-color: color-mix(in srgb, #5865F2 30%, transparent);">💬</span>Наш Discord</h2>
+      <div class="hint">Присоединяйся к нашему сообществу. (Ссылка исправлена)</div>
+      <a href="https://discord.gg/arizona_faraway" target="_blank" class="btn btn-ghost" style="border-color: #5865F2; color: #5865F2;">discord.gg/arizona_faraway</a>
     </div>
   </div>
 
@@ -284,13 +296,19 @@
       <h2><span class="ic">📝</span>Заявки на пост модератора</h2>
       <div class="items-list" id="modAppsList"><div class="empty">Загрузка…</div></div>
     </div>
+    
+    <div class="panel">
+      <h2><span class="ic">👥</span>Посты сообщества</h2>
+      <div class="hint">Удаление оскорбительных постов.</div>
+      <div class="items-list" id="modList"><div class="empty">Загрузка…</div></div>
+    </div>
   </div>
 
-  <!-- ROLES (FOUNDER ONLY) -->
+  <!-- ROLES (Теперь видна всем, но API не даст сохранить) -->
   <div class="tab-content" id="tab-roles">
     <div class="panel">
       <h2><span class="ic">👑</span>Управление ролями</h2>
-      <div class="hint">Доступно только основателям. Добавляй/меняй роли по Telegram ID.</div>
+      <div class="hint">Добавляй/меняй роли по Telegram ID. <br><b style="color:var(--red)">Внимание: Доступно только основателям!</b></div>
       <div class="form-grid">
         <div class="field"><label>Telegram ID</label><input type="number" id="roleTgId" placeholder="123456789"></div>
         <div class="field"><label>Роль</label>
@@ -332,21 +350,34 @@ function toast(msg, isError){
   toastEl.classList.toggle('err', !!isError);
   toastEl.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toastEl.classList.remove('show'), 3000);
+  toastTimer = setTimeout(() => toastEl.classList.remove('show'), 3500);
 }
 
 /* ============================================================
-   API helper
+   API helper (с глобальной обработкой 403)
    ============================================================ */
 async function api(path, opts){
   opts = opts || {};
   opts.headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
   if(adminToken) opts.headers['Authorization'] = 'Bearer ' + adminToken;
   const r = await fetch(API_BASE + path, opts);
+  
+  // Если сессия истекла или права отозваны
+  if (r.status === 401) {
+    adminToken = '';
+    localStorage.removeItem(STORAGE_KEY);
+    showGate();
+    throw new Error('Сессия истекла. Войдите заново.');
+  }
+
   const text = await r.text();
   let data;
   try { data = text ? JSON.parse(text) : {}; } catch(e){ data = { raw: text }; }
+  
   if(!r.ok){
+    if (r.status === 403) {
+      toast('Братан, у тебя нет прав!', true);
+    }
     const err = new Error(data.error || ('HTTP ' + r.status));
     err.status = r.status;
     err.data = data;
@@ -381,7 +412,7 @@ function setAuth(on, label, roleStr){
 }
 
 /* ============================================================
-   LOGIN (3 поля)
+   LOGIN
    ============================================================ */
 const loginBtn = document.getElementById('loginBtn');
 loginBtn.addEventListener('click', async () => {
@@ -426,14 +457,15 @@ loginBtn.addEventListener('click', async () => {
 /* ============================================================
    LOGOUT
    ============================================================ */
-document.getElementById('logout').addEventListener('click', async () => {
+async function doLogout() {
   try { await api('/api/auth/logout', { method: 'POST' }); } catch(e){}
   adminToken = '';
   localStorage.removeItem(STORAGE_KEY);
   setAuth(false);
   showGate();
-  toast('Вышел');
-});
+  toast('Вы вышли из системы');
+}
+document.getElementById('logoutHeader').addEventListener('click', doLogout);
 
 /* ============================================================
    BOOT
@@ -443,25 +475,10 @@ document.getElementById('logout').addEventListener('click', async () => {
   try {
     const me = await api('/api/admin/me');
     currentRole = me.role;
-    
-    // Скрываем / Показываем вкладки в зависимости от роли
-    if (currentRole === 'helper') {
-      document.getElementById('btn-tab-github').style.display = 'none';
-      document.getElementById('btn-tab-sections').style.display = 'none';
-    } else if (currentRole === 'admin') {
-      document.getElementById('tab-btn-roles').style.display = 'none';
-    } else if (currentRole === 'founder') {
-      document.getElementById('tab-btn-roles').style.display = 'block';
-    }
-
     setAuth(true, me.username, me.role);
     showMain();
     await loadAll();
   } catch(e){
-    if(e.status === 401){
-      adminToken = '';
-      localStorage.removeItem(STORAGE_KEY);
-    }
     showGate();
   }
 })();
@@ -470,17 +487,25 @@ document.getElementById('logout').addEventListener('click', async () => {
    LOAD FUNCTIONS
    ============================================================ */
 async function loadAll(){
+  await loadStats();
   await loadItems();
   await loadMaint();
   await loadModeration();
   await loadGhFiles();
   await loadConfig();
   await loadModApps();
-  
-  if (currentRole === 'founder') {
-    await loadRoles();
-  }
+  await loadRoles(); // Загружаем всегда, если нет прав - просто будет пусто/ошибка
 }
+
+async function loadStats(){
+  try {
+    const data = await api('/api/admin/stats');
+    document.getElementById('statPosts').textContent = data.posts || 0;
+    document.getElementById('statApps').textContent = data.apps || 0;
+    document.getElementById('statAdmins').textContent = data.admins || 0;
+  } catch(e){}
+}
+document.getElementById('refreshStats').addEventListener('click', loadStats);
 
 async function loadItems(){
   try {
@@ -519,6 +544,23 @@ document.getElementById('toggleMaintOff').addEventListener('click', async () => 
   } catch(e){ toast(e.message, true); }
 });
 
+/* ============================================================
+   СМЕНА ПАРОЛЯ
+   ============================================================ */
+document.getElementById('changePassBtn').addEventListener('click', async () => {
+  const pass = document.getElementById('newPass').value.trim();
+  if(pass.length < 4) return toast('Пароль слишком короткий', true);
+  try {
+    await api('/api/admin/change-pass', { method: 'POST', body: JSON.stringify({ password: pass }) });
+    toast('Пароль успешно изменён!');
+    document.getElementById('newPass').value = '';
+    setTimeout(() => { doLogout(); }, 2000);
+  } catch(e) { toast(e.message, true); }
+});
+
+/* ============================================================
+   ОСТАЛЬНЫЕ ФУНКЦИИ (Без изменений)
+   ============================================================ */
 async function loadModeration(){
   const el = document.getElementById('modList');
   try {
@@ -535,16 +577,13 @@ async function loadModeration(){
     el.querySelectorAll('[data-del-post]').forEach(b => {
       b.addEventListener('click', async () => {
         if(!confirm('Удалить этот пост?')) return;
-        try { await api('/api/admin/posts/' + b.dataset.delPost, { method: 'DELETE' }); loadModeration(); toast('Пост удалён'); }
+        try { await api('/api/admin/posts/' + b.dataset.delPost, { method: 'DELETE' }); loadModeration(); loadStats(); toast('Пост удалён'); }
         catch(e){ toast(e.message, true); }
       });
     });
-  } catch(e){ el.innerHTML = '<div class="empty">Модерация недоступна: ' + escapeAttr(e.message) + '</div>'; }
+  } catch(e){ el.innerHTML = '<div class="empty">Ошибка: ' + escapeAttr(e.message) + '</div>'; }
 }
 
-/* ============================================================
-   GITHUB CMS
-   ============================================================ */
 async function loadGhFiles(){
   const el = document.getElementById('ghFilesList');
   try {
@@ -606,9 +645,6 @@ document.getElementById('ghNewFile').addEventListener('click', () => {
   document.getElementById('ghEditor').style.display = 'block';
 });
 
-/* ============================================================
-   SECTIONS
-   ============================================================ */
 async function loadConfig(){
   try {
     const data = await api('/api/admin/config');
@@ -633,9 +669,6 @@ document.getElementById('saveSections').addEventListener('click', async () => {
   } catch(e){ toast(e.message, true); }
 });
 
-/* ============================================================
-   MOD APPS
-   ============================================================ */
 async function loadModApps(){
   const el = document.getElementById('modAppsList');
   try {
@@ -652,16 +685,13 @@ async function loadModApps(){
     el.querySelectorAll('[data-del-app]').forEach(b => {
       b.addEventListener('click', async () => {
         if(!confirm('Удалить заявку?')) return;
-        try { await api('/api/admin/moderator/applications/' + b.dataset.delApp, { method: 'DELETE' }); loadModApps(); toast('Удалено'); }
+        try { await api('/api/admin/moderator/applications/' + b.dataset.delApp, { method: 'DELETE' }); loadModApps(); loadStats(); toast('Удалено'); }
         catch(e){ toast(e.message, true); }
       });
     });
   } catch(e){ el.innerHTML = '<div class="empty">Ошибка: ' + escapeAttr(e.message) + '</div>'; }
 }
 
-/* ============================================================
-   ROLES
-   ============================================================ */
 async function loadRoles(){
   const el = document.getElementById('rolesList');
   try {
@@ -674,7 +704,9 @@ async function loadRoles(){
         <span class="ititle">${r.role}</span>
       </div>
     `).join('');
-  } catch(e){ el.innerHTML = '<div class="empty">Доступно только основателям.</div>'; }
+  } catch(e){ 
+    el.innerHTML = '<div class="empty" style="color:var(--red)">Братан, у тебя нет прав для просмотра ролей.</div>'; 
+  }
 }
 
 document.getElementById('saveRole').addEventListener('click', async () => {
@@ -685,31 +717,9 @@ document.getElementById('saveRole').addEventListener('click', async () => {
     await api('/api/admin/roles', { method: 'POST', body: JSON.stringify({ tg_id: Number(tg_id), role }) });
     toast('Роль сохранена');
     loadRoles();
-  } catch(e){ toast(e.message, true); }
+  } catch(e){ /* Ошибка 403 уже обработана глобально */ }
 });
 
-/* ============================================================
-   CHANGE PASSWORD (FROM ADMIN)
-   ============================================================ */
-document.getElementById('btnChangePass').addEventListener('click', async () => {
-  const newPass = document.getElementById('newPassInput').value.trim();
-  if (newPass.length < 4) return toast('Пароль слишком короткий', true);
-  
-  try {
-    await api('/api/admin/change-pass', {
-      method: 'POST',
-      body: JSON.stringify({ password: newPass })
-    });
-    toast('Пароль успешно изменен!');
-    document.getElementById('newPassInput').value = '';
-  } catch(e) {
-    toast('Ошибка: ' + e.message, true);
-  }
-});
-
-/* ============================================================
-   AI PROMPT
-   ============================================================ */
 document.getElementById('genPrompt').addEventListener('click', () => {
   const date = document.getElementById('aiDate').value || '2026-10-28';
   const title = document.getElementById('aiTitle').value || ('Обновление от ' + date);
@@ -745,16 +755,10 @@ document.getElementById('copyPrompt').addEventListener('click', async () => {
   catch { toast('Не удалось', true); }
 });
 
-/* ============================================================
-   ITEMS (dashboard)
-   ============================================================ */
 const itemsListEl = document.getElementById('itemsList');
-const countItemsEl = document.getElementById('countItems');
 const previewEl = document.getElementById('jsonPreview');
 
 function renderItems(){
-  if(!countItemsEl) return;
-  countItemsEl.textContent = items.length;
   if(!items.length){ itemsListEl.innerHTML = '<div class="empty">Пока пусто.</div>'; return; }
   itemsListEl.innerHTML = items.map(it => `
     <div class="item-row t-${it.type || 'change'}">
@@ -768,9 +772,6 @@ function updatePreview(){
   if(previewEl) previewEl.textContent = JSON.stringify(items, null, 2);
 }
 
-/* ============================================================
-   DOWNLOAD / COPY
-   ============================================================ */
 document.getElementById('downloadJson').addEventListener('click', () => {
   const payload = { meta: { version: "1", updated: new Date().toISOString(), source: "https://t.me/arizona_faraway26" }, items };
   const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
@@ -786,9 +787,6 @@ document.getElementById('copyJson').addEventListener('click', async () => {
   catch { toast('Не удалось скопировать', true); }
 });
 
-/* ============================================================
-   TABS
-   ============================================================ */
 document.getElementById('tabs').addEventListener('click', e => {
   const tab = e.target.closest('.tab');
   if(!tab) return;
@@ -799,9 +797,6 @@ document.getElementById('tabs').addEventListener('click', e => {
   if(target) target.classList.add('active');
 });
 
-/* ============================================================
-   UTIL
-   ============================================================ */
 function escapeAttr(s){
   return String(s).replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
 }
