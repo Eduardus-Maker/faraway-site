@@ -1,0 +1,24 @@
+{
+  "id": "2026-09-17",
+  "date": "2026-09-17",
+  "title": "Опечатки + Mobile v17.4.0 + PC v0.0.143",
+  "kind": "mixed",
+  "platforms": ["game", "mobile", "pc"],
+  "stats": { "files": 4, "commits": 3 },
+  "disclaimer": "Часть значений может быть взята с тестового сервера и не совпадать с боевыми. Воспринимайте как справочную информацию.",
+  "items": [
+    { "id": "1914", "file": "1914", "title": "Сундук за спиной", "type": "fix", "category": "text", "platform": "game",
+      "diffs": [{ "field": "Название", "old": "Сюндук за спиной", "new": "Сундук за спиной" }] },
+    { "id": "8819", "file": "8819", "title": "Осколок легендарной нашивки монстра", "type": "fix", "category": "text", "platform": "game",
+      "diffs": [{ "field": "Название", "old": "Осколок легендарной нашивке монстра", "new": "Осколок легендарной нашивки монстра" }] },
+
+    { "id": "mobile-1740", "title": "Mobile: v17.4.0 (build 1740)", "type": "change", "category": "other", "platform": "mobile",
+      "diffs": [{ "field": "Версия", "old": "v17.3.9", "new": "v17.4.0 (1740)" }],
+      "note": "beepycompare/arizonamobile — <code>01209d0…main</code>" },
+
+    { "id": "pc-00143", "title": "PC: v0.0.143", "type": "change", "category": "other", "platform": "pc",
+      "desc": "Размер — 245.57 MB (−5.48 MB). Скачиваний прошлой версии: 91017.",
+      "diffs": [{ "field": "Версия", "old": "v0.0.142", "new": "v0.0.143" }],
+      "note": "beepycompare/arizonapc — <code>00f0194…8b0109e</code>" }
+  ]
+}

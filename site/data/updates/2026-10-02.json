@@ -1,0 +1,19 @@
+{
+  "id": "2026-10-02",
+  "date": "2026-10-02",
+  "title": "PC: обновление кеша",
+  "kind": "site",
+  "platforms": ["pc"],
+  "stats": { "files": 4, "commits": 1 },
+  "disclaimer": "Часть значений может быть взята с тестового сервера и не совпадать с боевыми. Воспринимайте как справочную информацию.",
+  "items": [
+    { "id": "chg-crashes", "title": "/crashes.asi", "type": "change", "category": "other", "platform": "pc",
+      "diffs": [{ "field": "Размер", "old": "263.00 KB", "new": "280.72 KB (+17.72 KB)" }] },
+    { "id": "chg-configurator", "title": "/arizona_configurator.asi", "type": "change", "category": "other", "platform": "pc",
+      "diffs": [{ "field": "Размер", "old": "3.34 MB", "new": "2.94 MB (−416 KB)" }] },
+    { "id": "chg-core", "title": "/core.asi", "type": "change", "category": "other", "platform": "pc",
+      "diffs": [{ "field": "Размер", "old": "1.60 MB", "new": "2.00 MB (+404 KB)" }] },
+    { "id": "chg-arizona", "title": "/arizona.asi", "type": "change", "category": "other", "platform": "pc",
+      "diffs": [{ "field": "Размер", "old": "6.72 MB", "new": "6.89 MB (+166 KB)" }] }
+  ]
+}

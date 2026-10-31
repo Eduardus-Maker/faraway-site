@@ -1,0 +1,22 @@
+{
+  "id": "2026-10-05",
+  "date": "2026-10-05",
+  "title": "PC кеш + переименование Стоник → Спортик",
+  "kind": "mixed",
+  "platforms": ["pc", "game"],
+  "stats": { "files": 5, "commits": 2 },
+  "disclaimer": "Часть значений может быть взята с тестового сервера и не совпадать с боевыми. Воспринимайте как справочную информацию.",
+  "items": [
+    { "id": "chg-configurator", "title": "/arizona_configurator.asi", "type": "change", "category": "other", "platform": "pc",
+      "diffs": [{ "field": "Размер", "old": "2.94 MB", "new": "2.94 MB" }] },
+    { "id": "chg-core", "title": "/core.asi", "type": "change", "category": "other", "platform": "pc",
+      "diffs": [{ "field": "Размер", "old": "2.00 MB", "new": "2.00 MB (+1 KB)" }] },
+    { "id": "chg-arizona", "title": "/arizona.asi", "type": "change", "category": "other", "platform": "pc",
+      "diffs": [{ "field": "Размер", "old": "6.89 MB", "new": "6.88 MB (−2 KB)" }] },
+    { "id": "chg-vorbis", "title": "/vorbisFile.dll", "type": "change", "category": "other", "platform": "pc",
+      "diffs": [{ "field": "Размер", "old": "1.50 MB", "new": "1.49 MB (−8.51 KB)" }] },
+
+    { "id": "10476", "file": "10476", "title": "Спортик", "type": "change", "category": "text", "platform": "game",
+      "diffs": [{ "field": "Название", "old": "Стоник", "new": "Спортик" }] }
+  ]
+}
