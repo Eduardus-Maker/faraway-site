@@ -149,23 +149,6 @@
 
   .hero{padding:70px 0 40px;text-align:center;position:relative}
 
-  .server-badge{
-    display:inline-flex;align-items:center;gap:10px;
-    background:color-mix(in srgb, var(--accent) 10%, transparent);
-    border:1px solid color-mix(in srgb, var(--accent) 40%, transparent);
-    color:var(--accent-3);
-    font-size:12.5px;font-weight:700;letter-spacing:1.4px;
-    text-transform:uppercase;
-    padding:8px 20px;border-radius:999px;
-    margin-bottom:26px;
-    animation:pulse-border 3s ease-in-out infinite;
-  }
-  @keyframes pulse-border{
-    0%,100%{box-shadow:0 0 24px color-mix(in srgb, var(--accent) 15%, transparent)}
-    50%{box-shadow:0 0 36px color-mix(in srgb, var(--accent) 35%, transparent)}
-  }
-  .server-badge .dot{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green);animation:pulse-dot 1.8s ease-in-out infinite}
-
   .hero-logo{
     width:110px;height:110px;
     margin:0 auto 26px;
@@ -229,38 +212,85 @@
     will-change:transform;
   }
 
-  /* ===== ВИДЖЕТ ОНЛАЙНА ===== */
-  .online-widget {
+    /* ===== ОБЪЕДИНЕННАЯ ПЛАШКА ===== */
+  .top-badge-group {
     display: inline-flex;
     align-items: center;
-    gap: 16px;
-    background: rgba(11, 30, 61, 0.7);
-    border: 1px solid rgba(52, 211, 153, 0.4);
+    background: rgba(11, 30, 61, 0.6);
+    border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
     border-radius: 999px;
-    padding: 8px 20px 8px 14px;
-    margin-bottom: 24px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3), inset 0 0 15px rgba(52, 211, 153, 0.1);
+    padding: 6px 8px 6px 18px;
+    margin-bottom: 26px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3), inset 0 0 20px color-mix(in srgb, var(--accent) 10%, transparent);
     backdrop-filter: blur(10px);
+    animation: pulse-border 3s ease-in-out infinite;
   }
-  .ow-status {
+
+  .server-badge {
     display: flex;
     align-items: center;
     gap: 8px;
-    border-right: 1px solid rgba(255,255,255,0.1);
-    padding-right: 16px;
+    color: var(--accent-3);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
   }
-  .ow-dot {
-    width: 8px; height: 8px;
+  
+  .server-badge .dot {
+    width: 6px; height: 6px;
+    background: var(--green);
     border-radius: 50%;
-    background: #34d399;
-    box-shadow: 0 0 10px #34d399;
-    animation: pulse-dot 2s infinite;
+    box-shadow: 0 0 10px var(--green);
+    animation: pulse-dot 1.8s infinite;
   }
-  .ow-dot.offline { background: #f87171; box-shadow: 0 0 10px #f87171; animation: none; }
-  .ow-dot.loading { background: #fbbf24; box-shadow: 0 0 10px #fbbf24; }
-  .ow-text { font-size: 13px; font-weight: 700; color: #e8effa; text-transform: uppercase; letter-spacing: 0.5px; }
-  .ow-players { font-size: 15px; color: #7d93b5; font-family: 'JetBrains Mono', monospace; font-weight: 600; }
-  .ow-players b { color: #34d399; font-weight: 800; font-size: 18px; }
+
+  .badge-divider {
+    width: 1px;
+    height: 20px;
+    background: color-mix(in srgb, var(--accent) 30%, transparent);
+    margin: 0 16px;
+  }
+
+  .online-widget {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 4px 14px;
+    border-radius: 99px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .ow-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #34d399; /* Зеленый */
+    box-shadow: 0 0 8px #34d399;
+  }
+  .ow-dot.offline { background: #f87171; box-shadow: 0 0 8px #f87171; }
+  .ow-dot.loading { background: #fbbf24; box-shadow: 0 0 8px #fbbf24; }
+
+  .ow-text {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-right: 4px;
+  }
+
+  .ow-players {
+    font-size: 13px;
+    color: var(--dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+  }
+  .ow-players b {
+    color: #34d399;
+    font-weight: 800;
+    font-size: 14px;
+  }
 
     /* ===== СТИЛИ КРАСНОГО БАННЕРА ===== */
   .promo-banner {
@@ -982,15 +1012,13 @@
 <div class="wrap" id="top">
 
   <header class="hero">
-    <div class="server-badge"><span class="dot"></span>Сервер проекта Arizona RP</div>
-
-        <div class="online-widget" id="onlineWidget">
-      <div class="ow-status">
+    <div class="top-badge-group">
+      <div class="server-badge"><span class="dot"></span>Сервер проекта Arizona RP</div>
+      <div class="badge-divider"></div>
+      <div class="online-widget" id="onlineWidget">
         <span class="ow-dot loading" id="owDot"></span>
-        <span class="ow-text" id="owText">Загрузка онлайна...</span>
-      </div>
-      <div class="ow-players">
-        <b id="owPlayers">0</b> <span>/ <span id="owMax">1000</span></span>
+        <span class="ow-text" id="owText">Загрузка...</span>
+        <span class="ow-players"><b id="owPlayers">0</b> / <span id="owMax">1000</span></span>
       </div>
     </div>
 
@@ -1428,6 +1456,7 @@ document.getElementById('modAppForm')?.addEventListener('submit', async (e) => {
 
     try {
       const res = await fetch(API_BASE + '/api/server-status?t=' + Date.now());
+      if (!res.ok) throw new Error('API Error');
       const data = await res.json();
 
       if (data.online && data.players > 0) {
@@ -1445,9 +1474,10 @@ document.getElementById('modAppForm')?.addEventListener('submit', async (e) => {
       }
     } catch (e) {
       dot.className = 'ow-dot offline';
-      text.textContent = 'Нет связи';
+      text.textContent = 'Нет связи с API';
       playersEl.textContent = '?';
       playersEl.style.color = '#f87171';
+      console.error('Online error:', e);
     }
   }
 
