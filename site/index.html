@@ -1026,6 +1026,7 @@
     <div class="promo-content">
       <span class="promo-badge">🧟 ГЛАВНОЕ СОБЫТИЕ ХЭЛЛОУИНА 👻</span>
       <h2>Анонс обновления</h2>
+      <h09>ВСАДНИКИ, ОБОРОТНИ, НОВЫЙ БП</h09>
     </div>
   </a>
 
@@ -1442,7 +1443,7 @@ document.getElementById('modAppForm')?.addEventListener('submit', async (e) => {
     if(user){ renderUserChip(); updateLoginCard(); }
   })();
 
-document.addEventListener('DOMContentLoaded', function() {
+window.onload = function() {
   const API_BASE = "https://azfw26-api.eduardusmaker.workers.dev";
   
   async function fetchServerStatus() {
@@ -1451,41 +1452,42 @@ document.addEventListener('DOMContentLoaded', function() {
     const playersEl = document.getElementById('owPlayers');
     const maxEl = document.getElementById('owMax');
     
-    if(!dot) return; // Если виджета нет на этой странице, выходим
+    if(!dot) {
+        console.error("Элементы виджета онлайна не найдены в HTML!");
+        return;
+    }
 
     try {
       const res = await fetch(API_BASE + '/api/server-status?t=' + Date.now());
-      if (!res.ok) throw new Error('API Error');
       const data = await res.json();
 
+      console.log("Ответ от сервера:", data); // Для отладки
+
       if (data.online) {
-        // Всё ок
-        dot.className = 'ow-dot';
-        text.textContent = 'Игроков онлайн';
+        dot.className = 'ow-dot'; // Убираем желтый цвет загрузки
+        text.textContent = 'Игроков';
         playersEl.textContent = data.players;
         maxEl.textContent = data.maxplayers;
         playersEl.style.color = '#34d399'; // Зеленый
       } else {
-        // Сервер реально лежит
         dot.className = 'ow-dot offline';
-        text.textContent = 'Сервер оффлайн';
+        text.textContent = 'Оффлайн';
         playersEl.textContent = '0';
-        maxEl.textContent = data.maxplayers || 1000;
         playersEl.style.color = '#f87171'; // Красный
       }
     } catch (e) {
-      // Если нет связи с воркером
+      console.error('Ошибка запроса:', e);
       dot.className = 'ow-dot offline';
-      text.textContent = 'Нет связи';
+      text.textContent = 'Ошибка сети';
       playersEl.textContent = '?';
       playersEl.style.color = '#f87171';
-      console.error('Online error:', e);
     }
   }
 
+  // Запускаем
   fetchServerStatus();
   setInterval(fetchServerStatus, 60000);
-});
+};
 </script>
 
 <script src="theme.js"></script>
