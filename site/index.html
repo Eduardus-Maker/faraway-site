@@ -1026,7 +1026,7 @@
     <div class="promo-content">
       <span class="promo-badge">🧟 ГЛАВНОЕ СОБЫТИЕ ХЭЛЛОУИНА 👻</span>
       <h2>Анонс обновления</h2>
-      <p>Премьера через: <span id="countdown-timer">Загрузка...</span> 🧟</p>
+      <p>Премьера через: <span id="countdown-timer">Загрузка...</span> по МСК</p>
     </div>
   </a>
 
@@ -1443,7 +1443,7 @@ document.getElementById('modAppForm')?.addEventListener('submit', async (e) => {
     if(user){ renderUserChip(); updateLoginCard(); }
   })();
 
-(function() {
+document.addEventListener('DOMContentLoaded', function() {
   const API_BASE = "https://azfw26-api.eduardusmaker.workers.dev";
   
   async function fetchServerStatus() {
@@ -1452,20 +1452,22 @@ document.getElementById('modAppForm')?.addEventListener('submit', async (e) => {
     const playersEl = document.getElementById('owPlayers');
     const maxEl = document.getElementById('owMax');
     
-    if(!dot) return;
+    if(!dot) return; // Если виджета нет на этой странице, выходим
 
     try {
       const res = await fetch(API_BASE + '/api/server-status?t=' + Date.now());
       if (!res.ok) throw new Error('API Error');
       const data = await res.json();
 
-      if (data.online && data.players > 0) {
+      if (data.online) {
+        // Всё ок
         dot.className = 'ow-dot';
-        text.textContent = 'Сервер онлайн';
+        text.textContent = 'Игроков онлайн';
         playersEl.textContent = data.players;
         maxEl.textContent = data.maxplayers;
         playersEl.style.color = '#34d399'; // Зеленый
       } else {
+        // Сервер реально лежит
         dot.className = 'ow-dot offline';
         text.textContent = 'Сервер оффлайн';
         playersEl.textContent = '0';
@@ -1473,8 +1475,9 @@ document.getElementById('modAppForm')?.addEventListener('submit', async (e) => {
         playersEl.style.color = '#f87171'; // Красный
       }
     } catch (e) {
+      // Если нет связи с воркером
       dot.className = 'ow-dot offline';
-      text.textContent = 'Нет связи с API';
+      text.textContent = 'Нет связи';
       playersEl.textContent = '?';
       playersEl.style.color = '#f87171';
       console.error('Online error:', e);
@@ -1483,7 +1486,7 @@ document.getElementById('modAppForm')?.addEventListener('submit', async (e) => {
 
   fetchServerStatus();
   setInterval(fetchServerStatus, 60000);
-})();
+});
 </script>
 
 <script src="theme.js"></script>
