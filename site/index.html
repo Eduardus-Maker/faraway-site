@@ -149,70 +149,7 @@
 
   .hero{padding:70px 0 40px;text-align:center;position:relative}
 
-  .hero-logo{
-    width:110px;height:110px;
-    margin:0 auto 26px;
-    background:linear-gradient(135deg,var(--accent),var(--violet));
-    border-radius:30px;
-    display:grid;place-items:center;
-    font-size:58px;
-    box-shadow:0 20px 60px var(--glow), inset 0 1px 0 rgba(255,255,255,.15);
-    animation:bob 4s ease-in-out infinite;
-    position:relative;
-  }
-  .hero-logo::after{
-    content:'';
-    position:absolute;inset:-6px;
-    border-radius:36px;
-    background:conic-gradient(from 0deg, var(--accent), var(--violet), var(--tg), var(--accent));
-    opacity:.35;z-index:-1;filter:blur(24px);
-    animation:spin 8s linear infinite;
-  }
-  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-  @keyframes spin{to{transform:rotate(360deg)}}
-
-  h1.hero-title{
-    font-size:clamp(42px,8vw,86px);
-    font-weight:900;
-    letter-spacing:-3px;
-    line-height:1;
-    background:linear-gradient(135deg,var(--text) 0%,var(--accent-2) 45%,var(--violet) 100%);
-    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-    margin-bottom:8px;
-  }
-
-  .hero-tagline{
-    font-size:clamp(16px,2.2vw,22px);
-    color:var(--accent-2);
-    font-weight:600;letter-spacing:.5px;
-    margin-bottom:20px;
-  }
-
-  .hero-desc{
-    color:var(--text-2);font-size:16px;
-    max-width:600px;margin:0 auto 38px;
-    line-height:1.7;
-  }
-  .hero-desc b{color:var(--text);font-weight:600}
-
-  .hero-cta{
-    display:flex;gap:14px;justify-content:center;flex-wrap:wrap;
-    margin-bottom:52px;
-  }
-
-  .btn{
-    display:inline-flex;align-items:center;gap:11px;
-    padding:16px 30px;
-    border-radius:15px;
-    font-size:16px;font-weight:700;
-    font-family:inherit;
-    text-decoration:none;cursor:pointer;border:none;
-    transition:transform .3s cubic-bezier(.4,0,.2,1), box-shadow .3s, background .3s, border-color .3s;
-    position:relative;overflow:hidden;
-    will-change:transform;
-  }
-
-    /* ===== ОБЪЕДИНЕННАЯ ПЛАШКА ===== */
+  /* ===== ОБЪЕДИНЕННАЯ ПЛАШКА ===== */
   .top-badge-group {
     display: inline-flex;
     align-items: center;
@@ -265,7 +202,7 @@
   .ow-dot {
     width: 6px; height: 6px;
     border-radius: 50%;
-    background: #34d399; /* Зеленый */
+    background: #34d399;
     box-shadow: 0 0 8px #34d399;
   }
   .ow-dot.offline { background: #f87171; box-shadow: 0 0 8px #f87171; }
@@ -292,7 +229,7 @@
     font-size: 14px;
   }
 
-    /* ===== СТИЛИ КРАСНОГО БАННЕРА ===== */
+  /* ===== СТИЛИ БАННЕРА ===== */
   .promo-banner {
     display: block;
     width: 100%;
@@ -313,11 +250,12 @@
     box-shadow: 0 15px 50px rgba(218, 2, 218, 0.6), inset 0 0 0 1px rgba(255,255,255,0.2);
   }
 
+  /* Используем PNG, так как JPG заблокирован Imgur */
   .promo-banner::before {
     content: '';
     position: absolute;
     inset: 0;
-    background-image: url('https://i.imgur.com/X0hskwF.jpg'); /* ТУТ ТВОЯ КАРТИНКА */
+    background-image: url('https://i.imgur.com/X0hskwF.png'); 
     background-size: cover;
     background-position: center;
     opacity: 0.35;
@@ -390,6 +328,69 @@
     50% { transform: scale(1.05); box-shadow: 0 4px 25px rgba(255,255,255,0.4); }
   }
 
+  .hero-logo{
+    width:110px;height:110px;
+    margin:0 auto 26px;
+    background:linear-gradient(135deg,var(--accent),var(--violet));
+    border-radius:30px;
+    display:grid;place-items:center;
+    font-size:58px;
+    box-shadow:0 20px 60px var(--glow), inset 0 1px 0 rgba(255,255,255,.15);
+    animation:bob 4s ease-in-out infinite;
+    position:relative;
+  }
+  .hero-logo::after{
+    content:'';
+    position:absolute;inset:-6px;
+    border-radius:36px;
+    background:conic-gradient(from 0deg, var(--accent), var(--violet), var(--tg), var(--accent));
+    opacity:.35;z-index:-1;filter:blur(24px);
+    animation:spin 8s linear infinite;
+  }
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  h1.hero-title{
+    font-size:clamp(42px,8vw,86px);
+    font-weight:900;
+    letter-spacing:-3px;
+    line-height:1;
+    background:linear-gradient(135deg,var(--text) 0%,var(--accent-2) 45%,var(--violet) 100%);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    margin-bottom:8px;
+  }
+
+  .hero-tagline{
+    font-size:clamp(16px,2.2vw,22px);
+    color:var(--accent-2);
+    font-weight:600;letter-spacing:.5px;
+    margin-bottom:20px;
+  }
+
+  .hero-desc{
+    color:var(--text-2);font-size:16px;
+    max-width:600px;margin:0 auto 38px;
+    line-height:1.7;
+  }
+  .hero-desc b{color:var(--text);font-weight:600}
+
+  .hero-cta{
+    display:flex;gap:14px;justify-content:center;flex-wrap:wrap;
+    margin-bottom:52px;
+  }
+
+  .btn{
+    display:inline-flex;align-items:center;gap:11px;
+    padding:16px 30px;
+    border-radius:15px;
+    font-size:16px;font-weight:700;
+    font-family:inherit;
+    text-decoration:none;cursor:pointer;border:none;
+    transition:transform .3s cubic-bezier(.4,0,.2,1), box-shadow .3s, background .3s, border-color .3s;
+    position:relative;overflow:hidden;
+    will-change:transform;
+  }
+
   .btn-primary{
     background:linear-gradient(135deg,var(--accent),var(--violet));
     color:#fff;
@@ -451,7 +452,6 @@
   }
   .btn-forum:active{transform:translateY(-1px) scale(.99)}
 
-  /* Discord — индиго-фиолетовая */
   .btn-discord{
     background:linear-gradient(135deg,#5865F2,#7C3AED);
     color:#fff;
@@ -466,7 +466,6 @@
   }
   .btn-discord:active{transform:translateY(-1px) scale(.99)}
 
-  /* Сообщество — розово-фиолетовая */
   .btn-community{
     background:linear-gradient(135deg,#ec4899,#8b5cf6);
     color:#fff;
@@ -480,19 +479,6 @@
     background:linear-gradient(135deg,#f472b6,#a78bfa);
   }
   .btn-community:active{transform:translateY(-1px) scale(.99)}
-
-  .btn-ghost{
-    background:color-mix(in srgb, var(--card) 70%, transparent);
-    border:1px solid var(--border-2);
-    color:var(--text);
-  }
-  .btn-ghost:hover{
-    border-color:var(--accent);
-    background:color-mix(in srgb, var(--card-2) 90%, transparent);
-    transform:translateY(-3px) scale(1.03);
-    box-shadow:0 14px 40px rgba(0,0,0,.5), 0 0 0 1px color-mix(in srgb, var(--accent) 40%, transparent);
-  }
-  .btn-ghost:active{transform:translateY(-1px) scale(.99)}
 
   .quick-info{
     display:grid;
@@ -805,48 +791,6 @@
   .feat h4{font-size:15.5px;font-weight:700;margin-bottom:7px;letter-spacing:-.2px}
   .feat p{font-size:13px;color:var(--text-2);line-height:1.6}
 
-  .login-card{
-    margin-top:26px;
-    background:linear-gradient(160deg,var(--card) 0%,color-mix(in srgb, var(--bg-2) 70%, transparent) 100%);
-    border:1px solid color-mix(in srgb, var(--tg) 35%, transparent);
-    border-radius:22px;
-    padding:32px 34px;
-    display:grid;
-    grid-template-columns:1fr auto;
-    gap:26px;
-    align-items:center;
-    position:relative;
-    overflow:hidden;
-  }
-  .login-card::before{
-    content:'';
-    position:absolute;
-    top:-50%;left:-20%;
-    width:400px;height:400px;
-    background:radial-gradient(circle, color-mix(in srgb, var(--tg) 15%, transparent), transparent 65%);
-    pointer-events:none;
-  }
-  .login-card .lc-info{position:relative;z-index:1}
-  .login-card h3{
-    font-size:22px;font-weight:800;letter-spacing:-.4px;
-    margin-bottom:8px;
-    display:flex;align-items:center;gap:10px;
-  }
-  .login-card h3 .ico{
-    width:38px;height:38px;border-radius:11px;
-    background:linear-gradient(135deg,var(--tg),#1c7fb3);
-    display:grid;place-items:center;font-size:18px;
-    box-shadow:0 0 22px color-mix(in srgb, var(--tg) 40%, transparent);
-  }
-  .login-card p{color:var(--text-2);font-size:14px;line-height:1.6;max-width:560px}
-  .login-card .lc-actions{position:relative;z-index:1;display:flex;flex-direction:column;gap:10px;min-width:220px}
-  .login-card .lc-actions .btn{justify-content:center;width:100%}
-
-  @media (max-width:760px){
-    .login-card{grid-template-columns:1fr;padding:24px 22px}
-    .login-card .lc-actions{width:100%}
-  }
-
   footer{
     margin-top:80px;padding-top:40px;
     border-top:1px solid var(--border);
@@ -903,10 +847,6 @@
     box-shadow:0 10px 28px rgba(0,0,0,.4), 0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent);
   }
   .foot-legal a:hover::before{transform:translateX(100%)}
-  .foot-legal a.privacy-ico{border-color:color-mix(in srgb, var(--green) 35%, var(--border))}
-  .foot-legal a.privacy-ico:hover{border-color:var(--green);color:var(--green)}
-  .foot-legal a.docs-ico{border-color:color-mix(in srgb, var(--violet) 35%, var(--border))}
-  .foot-legal a.docs-ico:hover{border-color:var(--violet);color:var(--violet)}
 
   .foot-bottom{
     padding-top:26px;
@@ -1012,6 +952,7 @@
 <div class="wrap" id="top">
 
   <header class="hero">
+    <!-- Плашка онлайна -->
     <div class="top-badge-group">
       <div class="server-badge"><span class="dot"></span>Сервер проекта Arizona RP</div>
       <div class="badge-divider"></div>
@@ -1022,15 +963,14 @@
       </div>
     </div>
 
-  <a href="https://www.youtube.com/watch?v=ng3B2qi3b-w" target="_blank" class="promo-banner">
-    <div class="promo-content">
-      <span class="promo-badge">🧟 ГЛАВНОЕ СОБЫТИЕ ХЭЛЛОУИНА 👻</span>
-      <h2>Анонс обновления</h2>
-      <h09>ВСАДНИКИ, ОБОРОТНИ, НОВЫЙ БП</h09>
-    </div>
-  </a>
-
-  <header class="hero">
+    <!-- Баннер анонса с таймером -->
+    <a href="https://www.youtube.com/watch?v=ng3B2qi3b-w" target="_blank" class="promo-banner">
+      <div class="promo-content">
+        <span class="promo-badge">🧟 ГЛАВНОЕ СОБЫТИЕ ХЭЛЛОУИНА 👻</span>
+        <h2>Анонс обновления</h2>
+        <h09>ВСАДНИКИ, ОБОРОТНИ, НОВЫЙ БП</h09>
+      </div>
+    </a>
 
     <div class="hero-logo">⚡</div>
 
@@ -1043,7 +983,6 @@
       свежие ивенты и постоянные обновления.
     </p>
 
-    <!-- Цветные кнопки: обновления / новости / барахолка / форум / discord -->
     <div class="hero-cta">
       <a href="updates.html" class="btn btn-primary">📋 Перейти к обновлениям</a>
       <a href="https://t.me/arizona_faraway26" class="btn btn-tg" target="_blank" rel="noopener">📢 Новости сервера</a>
@@ -1186,50 +1125,6 @@
     </div>
   </section>
 
-<!-- Moderator Application -->
-<section id="moderatorForm" class="panel" style="display:none; margin-top: 40px;">
-  <h2><span class="ic">📝</span>Заявка на пост модератора ТГК</h2>
-  <div class="hint">Заполни форму — заявка попадёт в админ-панель.</div>
-  <form id="modAppForm" class="form-grid">
-    <div class="field"><label>Ник *</label><input type="text" id="modNick" required></div>
-    <div class="field"><label>Telegram *</label><input type="text" id="modTg" placeholder="@username" required></div>
-    <div class="field"><label>Возраст</label><input type="text" id="modAge"></div>
-    <div class="field"><label>Опыт</label><input type="text" id="modExp"></div>
-    <div class="field full"><label>Почему ты? *</label><textarea id="modReason" required></textarea></div>
-    <div class="btn-row full"><button type="submit" class="btn btn-primary">Отправить заявку</button></div>
-  </form>
-  <div id="modFormStatus" style="margin-top:12px;font-size:13px;"></div>
-</section>
-
-<script>
-document.getElementById('modAppForm')?.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const body = {
-    nickname: document.getElementById('modNick').value.trim(),
-    tg: document.getElementById('modTg').value.trim(),
-    age: document.getElementById('modAge').value.trim(),
-    experience: document.getElementById('modExp').value.trim(),
-    reason: document.getElementById('modReason').value.trim()
-  };
-  const status = document.getElementById('modFormStatus');
-  status.textContent = 'Отправка...';
-  try {
-    const r = await fetch('/api/moderator/apply', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    });
-    if (!r.ok) throw new Error('Ошибка сервера');
-    status.textContent = '✅ Заявка отправлена! Мы свяжемся с тобой.';
-    status.style.color = 'var(--green)';
-    e.target.reset();
-  } catch (e) {
-    status.textContent = '❌ ' + e.message;
-    status.style.color = 'var(--red)';
-  }
-});
-</script>
-
   <footer>
     <div class="foot-grid">
       <div class="foot-brand">
@@ -1240,7 +1135,7 @@ document.getElementById('modAppForm')?.addEventListener('submit', async (e) => {
             <span class="s">игровой сервер Arizona RP</span>
           </span>
         </a>
-        <p>Фан-сайт игрового сервера Arizona Faraway. Сайт не собирает персональные данные, кроме случаев добровольной авторизации, и не использует трекеры.</p>
+        <p>Сайт игрового сервера Arizona Faraway.</p>
       </div>
 
       <div class="foot-col">
@@ -1286,6 +1181,7 @@ document.getElementById('modAppForm')?.addEventListener('submit', async (e) => {
 <button id="toTop" title="Наверх">↑</button>
 
 <script>
+  // --- Логика интерфейса (Курсор, кнопки, меню) ---
   (function(){
     const glow = document.getElementById('cursorGlow');
     if(glow){
@@ -1304,6 +1200,7 @@ document.getElementById('modAppForm')?.addEventListener('submit', async (e) => {
 
   (function(){
     const toTop = document.getElementById('toTop');
+    if(!toTop) return;
     window.addEventListener('scroll', () => toTop.classList.toggle('show', window.scrollY > 500));
     toTop.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
   })();
@@ -1340,33 +1237,29 @@ document.getElementById('modAppForm')?.addEventListener('submit', async (e) => {
     });
   });
 
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if(e.isIntersecting){
-        e.target.style.animation = 'fadeUp .6s ease forwards';
-        io.unobserve(e.target);
-      }
+  // Анимация появления элементов
+  if('IntersectionObserver' in window){
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if(e.isIntersecting){
+          e.target.style.animation = 'fadeUp .6s ease forwards';
+          io.unobserve(e.target);
+        }
+      });
+    }, {threshold:.08});
+    document.querySelectorAll('.feat, .qi, .big-card, .updates-banner').forEach(el => {
+      el.style.opacity = '0';
+      io.observe(el);
     });
-  }, {threshold:.08});
-  document.querySelectorAll('.feat, .qi, .big-card, .updates-banner').forEach(el => {
-    el.style.opacity = '0';
-    io.observe(el);
-  });
-  const style = document.createElement('style');
-  style.textContent = '@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}';
-  document.head.appendChild(style);
+    const style = document.createElement('style');
+    style.textContent = '@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}';
+    document.head.appendChild(style);
+  }
 
-  /* ============================================================
-     TELEGRAM LOGIN (WebApp + ручной)
-     ============================================================ */
+  // Telegram Login
   const TG_STORAGE_KEY = 'azfw26_tg_user';
-  const TG_BOT_KEY = 'azfw26_tg_bot';
-
   function getTgUser(){
-    try {
-      const raw = localStorage.getItem(TG_STORAGE_KEY);
-      return raw ? JSON.parse(raw) : null;
-    } catch(e){ return null; }
+    try { const raw = localStorage.getItem(TG_STORAGE_KEY); return raw ? JSON.parse(raw) : null; } catch(e){ return null; }
   }
 
   function renderUserChip(){
@@ -1380,7 +1273,7 @@ document.getElementById('modAppForm')?.addEventListener('submit', async (e) => {
       </span>
     `;
     const chip = document.getElementById('userChip');
-    chip.addEventListener('click', () => {
+    chip?.addEventListener('click', () => {
       if(confirm('Выйти из аккаунта Telegram?')){
         localStorage.removeItem(TG_STORAGE_KEY);
         location.reload();
@@ -1390,17 +1283,11 @@ document.getElementById('modAppForm')?.addEventListener('submit', async (e) => {
 
   function saveTgUser(user){
     const clean = {
-      id: user.id,
-      username: user.username || ('id' + user.id),
-      first_name: user.first_name || '',
-      last_name: user.last_name || '',
-      photo_url: user.photo_url || ''
+      id: user.id, username: user.username || ('id' + user.id),
+      first_name: user.first_name || '', last_name: user.last_name || '', photo_url: user.photo_url || ''
     };
     localStorage.setItem(TG_STORAGE_KEY, JSON.stringify(clean));
     renderUserChip();
-    updateLoginCard();
-    if(window.AZFW && window.AZFW.toast) window.AZFW.toast('✓ Вошёл как @' + clean.username);
-    else alert('Вошёл как @' + clean.username);
   }
 
   const tgWa = window.Telegram && window.Telegram.WebApp;
@@ -1410,7 +1297,8 @@ document.getElementById('modAppForm')?.addEventListener('submit', async (e) => {
     saveTgUser(tgWa.initDataUnsafe.user);
   }
 
-  document.getElementById('loginBtn').addEventListener('click', () => {
+  // Используем опциональную цепочку (?.), чтобы не было ошибки null
+  document.getElementById('loginBtn')?.addEventListener('click', () => {
     if(getTgUser()){
       if(confirm('Выйти из аккаунта Telegram?')){
         localStorage.removeItem(TG_STORAGE_KEY);
@@ -1429,65 +1317,91 @@ document.getElementById('modAppForm')?.addEventListener('submit', async (e) => {
       alert('Некорректный username');
       return;
     }
-    saveTgUser({
-      id: 'manual_' + clean,
-      username: clean,
-      first_name: clean,
-      last_name: '',
-      photo_url: ''
-    });
+    saveTgUser({ id: 'manual_' + clean, username: clean, first_name: clean, last_name: '', photo_url: '' });
   });
 
   (function(){
     const user = getTgUser();
-    if(user){ renderUserChip(); updateLoginCard(); }
+    if(user){ renderUserChip(); }
   })();
 
-window.onload = function() {
-  const API_BASE = "https://azfw26-api.eduardusmaker.workers.dev";
-  
-  async function fetchServerStatus() {
-    const dot = document.getElementById('owDot');
-    const text = document.getElementById('owText');
-    const playersEl = document.getElementById('owPlayers');
-    const maxEl = document.getElementById('owMax');
+  // ==========================================
+  // СКРИПТ ОНЛАЙНА И ТАЙМЕРА (Запускается после загрузки)
+  // ==========================================
+  window.addEventListener('DOMContentLoaded', () => {
     
-    if(!dot) {
-        console.error("Элементы виджета онлайна не найдены в HTML!");
-        return;
-    }
+    // 1. ОНЛАЙН СЕРВЕРА
+    const API_BASE = "https://azfw26-api.eduardusmaker.workers.dev";
+    
+    async function fetchServerStatus() {
+      const dot = document.getElementById('owDot');
+      const text = document.getElementById('owText');
+      const playersEl = document.getElementById('owPlayers');
+      const maxEl = document.getElementById('owMax');
+      
+      if(!dot) return;
 
-    try {
-      const res = await fetch(API_BASE + '/api/server-status?t=' + Date.now());
-      const data = await res.json();
+      try {
+        const res = await fetch(API_BASE + '/api/server-status?t=' + Date.now());
+        const data = await res.json();
 
-      console.log("Ответ от сервера:", data); // Для отладки
-
-      if (data.online) {
-        dot.className = 'ow-dot'; // Убираем желтый цвет загрузки
-        text.textContent = 'Игроков';
-        playersEl.textContent = data.players;
-        maxEl.textContent = data.maxplayers;
-        playersEl.style.color = '#34d399'; // Зеленый
-      } else {
+        if (data.online) {
+          dot.className = 'ow-dot';
+          text.textContent = 'Игроков';
+          playersEl.textContent = data.players;
+          maxEl.textContent = data.maxplayers;
+          playersEl.style.color = '#34d399';
+        } else {
+          dot.className = 'ow-dot offline';
+          text.textContent = 'Оффлайн';
+          playersEl.textContent = '0';
+          playersEl.style.color = '#f87171';
+        }
+      } catch (e) {
         dot.className = 'ow-dot offline';
-        text.textContent = 'Оффлайн';
-        playersEl.textContent = '0';
-        playersEl.style.color = '#f87171'; // Красный
+        text.textContent = 'Ошибка сети';
+        playersEl.textContent = '?';
+        playersEl.style.color = '#f87171';
       }
-    } catch (e) {
-      console.error('Ошибка запроса:', e);
-      dot.className = 'ow-dot offline';
-      text.textContent = 'Ошибка сети';
-      playersEl.textContent = '?';
-      playersEl.style.color = '#f87171';
     }
-  }
 
-  // Запускаем
-  fetchServerStatus();
-  setInterval(fetchServerStatus, 60000);
-};
+    fetchServerStatus();
+    setInterval(fetchServerStatus, 60000);
+
+    // 2. ТАЙМЕР ДО 20:30 МСК
+    const timerEl = document.getElementById('countdown-timer');
+    if(timerEl) {
+      function updateTimer() {
+        const now = new Date();
+        const mskOffset = 3 * 60 * 60 * 1000;
+        const nowMsk = new Date(now.getTime() + mskOffset);
+        
+        let targetMsk = new Date(nowMsk);
+        targetMsk.setUTCHours(20, 30, 0, 0);
+        
+        if (nowMsk > targetMsk) {
+          targetMsk.setUTCDate(targetMsk.getUTCDate() + 1);
+        }
+
+        const targetUtc = new Date(targetMsk.getTime() - mskOffset);
+        const diff = targetUtc - now;
+
+        if (diff <= 0) {
+          timerEl.textContent = "Время пришло!";
+          return;
+        }
+
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+        const pad = (num) => String(num).padStart(2, '0');
+        
+        timerEl.textContent = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+      }
+      updateTimer();
+      setInterval(updateTimer, 1000);
+    }
+  });
 </script>
 
 <script src="theme.js"></script>
