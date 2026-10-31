@@ -1,10 +1,13 @@
 /* ============================================================
    app.js — Arizona Faraway — 26
    PJAX-навигация + UI-хелперы + статус тех.режима.
-   Авторизация TG теперь живёт в index.html/community.html.
    ============================================================ */
 (function () {
   'use strict';
+
+  var API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1') 
+    ? 'http://localhost:8787' 
+    : 'https://azfw26-api.eduardusmaker.workers.dev';
 
   var SITE_KEY = 'azfw26_site_cache';
   var TOKEN_KEY = 'azfw26_admin_token';
@@ -190,7 +193,7 @@
   /* ====== SITE FETCH ====== */
   async function loadSite() {
     try {
-      var r = await fetch('/api/site?t=' + Date.now(), { cache: 'no-cache' });
+      var r = await fetch(API_BASE + '/api/site?t=' + Date.now(), { cache: 'no-cache' });
       if (!r.ok) throw new Error('HTTP ' + r.status);
       var j = await r.json();
       saveSite(j);
@@ -298,11 +301,10 @@
   /* ====== SITE CONFIG ====== */
   async function loadSiteConfig() {
   try {
-    const r = await fetch('/api/site/config?t=' + Date.now(), { cache: 'no-cache' });
+    const r = await fetch(API_BASE + '/api/site/config?t=' + Date.now(), { cache: 'no-cache' });
     if (!r.ok) return;
     const cfg = await r.json();
     const s = cfg.sections || {};
-    // Пример: скрыть блоки
     const ids = {
       updates: 'updatesBanner',
       news: 'newsSection',
@@ -314,7 +316,6 @@
       if (!el) return;
       el.style.display = s[key] !== false ? '' : 'none';
     });
-    // Форма модератора: если включена, показываем
     const mf = document.getElementById('moderatorForm');
     if (mf) mf.style.display = s.moderatorForm ? '' : 'none';
   } catch (e) {}

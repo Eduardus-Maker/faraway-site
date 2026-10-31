@@ -1,8 +1,6 @@
 /* ============================================================
    theme.js — Arizona Faraway — 26
-   26 базовых тем + 12 доп. + своё оформление.
-   Исправлено: полный сброс inline-переменных, color-scheme и
-   корректная подсветка активного пресета.
+   38 тем. Вызов панели через футер. По умолчанию — Полночь.
    ============================================================ */
 (function () {
   'use strict';
@@ -191,7 +189,7 @@
 
   var KEY = 'azfw26_theme';
   var CUSTOM_KEY = 'azfw26_custom_theme';
-  var DEFAULT = 'ocean';
+  var DEFAULT = 'midnight'; // Тема по умолчанию — Полночь
 
   var ALL_THEMES = THEMES.concat(EXTRA_THEMES.map(function (t) {
     return { id: t.id, name: t.name, c1: t.c1, c2: t.c2 };
@@ -241,16 +239,11 @@
     '--bg-image','--grid-line'
   ];
 
-  // ПОЛНЫЙ сброс inline-стилей с <html>. Раньше часть переменных
-  // (--accent-2, --accent-3, --glow, --text-2, --dim) могла
-  // остаться после переключения custom→пресет и ломать кнопку «Сброс».
   function purgeInlineVars() {
     var root = document.documentElement;
     CUSTOM_VARS.forEach(function (p) { root.style.removeProperty(p); });
     root.style.removeProperty('color-scheme');
     try { root.style.colorScheme = ''; } catch (e) {}
-    // На всякий: удаляем любые наши inline-переменные, даже если CUSTOM_VARS
-    // когда-то расширят, а они остались.
     for (var i = root.style.length - 1; i >= 0; i--) {
       var prop = root.style[i];
       if (prop.indexOf('--') === 0) root.style.removeProperty(prop);
@@ -270,10 +263,10 @@
     var root = document.documentElement;
     root.setAttribute('data-theme', 'custom');
 
-    var bg     = cfg.bg     || '#03060f';
-    var card   = cfg.card   || '#0b1e3d';
-    var accent = cfg.accent || '#3b82f6';
-    var text   = cfg.text   || '#e8effa';
+    var bg     = cfg.bg     || '#000';
+    var card   = cfg.card   || '#111';
+    var accent = cfg.accent || '#fff';
+    var text   = cfg.text   || '#fff';
     var isDark = lum(bg) < 0.5;
     var border  = mix(card, accent, 0.28);
     var border2 = mix(card, accent, 0.5);
@@ -313,19 +306,12 @@
   }
 
   function build() {
-    if (document.querySelector('.theme-fab')) return;
-
-    var fab = document.createElement('button');
-    fab.className = 'theme-fab';
-    fab.type = 'button';
-    fab.setAttribute('aria-label', 'Выбрать тему');
-    fab.title = 'Тема оформления';
-    fab.innerHTML = '🎨';
+    if (document.querySelector('.theme-panel')) return;
 
     var panel = document.createElement('div');
     panel.className = 'theme-panel';
 
-    var customCfg = { bg: '#03060f', card: '#0b1e3d', accent: '#3b82f6', text: '#e8effa' };
+    var customCfg = { bg: '#000000', card: '#111111', accent: '#e5e5e5', text: '#f5f5f5' };
     try {
       var cc = JSON.parse(localStorage.getItem(CUSTOM_KEY) || 'null');
       if (cc) customCfg = Object.assign(customCfg, cc);
@@ -352,7 +338,6 @@
         '<button type="button" class="btn btn-ghost" id="resetCustomBtn">Сброс</button>' +
       '</div>';
 
-    document.body.appendChild(fab);
     document.body.appendChild(panel);
 
     function highlightActive() {
@@ -388,20 +373,16 @@
     });
 
     document.getElementById('resetCustomBtn').addEventListener('click', function () {
-      var def = { bg: '#03060f', card: '#0b1e3d', accent: '#3b82f6', text: '#e8effa' };
+      var def = { bg: '#000000', card: '#111111', accent: '#e5e5e5', text: '#f5f5f5' };
       document.getElementById('custBg').value = def.bg;
       document.getElementById('custCard').value = def.card;
       document.getElementById('custAccent').value = def.accent;
       document.getElementById('custText').value = def.text;
-
-      // 1) вычищаем кастом полностью
       try { localStorage.removeItem(CUSTOM_KEY); } catch (e) {}
-      // 2) сбрасываем тему к дефолту
       try { localStorage.setItem(KEY, DEFAULT); } catch (e) {}
       apply(DEFAULT);
       highlightActive();
-
-      if (window.AZFW && window.AZFW.toast) window.AZFW.toast('Сброшено к «Океан»');
+      if (window.AZFW && window.AZFW.toast) window.AZFW.toast('Сброшено к «Полночь»');
     });
 
     ['custBg','custCard','custAccent','custText'].forEach(function (id) {
@@ -416,12 +397,20 @@
       });
     });
 
-    fab.addEventListener('click', function (e) {
-      e.stopPropagation();
-      panel.classList.toggle('open');
-    });
+    // Вызов панели через текст в футере
+    const toggleBtn = document.getElementById('themeToggleLink');
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        panel.classList.toggle('open');
+      });
+    }
+
     document.addEventListener('click', function (e) {
-      if (!panel.contains(e.target) && e.target !== fab) panel.classList.remove('open');
+      if (!panel.contains(e.target) && (!toggleBtn || e.target !== toggleBtn)) {
+        panel.classList.remove('open');
+      }
     });
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') panel.classList.remove('open');
@@ -434,7 +423,7 @@
     build();
   }
   document.addEventListener('page:loaded', function () {
-    if (!document.querySelector('.theme-fab')) build();
+    if (!document.querySelector('.theme-panel')) build();
   });
 
   window.AZFWTheme = {
@@ -457,57 +446,9 @@
     .then(data => {
       if (data && data.version) {
         const el = document.createElement('div');
-        // Позиционируем по центру снизу или в правом нижнем углу, чтобы не мешать
         el.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.65);color:#a3a3a3;padding:4px 12px;border-radius:99px;font-size:11px;font-family:monospace;z-index:9999;backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.1);pointer-events:none;transition:0.3s;';
         el.textContent = 'v' + data.version;
         document.body.appendChild(el);
       }
     }).catch(e => console.log('Version error:', e));
-})();
-
-(function() {
-  const timerEl = document.getElementById('countdown-timer');
-  if (!timerEl) return;
-
-  function updateTimer() {
-    // Текущее время в UTC
-    const now = new Date();
-    
-    // Вычисляем время 20:30 по Москве (UTC+3) на сегодня
-    // Для этого берем текущую дату в UTC, добавляем 3 часа (МСК), 
-    // устанавливаем 20:30 и возвращаем обратно в UTC.
-    const mskOffset = 3 * 60 * 60 * 1000; // 3 часа в миллисекундах
-    const nowMsk = new Date(now.getTime() + mskOffset);
-    
-    let targetMsk = new Date(nowMsk);
-    targetMsk.setUTCHours(20, 30, 0, 0); // Ставим 20:30 по МСК (в UTC это 17:30)
-    
-    // Если время уже прошло, ставим на завтра
-    if (nowMsk > targetMsk) {
-      targetMsk.setUTCDate(targetMsk.getUTCDate() + 1);
-    }
-
-    // Переводим цель обратно в UTC для сравнения с текущим временем
-    const targetUtc = new Date(targetMsk.getTime() - mskOffset);
-    const diff = targetUtc - now;
-
-    if (diff <= 0) {
-      timerEl.textContent = "Время пришло!";
-      return;
-    }
-
-    // Переводим миллисекунды в часы, минуты и секунды
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
-
-    // Форматируем (добавляем нули)
-    const pad = (num) => String(num).padStart(2, '0');
-    
-    timerEl.textContent = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
-  }
-
-  // Запускаем сразу и обновляем каждую секунду
-  updateTimer();
-  setInterval(updateTimer, 1000);
 })();

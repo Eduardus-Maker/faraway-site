@@ -1,10 +1,14 @@
 /* ============================================================
-   Cloudflare Worker — Arizona Faraway — 26
-   Расширенная версия: GitHub CMS + роли + заявки модераторов
+   Cloudflare Worker — Arizona Faraway — 26 (FINAL CLEAN VERSION)
    ============================================================ */
 
-const SESSION_TTL_SEC = 12 * 60 * 60;
-const TEMP_TTL_SEC = 10 * 60;
+/* ============================================================
+   Cloudflare Worker — Arizona Faraway — 26 (V4 - SECURE)
+   ============================================================ */
+
+/* ============================================================
+   Cloudflare Worker — Arizona Faraway — 26 (V4 - SECURE)
+   ============================================================ */
 
 export default {
   async fetch(request, env, ctx) {
@@ -17,62 +21,59 @@ export default {
     }
 
     try {
-      // --- Auth ---
-      if (path === '/api/auth/tg-verify' && request.method === 'POST') return await tgVerify(request, env, cors);
-      if (path === '/api/auth/tg-confirm' && request.method === 'POST') return await tgConfirm(request, env, cors);
-      if (path === '/api/auth/logout' && request.method === 'POST') return await logout(request, env, cors);
-
-      // --- Admin ---
+      // --- 1. АВТОРИЗАЦИЯ ---
+      if (path === '/api/auth/admin-login' && request.method === 'POST') return await adminLogin(request, env, cors);
+      if (path === '/api/auth/logout' && request.method === 'POST') return json({ ok: true }, 200, cors);
       if (path === '/api/admin/me' && request.method === 'GET') return await adminMe(request, env, cors);
-      if (path === '/api/admin/updates' && request.method === 'GET') return await getUpdates(request, env, cors);
+      if (path === '/api/admin/change-pass' && request.method === 'POST') return await adminChangePass(request, env, cors);
+
+      // --- 2. API ДЛЯ PYTHON-БОТА ---
+      if (path.startsWith('/api/bot/user/') && request.method === 'GET') return await botGetUser(request, env, cors);
+      if (path === '/api/bot/user' && request.method === 'POST') return await botSaveUser(request, env, cors);
+      if (path === '/api/bot/admins' && request.method === 'GET') return await botGetAdmins(request, env, cors);
+      if (path === '/api/bot/sync-github' && request.method === 'POST') return await botSyncGithub(request, env, cors);
+
+      // --- 3. АДМИНКА ---
+      if (path === '/api/admin/stats' && request.method === 'GET') return await getStats(request, env, cors);
       if (path === '/api/admin/site' && request.method === 'GET') return await getSite(request, env, cors);
       if (path === '/api/admin/site' && request.method === 'POST') return await setSite(request, env, cors);
-      if (path === '/api/admin/posts' && request.method === 'GET') return await adminPostsList(request, env, cors);
-      if (path.startsWith('/api/admin/posts/') && request.method === 'DELETE') {
-        const id = path.split('/').pop();
-        return await adminPostDelete(request, env, cors, id);
-      }
-
-      // --- GitHub CMS ---
-      if (path === '/api/admin/github/list' && request.method === 'GET') return await githubList(request, env, cors);
-      if (path === '/api/admin/github/file' && request.method === 'GET') return await githubRead(request, env, cors);
-      if (path === '/api/admin/github/file' && request.method === 'POST') return await githubWrite(request, env, cors);
-
-      // --- Site Config (вкл/выкл разделы) ---
       if (path === '/api/admin/config' && request.method === 'GET') return await getConfig(request, env, cors);
       if (path === '/api/admin/config' && request.method === 'POST') return await setConfig(request, env, cors);
-
-      // --- Moderator Applications ---
-      if (path === '/api/moderator/apply' && request.method === 'POST') return await createModApp(request, env, cors);
-      if (path === '/api/admin/moderator/applications' && request.method === 'GET') return await listModApps(request, env, cors);
-      if (path.startsWith('/api/admin/moderator/applications/') && request.method === 'DELETE') {
-        const id = path.split('/').pop();
-        return await deleteModApp(request, env, cors, id);
-      }
-
-      // --- Roles (Founder only) ---
+      
       if (path === '/api/admin/roles' && request.method === 'GET') return await listRoles(request, env, cors);
       if (path === '/api/admin/roles' && request.method === 'POST') return await setRole(request, env, cors);
 
-      // --- Public ---
+      if (path === '/api/admin/moderator/applications' && request.method === 'GET') return await listModApps(request, env, cors);
+      if (path.startsWith('/api/admin/moderator/applications/') && request.method === 'DELETE') {
+        return await deleteModApp(request, env, cors, path.split('/').pop());
+      }
+      if (path === '/api/moderator/apply' && request.method === 'POST') return await createModApp(request, env, cors);
+
+      if (path === '/api/admin/posts' && request.method === 'GET') return await adminPostsList(request, env, cors);
+      if (path.startsWith('/api/admin/posts/') && request.method === 'DELETE') {
+        return await adminPostDelete(request, env, cors, path.split('/').pop());
+      }
+
+      // --- 4. GITHUB CMS ---
+      if (path === '/api/admin/github/list' && request.method === 'GET') return await githubList(request, env, cors);
+      if (path === '/api/admin/github/file' && request.method === 'GET') return await githubRead(request, env, cors);
+      if (path === '/api/admin/github/file' && request.method === 'POST') return await githubWrite(request, env, cors);
+      if (path === '/api/admin/updates' && request.method === 'GET') return await getUpdatesList(request, env, cors);
+
+      // --- 5. ПУБЛИЧНЫЕ ---
       if (path === '/api/posts' && request.method === 'GET') return await postsList(env, cors);
       if (path === '/api/posts' && request.method === 'POST') return await postCreate(request, env, cors);
       if (path === '/api/site' && request.method === 'GET') return await getSitePublic(env, cors);
       if (path === '/api/site/config' && request.method === 'GET') return await getPublicConfig(env, cors);
 
-      // --- Telegram Webhook ---
-      if (path === '/api/tg/webhook' && request.method === 'POST') return await tgWebhook(request, env, cors);
-
       return json({ error: 'Not found: ' + path }, 404, cors);
     } catch (e) {
-      return json({ error: e.message || 'Server error' }, 500, cors);
+      return json({ error: e.message || 'Server error' }, e.status || 500, cors);
     }
   }
 };
 
-/* ============================================================
-   CORS
-   ============================================================ */
+/* ============================================================ HELPERS ============================================================ */
 function corsHeaders(req){
   const origin = req.headers.get('Origin') || '*';
   return {
@@ -90,133 +91,56 @@ function json(obj, status, cors){
   });
 }
 
-/* ============================================================
-   TELEGRAM HASH VERIFY
-   ============================================================ */
-async function verifyTelegramHash(data, botToken){
-  const { hash, ...rest } = data;
-  if(!hash) return false;
-  const dataCheckString = Object.keys(rest).sort().map(k => k + '=' + rest[k]).join('\n');
-  const enc = new TextEncoder();
-  const secretKey = await crypto.subtle.importKey(
-    'raw', enc.encode('WebAppData'),
-    { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
-  );
-  const secret = await crypto.subtle.sign('HMAC', secretKey, enc.encode(botToken));
-  const hmacKey = await crypto.subtle.importKey(
-    'raw', secret, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
-  );
-  const sig = await crypto.subtle.sign('HMAC', hmacKey, enc.encode(dataCheckString));
-  const hex = [...new Uint8Array(sig)].map(b => b.toString(16).padStart(2, '0')).join('');
-  return hex === hash;
-}
+/* ============================================================ АВТОРИЗАЦИЯ ============================================================ */
+async function adminLogin(request, env, cors) {
+  const { login_code, password, admin_code } = await request.json();
+  if (!login_code || !password || !admin_code) return json({ error: 'Заполните все поля' }, 400, cors);
 
-/* ============================================================
-   TG AUTH
-   ============================================================ */
-async function tgVerify(request, env, cors){
-  const body = await request.json();
-  let tgUser = null;
-
-  if(body.initData){
-    const params = new URLSearchParams(body.initData);
-    const obj = {};
-    for(const [k, v] of params) obj[k] = v;
-    if(!await verifyTelegramHash(obj, env.BOT_TOKEN)) return json({ error: 'TG hash invalid' }, 401, cors);
-    tgUser = JSON.parse(obj.user || '{}');
-  } else if(body.user){
-    if(!body.user.hash) return json({ error: 'No hash' }, 400, cors);
-    if(!await verifyTelegramHash(body.user, env.BOT_TOKEN)) return json({ error: 'TG hash invalid' }, 401, cors);
-    tgUser = body.user;
-  } else {
-    return json({ error: 'No TG data' }, 400, cors);
+  const raw = await env.AZFW_KV.get('bot_user:' + login_code);
+  if (!raw) return json({ error: 'Неверный логин или пароль' }, 401, cors);
+  
+  const user = JSON.parse(raw);
+  if (user.password !== password || user.admin_code !== admin_code) {
+    return json({ error: 'Неверный логин или пароль' }, 401, cors);
   }
 
-  const role = await getRole(env, tgUser.id);
-  if(!role) {
-    return json({ error: 'У твоего Telegram-аккаунта нет доступа к админке. Обратись к основателю.' }, 403, cors);
-  }
-
-  if (body.password) {
-    if (!env.ADMIN_PASSWORD || body.password !== env.ADMIN_PASSWORD) {
-      return json({ error: 'Неверный пароль' }, 401, cors);
-    }
-  } else if (env.ADMIN_PASSWORD) {
-    return json({ error: 'Требуется админ-пароль' }, 401, cors);
-  }
-
-  const code = String(Math.floor(100000 + Math.random() * 900000));
-  const tempToken = crypto.randomUUID();
-  await env.AZFW_KV.put('temp:' + tempToken, JSON.stringify({
-    tg: tgUser,
-    code,
-    role,
-    created_at: Date.now()
-  }), { expirationTtl: TEMP_TTL_SEC });
-
-  const ip = request.headers.get('CF-Connecting-IP') || '0.0.0.0';
-  await sendTelegramMessage(env, tgUser.id,
-    `🔐 <b>Arizona Faraway — 26</b>\n\nКод для входа:\n\n<code>${code}</code>\n\nРоль: <b>${role}</b>\nIP: <code>${ip}</code>\nКод действует 10 минут.`);
-
-  return json({ status: 'code_sent', temp_token: tempToken }, 200, cors);
-}
-
-async function tgConfirm(request, env, cors){
-  const { temp_token, code } = await request.json();
-  if(!temp_token || !code) return json({ error: 'No data' }, 400, cors);
-
-  const raw = await env.AZFW_KV.get('temp:' + temp_token);
-  if(!raw) return json({ error: 'Код истёк, запроси новый' }, 400, cors);
-  const session = JSON.parse(raw);
-  if(session.code !== String(code)) return json({ error: 'Неверный код' }, 401, cors);
-
-  await env.AZFW_KV.delete('temp:' + temp_token);
+  const roleNum = Number(user.role);
+  const roleString = roleNum === 3 ? 'founder' : (roleNum === 2 ? 'admin' : 'helper');
 
   const ip = request.headers.get('CF-Connecting-IP') || '0.0.0.0';
   const token = await signJwt({
-    sub: session.tg.id,
-    username: session.tg.username || ('id' + session.tg.id),
-    name: session.tg.first_name || '',
-    role: session.role,
+    sub: user.tg_id,
+    username: user.login_code,
+    role: roleString,
     ip,
     iat: Math.floor(Date.now() / 1000),
-    exp: Math.floor(Date.now() / 1000) + SESSION_TTL_SEC
+    exp: Math.floor(Date.now() / 1000) + (2 * 60 * 60) // Живёт 2 часа
   }, env.JWT_SECRET);
 
-  return json({ status: 'ok', token, username: session.tg.username || ('id' + session.tg.id), role: session.role }, 200, cors);
+  return json({ status: 'ok', token, username: user.login_code, role: roleString }, 200, cors);
 }
 
-async function logout(request, env, cors){
-  return json({ ok: true }, 200, cors);
-}
-
-/* ============================================================
-   ADMIN AUTH MIDDLEWARE
-   ============================================================ */
 async function requireAdmin(request, env, cors){
   const auth = request.headers.get('Authorization') || '';
   const token = auth.replace(/^Bearer\s+/i, '');
-  if(!token) throw { status: 401, message: 'No token' };
+  if(!token) throw { status: 401, message: 'Нет токена' };
+  
   const payload = await verifyJwt(token, env.JWT_SECRET);
-  if(!payload) throw { status: 401, message: 'Token invalid/expired' };
-  if(payload.role !== 'admin' && payload.role !== 'founder') {
-    throw { status: 403, message: 'Недостаточно прав' };
-  }
+  if(!payload) throw { status: 401, message: 'Сессия истекла. Войдите заново.' };
+  
+  // Проверяем, существует ли пользователь в базе (если бот его удалил, доступ пропадет)
+  const userRaw = await env.AZFW_KV.get('bot_user:' + payload.username);
+  if(!userRaw) throw { status: 401, message: 'Доступ отозван. Войдите заново.' };
+  
+  const user = JSON.parse(userRaw);
+  if(!user.role || user.role === 0) throw { status: 403, message: 'Братан, у тебя нет прав!' };
 
-  const ip = request.headers.get('CF-Connecting-IP') || '0.0.0.0';
-  if(payload.ip && payload.ip !== ip){
-    await sendTelegramMessage(env, payload.sub,
-      `⚠️ IP изменился!\nБыло: ${payload.ip}\nСтало: ${ip}\n\nВойди заново.`);
-    throw { status: 401, message: 'IP changed — re-login required' };
-  }
   return payload;
 }
 
 async function requireFounder(request, env, cors){
   const payload = await requireAdmin(request, env, cors);
-  if(payload.role !== 'founder') {
-    throw { status: 403, message: 'Только основатель может выполнять это действие' };
-  }
+  if(payload.role !== 'founder') throw { status: 403, message: 'Братан, у тебя нет прав (только основатель)!' };
   return payload;
 }
 
@@ -224,27 +148,270 @@ async function adminMe(request, env, cors){
   try {
     const payload = await requireAdmin(request, env, cors);
     return json({ username: payload.username, id: payload.sub, role: payload.role }, 200, cors);
-  } catch(e){
-    return json({ error: e.message }, e.status || 401, cors);
-  }
+  } catch(e){ return json({ error: e.message }, e.status || 401, cors); }
 }
 
-/* ============================================================
-   UPDATES
-   ============================================================ */
-async function getUpdates(request, env, cors){
+async function getStats(request, env, cors) {
   try {
     await requireAdmin(request, env, cors);
-    const raw = await env.AZFW_KV.get('updates:latest');
-    return json(raw ? JSON.parse(raw) : { items: [] }, 200, cors);
-  } catch(e){
-    return json({ error: e.message }, e.status || 500, cors);
+    const postsRaw = await env.AZFW_KV.get('posts:all');
+    const appsRaw = await env.AZFW_KV.get('mod_apps:all');
+    const adminsRaw = await env.AZFW_KV.list({ prefix: 'bot_user:' });
+    
+    const posts = postsRaw ? JSON.parse(postsRaw) : [];
+    const apps = appsRaw ? JSON.parse(appsRaw) : [];
+    
+    return json({ posts: posts.length, apps: apps.length, admins: adminsRaw.keys.length }, 200, cors);
+  } catch(e) { return json({ error: e.message }, 500, cors); }
+}
+
+/* ============================================================ API БОТА ============================================================ */
+async function checkBotSecret(request, env) {
+  const auth = request.headers.get('Authorization') || '';
+  if (auth !== `Bearer ${env.BOT_SECRET}`) throw new Error('Unauthorized bot');
+}
+
+async function botGetUser(request, env, cors) {
+  try {
+    await checkBotSecret(request, env);
+    const tg_id = request.url.split('/').pop();
+    const login_code = await env.AZFW_KV.get('bot_id_index:' + tg_id);
+    if (!login_code) return json({ error: 'Not found' }, 404, cors);
+    const raw = await env.AZFW_KV.get('bot_user:' + login_code);
+    return json(JSON.parse(raw), 200, cors);
+  } catch (e) { return json({ error: e.message }, 401, cors); }
+}
+
+async function botSaveUser(request, env, cors) {
+  try {
+    await checkBotSecret(request, env);
+    let data = await request.json();
+    const tg_id = String(data.tg_id);
+
+    let old_login_code = await env.AZFW_KV.get('bot_id_index:' + tg_id);
+    let final_login_code = data.login_code || old_login_code;
+
+    if (!final_login_code) final_login_code = 'azfw_' + Math.random().toString(36).slice(2, 8);
+
+    let existing = {};
+    if (old_login_code) {
+      const raw = await env.AZFW_KV.get('bot_user:' + old_login_code);
+      if (raw) existing = JSON.parse(raw);
+    }
+
+    data = Object.assign(existing, data);
+    data.login_code = final_login_code;
+
+    // УДАЛЯЕМ СТАРЫЙ ЛОГИН (Очистка мусора)
+    if (old_login_code && old_login_code !== final_login_code) {
+      await env.AZFW_KV.delete('bot_user:' + old_login_code);
+    }
+
+    if (data.role === 0) {
+      await env.AZFW_KV.delete('bot_user:' + final_login_code);
+      await env.AZFW_KV.delete('bot_id_index:' + tg_id);
+    } else {
+      await env.AZFW_KV.put('bot_id_index:' + tg_id, final_login_code);
+      await env.AZFW_KV.put('bot_user:' + final_login_code, JSON.stringify(data));
+    }
+
+    return json({ ok: true, user: data }, 200, cors);
+  } catch (e) { return json({ error: e.message }, 401, cors); }
+}
+
+async function botGetAdmins(request, env, cors) {
+  try {
+    await checkBotSecret(request, env);
+    const list = await env.AZFW_KV.list({ prefix: 'bot_user:' });
+    const admins = [];
+    for (const key of list.keys) {
+      const raw = await env.AZFW_KV.get(key.name);
+      const u = JSON.parse(raw);
+      if (u.role >= 3) admins.push(u);
+    }
+    return json(admins, 200, cors);
+  } catch (e) { return json({ error: e.message }, 401, cors); }
+}
+
+async function botSyncGithub(request, env, cors) {
+  try {
+    await checkBotSecret(request, env);
+    const repo = env.GITHUB_REPO;
+    const branch = env.GITHUB_BRANCH || 'main';
+    
+    const r = await fetch(`https://api.github.com/repos/${repo}/contents/data/updates?ref=${branch}`, {
+      headers: { 'Authorization': `Bearer ${env.GITHUB_TOKEN}`, 'User-Agent': 'azfw26-bot' }
+    });
+    if(!r.ok) throw new Error('Не удалось получить файлы с GitHub');
+    
+    const files = await r.json();
+    const index = { updates: [] };
+    
+    for (const file of files) {
+      if(!file.name.endsWith('.json')) continue;
+      const fileRes = await fetch(file.download_url);
+      if(!fileRes.ok) continue;
+      try {
+        const upd = await fileRes.json();
+        const items = Array.isArray(upd.items) ? upd.items : [];
+        index.updates.push({
+          id: upd.id, date: upd.date, title: upd.title, summary: upd.summary,
+          kind: upd.kind || 'game', platforms: upd.platforms || [],
+          file: file.name, commit_hash: upd.commit_hash || null,
+          stats: upd.stats || { files: items.length, additions: items.length, deletions: 0, commits: 1 }
+        });
+      } catch(e) { console.error(`Ошибка чтения ${file.name}`, e); }
+    }
+    
+    index.updates.sort((a, b) => String(b.date).localeCompare(String(a.date)));
+    
+    let idxSha = null;
+    const idxRes = await fetch(`https://api.github.com/repos/${repo}/contents/data/index.json?ref=${branch}`, {
+      headers: { 'Authorization': `Bearer ${env.GITHUB_TOKEN}`, 'User-Agent': 'azfw26-bot' }
+    });
+    if(idxRes.ok) { const idxData = await idxRes.json(); idxSha = idxData.sha; }
+    
+    const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(index, null, 2))));
+    const payload = { message: `Manual bot sync`, content: encoded, branch };
+    if (idxSha) payload.sha = idxSha;
+    
+    await fetch(`https://api.github.com/repos/${repo}/contents/data/index.json`, {
+      method: 'PUT',
+      headers: { 'Authorization': `Bearer ${env.GITHUB_TOKEN}`, 'User-Agent': 'azfw26-bot', 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    return json({ ok: true, count: index.updates.length }, 200, cors);
+  } catch(e) { return json({ error: e.message }, 500, cors); }
+}
+
+/* ============================================================
+   3. GITHUB CMS
+   ============================================================ */
+async function githubList(request, env, cors){
+  try {
+    await requireAdmin(request, env, cors);
+    const path = new URL(request.url).searchParams.get('path') || 'data/updates';
+    const repo = env.GITHUB_REPO;
+    const branch = env.GITHUB_BRANCH || 'main';
+    
+    const r = await fetch(`https://api.github.com/repos/${repo}/contents/${path}?ref=${branch}`, {
+      headers: { 'Authorization': `Bearer ${env.GITHUB_TOKEN}`, 'User-Agent': 'azfw26-bot', 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if(!r.ok) throw new Error('GitHub: ' + r.status);
+    const data = await r.json();
+    const files = Array.isArray(data) ? data.map(f => ({ name: f.name, path: f.path, size: f.size })) : [];
+    return json({ files }, 200, cors);
+  } catch(e) { return json({ error: e.message }, 500, cors); }
+}
+
+async function githubRead(request, env, cors){
+  try {
+    await requireAdmin(request, env, cors);
+    const path = new URL(request.url).searchParams.get('path');
+    const repo = env.GITHUB_REPO;
+    const branch = env.GITHUB_BRANCH || 'main';
+
+    const r = await fetch(`https://api.github.com/repos/${repo}/contents/${path}?ref=${branch}`, {
+      headers: { 'Authorization': `Bearer ${env.GITHUB_TOKEN}`, 'User-Agent': 'azfw26-bot', 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if(!r.ok) throw new Error('GitHub: ' + r.status);
+    const data = await r.json();
+    const content = decodeURIComponent(escape(atob(data.content.replace(/\n/g, ''))));
+    return json({ content, sha: data.sha, path: data.path }, 200, cors);
+  } catch(e) { return json({ error: e.message }, 500, cors); }
+}
+
+async function githubWrite(request, env, cors){
+  try {
+    await requireAdmin(request, env, cors);
+    const { path, content, message, sha } = await request.json();
+    const repo = env.GITHUB_REPO;
+    const branch = env.GITHUB_BRANCH || 'main';
+    const encoded = btoa(unescape(encodeURIComponent(content)));
+
+    const payload = { message: message || `Update ${path}`, content: encoded, branch };
+    if(sha) payload.sha = sha;
+
+    const r = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+      method: 'PUT',
+      headers: { 'Authorization': `Bearer ${env.GITHUB_TOKEN}`, 'User-Agent': 'azfw26-bot', 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' },
+      body: JSON.stringify(payload)
+    });
+    if(!r.ok) throw new Error('GitHub PUT Error: ' + r.status);
+    const data = await r.json();
+    
+    // Авто-синхронизация index.json
+    if (path.startsWith('data/updates/')) {
+      await syncIndex(env, path, content);
+    }
+
+    return json({ ok: true, sha: data.content.sha, commit: data.commit.sha }, 200, cors);
+  } catch(e) { return json({ error: e.message }, 500, cors); }
+}
+
+async function syncIndex(env, path, content) {
+  try {
+    const repo = env.GITHUB_REPO;
+    const branch = env.GITHUB_BRANCH || 'main';
+    
+    // Читаем текущий index.json
+    let index = { updates: [] };
+    let idxSha = null;
+    const r = await fetch(`https://api.github.com/repos/${repo}/contents/data/index.json?ref=${branch}`, {
+      headers: { 'Authorization': `Bearer ${env.GITHUB_TOKEN}`, 'User-Agent': 'azfw26-bot' }
+    });
+    if (r.ok) {
+      const data = await r.json();
+      idxSha = data.sha;
+      try { index = JSON.parse(decodeURIComponent(escape(atob(data.content.replace(/\n/g, ''))))); } catch(e) {}
+    }
+    if (!Array.isArray(index.updates)) index.updates = [];
+
+    // Парсим новое обновление
+    const upd = JSON.parse(content);
+    const items = Array.isArray(upd.items) ? upd.items : [];
+    const entry = {
+      id: upd.id, date: upd.date, title: upd.title, summary: upd.summary,
+      kind: upd.kind || 'game', platforms: upd.platforms || [],
+      file: path.split('/').pop(), commit_hash: upd.commit_hash || null,
+      stats: upd.stats || { files: items.length, additions: items.length, deletions: 0, commits: 1 }
+    };
+
+    // Обновляем массив
+    const existing = index.updates.findIndex(u => u.id === entry.id);
+    if (existing >= 0) index.updates[existing] = entry;
+    else index.updates.push(entry);
+    
+    // Сортируем по дате (новые сверху)
+    index.updates.sort((a, b) => String(b.date).localeCompare(String(a.date)));
+
+    // Записываем обратно
+    const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(index, null, 2))));
+    const payload = { message: `Auto-index for ${entry.id}`, content: encoded, branch };
+    if (idxSha) payload.sha = idxSha;
+    
+    await fetch(`https://api.github.com/repos/${repo}/contents/data/index.json`, {
+      method: 'PUT',
+      headers: { 'Authorization': `Bearer ${env.GITHUB_TOKEN}`, 'User-Agent': 'azfw26-bot', 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  } catch(e) {
+    console.error('Sync index error:', e);
   }
 }
 
 /* ============================================================
-   SITE (maintenance + config)
+   4. ОСТАЛЬНЫЕ ФУНКЦИИ
    ============================================================ */
+async function getSitePublic(env, cors){
+  const raw = await env.AZFW_KV.get('site:status');
+  return json(raw ? JSON.parse(raw) : { maintenance: false }, 200, cors);
+}
+async function getPublicConfig(env, cors){
+  const raw = await env.AZFW_KV.get('site:config');
+  return json(raw ? JSON.parse(raw) : { sections: { updates: true, news: true, community: true, moderatorForm: false } }, 200, cors);
+}
 async function getSite(request, env, cors){
   try {
     await requireAdmin(request, env, cors);
@@ -252,92 +419,76 @@ async function getSite(request, env, cors){
     return json(raw ? JSON.parse(raw) : { maintenance: false }, 200, cors);
   } catch(e){ return json({ error: e.message }, e.status || 401, cors); }
 }
-async function getSitePublic(env, cors){
-  const raw = await env.AZFW_KV.get('site:status');
-  return json(raw ? JSON.parse(raw) : { maintenance: false }, 200, cors);
-}
 async function setSite(request, env, cors){
   try {
     await requireAdmin(request, env, cors);
-    const body = await request.json();
-    await env.AZFW_KV.put('site:status', JSON.stringify(body));
+    await env.AZFW_KV.put('site:status', JSON.stringify(await request.json()));
     return json({ ok: true }, 200, cors);
-  } catch(e){
-    return json({ error: e.message }, e.status || 500, cors);
-  }
+  } catch(e){ return json({ error: e.message }, e.status || 500, cors); }
 }
-
-/* ============================================================
-   SITE CONFIG (sections visibility)
-   ============================================================ */
 async function getConfig(request, env, cors){
   try {
     await requireAdmin(request, env, cors);
     const raw = await env.AZFW_KV.get('site:config');
-    const def = { sections: { updates: true, news: true, community: true, moderatorForm: false } };
-    return json(raw ? JSON.parse(raw) : def, 200, cors);
+    return json(raw ? JSON.parse(raw) : { sections: { updates: true, news: true, community: true, moderatorForm: false } }, 200, cors);
   } catch(e){ return json({ error: e.message }, e.status || 401, cors); }
 }
 async function setConfig(request, env, cors){
   try {
     await requireAdmin(request, env, cors);
-    const body = await request.json();
-    await env.AZFW_KV.put('site:config', JSON.stringify(body));
+    await env.AZFW_KV.put('site:config', JSON.stringify(await request.json()));
     return json({ ok: true }, 200, cors);
-  } catch(e){
-    return json({ error: e.message }, e.status || 500, cors);
-  }
+  } catch(e){ return json({ error: e.message }, e.status || 500, cors); }
 }
-async function getPublicConfig(env, cors){
-  const raw = await env.AZFW_KV.get('site:config');
-  const def = { sections: { updates: true, news: true, community: true, moderatorForm: false } };
-  return json(raw ? JSON.parse(raw) : def, 200, cors);
+async function listRoles(request, env, cors) {
+  try {
+    await requireFounder(request, env, cors);
+    const list = await env.AZFW_KV.list({ prefix: 'bot_user:' });
+    const roles = [];
+    for (const k of list.keys) {
+      const u = JSON.parse(await env.AZFW_KV.get(k.name));
+      roles.push({ tg_id: u.tg_id, role: u.role === 3 ? 'founder' : 'admin' });
+    }
+    return json({ roles }, 200, cors);
+  } catch(e) { return json({ error: e.message }, e.status || 500, cors); }
+}
+async function setRole(request, env, cors) {
+  try {
+    await requireFounder(request, env, cors);
+    const { tg_id, role } = await request.json();
+    const login_code = await env.AZFW_KV.get('bot_id_index:' + tg_id);
+    if (login_code) {
+      const raw = await env.AZFW_KV.get('bot_user:' + login_code);
+      const u = JSON.parse(raw);
+      u.role = role === 'founder' ? 3 : 2;
+      await env.AZFW_KV.put('bot_user:' + login_code, JSON.stringify(u));
+    }
+    return json({ ok: true }, 200, cors);
+  } catch(e) { return json({ error: e.message }, e.status || 500, cors); }
 }
 
-/* ============================================================
-   POSTS (community)
-   ============================================================ */
 async function postsList(env, cors){
   const raw = await env.AZFW_KV.get('posts:all');
-  const posts = raw ? JSON.parse(raw) : [];
-  return json({ posts: posts.slice(-100).reverse() }, 200, cors);
+  return json({ posts: (raw ? JSON.parse(raw) : []).slice(-100).reverse() }, 200, cors);
 }
-
 async function postCreate(request, env, cors){
   const body = await request.json();
   const text = String(body.text || '').trim();
   const user = body.user || {};
-  if(text.length < 2) return json({ error: 'Too short' }, 400, cors);
-  if(text.length > 2000) return json({ error: 'Too long' }, 400, cors);
-  if(!user.id) return json({ error: 'No user' }, 400, cors);
-
+  if(text.length < 2 || !user.id) return json({ error: 'Invalid data' }, 400, cors);
+  
   const raw = await env.AZFW_KV.get('posts:all');
   const posts = raw ? JSON.parse(raw) : [];
-  const post = {
-    id: Date.now(),
-    user_id: user.id,
-    username: user.username || ('id' + user.id),
-    name: (user.first_name || '') + (user.last_name ? ' ' + user.last_name : ''),
-    photo_url: user.photo_url || '',
-    text,
-    created_at: Date.now(),
-    likes: 0, comments: 0
-  };
-  posts.push(post);
-  const trimmed = posts.slice(-500);
-  await env.AZFW_KV.put('posts:all', JSON.stringify(trimmed));
-  return json({ ok: true, post }, 200, cors);
+  posts.push({ id: Date.now(), user_id: user.id, username: user.username || 'id'+user.id, name: user.first_name || '', text, created_at: Date.now() });
+  await env.AZFW_KV.put('posts:all', JSON.stringify(posts.slice(-500)));
+  return json({ ok: true }, 200, cors);
 }
-
 async function adminPostsList(request, env, cors){
   try {
     await requireAdmin(request, env, cors);
     const raw = await env.AZFW_KV.get('posts:all');
-    const posts = raw ? JSON.parse(raw) : [];
-    return json({ posts: posts.slice(-100).reverse() }, 200, cors);
-  } catch(e){
-    return json({ error: e.message }, e.status || 500, cors);
-  }
+    return json({ posts: (raw ? JSON.parse(raw) : []).slice(-100).reverse() }, 200, cors);
+  } catch(e){ return json({ error: e.message }, 500, cors); }
 }
 async function adminPostDelete(request, env, cors, id){
   try {
@@ -347,143 +498,25 @@ async function adminPostDelete(request, env, cors, id){
     posts = posts.filter(p => String(p.id) !== String(id));
     await env.AZFW_KV.put('posts:all', JSON.stringify(posts));
     return json({ ok: true }, 200, cors);
-  } catch(e){
-    return json({ error: e.message }, e.status || 500, cors);
-  }
+  } catch(e){ return json({ error: e.message }, 500, cors); }
 }
 
-/* ============================================================
-   GITHUB CMS
-   ============================================================ */
-async function githubList(request, env, cors){
-  try {
-    await requireAdmin(request, env, cors);
-    const path = new URL(request.url).searchParams.get('path') || 'data/updates';
-    const repo = env.GITHUB_REPO;
-    const branch = env.GITHUB_BRANCH || 'main';
-    if(!repo) throw new Error('GITHUB_REPO not set');
-
-    const r = await fetch(`https://api.github.com/repos/${repo}/contents/${path}?ref=${branch}`, {
-      headers: {
-        'Authorization': `Bearer ${env.GITHUB_TOKEN}`,
-        'User-Agent': 'azfw26-bot',
-        'Accept': 'application/vnd.github.v3+json'
-      }
-    });
-    if(!r.ok) throw new Error('GitHub: ' + r.status);
-    const data = await r.json();
-    const files = Array.isArray(data) ? data.map(f => ({
-      name: f.name,
-      path: f.path,
-      type: f.type,
-      size: f.size,
-      sha: f.sha
-    })) : [];
-    return json({ files }, 200, cors);
-  } catch(e){
-    return json({ error: e.message }, 500, cors);
-  }
-}
-
-async function githubRead(request, env, cors){
-  try {
-    await requireAdmin(request, env, cors);
-    const path = new URL(request.url).searchParams.get('path');
-    if(!path) throw new Error('path is required');
-    const repo = env.GITHUB_REPO;
-    const branch = env.GITHUB_BRANCH || 'main';
-
-    const r = await fetch(`https://api.github.com/repos/${repo}/contents/${path}?ref=${branch}`, {
-      headers: {
-        'Authorization': `Bearer ${env.GITHUB_TOKEN}`,
-        'User-Agent': 'azfw26-bot',
-        'Accept': 'application/vnd.github.v3+json'
-      }
-    });
-    if(!r.ok) throw new Error('GitHub: ' + r.status);
-    const data = await r.json();
-    const content = atob(data.content.replace(/\n/g, ''));
-    return json({ content, sha: data.sha, path: data.path }, 200, cors);
-  } catch(e){
-    return json({ error: e.message }, 500, cors);
-  }
-}
-
-async function githubWrite(request, env, cors){
-  try {
-    await requireAdmin(request, env, cors);
-    const body = await request.json();
-    const { path, content, message, sha } = body;
-    if(!path || content === undefined) throw new Error('path and content required');
-
-    const repo = env.GITHUB_REPO;
-    const branch = env.GITHUB_BRANCH || 'main';
-    const encoded = btoa(unescape(encodeURIComponent(content)));
-
-    const payload = {
-      message: message || `Update ${path} via admin`,
-      content: encoded,
-      branch
-    };
-    if(sha) payload.sha = sha;
-
-    const r = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `Bearer ${env.GITHUB_TOKEN}`,
-        'User-Agent': 'azfw26-bot',
-        'Content-Type': 'application/json',
-        'Accept': 'application/vnd.github.v3+json'
-      },
-      body: JSON.stringify(payload)
-    });
-    if(!r.ok) {
-      const err = await r.text();
-      throw new Error('GitHub: ' + r.status + ' ' + err);
-    }
-    const data = await r.json();
-    return json({ ok: true, sha: data.content.sha, commit: data.commit.sha }, 200, cors);
-  } catch(e){
-    return json({ error: e.message }, 500, cors);
-  }
-}
-
-/* ============================================================
-   MODERATOR APPLICATIONS
-   ============================================================ */
 async function createModApp(request, env, cors){
   const body = await request.json();
-  const { nickname, tg, age, experience, reason } = body;
-  if(!nickname || !tg || !reason) return json({ error: 'Заполните обязательные поля' }, 400, cors);
-
-  const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-  const app = { id, nickname, tg, age: age || '', experience: experience || '', reason, created_at: Date.now() };
-
+  const id = Date.now().toString(36);
   const raw = await env.AZFW_KV.get('mod_apps:all');
   const apps = raw ? JSON.parse(raw) : [];
-  apps.push(app);
+  apps.push({ ...body, id, created_at: Date.now() });
   await env.AZFW_KV.put('mod_apps:all', JSON.stringify(apps.slice(-200)));
-
-  // Уведомление в Telegram админам
-  const admins = await getAdminsList(env);
-  for (const a of admins) {
-    if (a.role === 'founder' || a.role === 'admin') {
-      await sendTelegramMessage(env, a.tg_id,
-        `📝 <b>Новая заявка модератора</b>\n\nНик: ${nickname}\nTG: ${tg}\nВозраст: ${age || '—'}\nОпыт: ${experience || '—'}\n\nПричина:\n${reason}`);
-    }
-  }
-
   return json({ ok: true, id }, 200, cors);
 }
-
 async function listModApps(request, env, cors){
   try {
     await requireAdmin(request, env, cors);
     const raw = await env.AZFW_KV.get('mod_apps:all');
     return json({ apps: raw ? JSON.parse(raw) : [] }, 200, cors);
-  } catch(e){ return json({ error: e.message }, e.status || 500, cors); }
+  } catch(e){ return json({ error: e.message }, 500, cors); }
 }
-
 async function deleteModApp(request, env, cors, id){
   try {
     await requireAdmin(request, env, cors);
@@ -492,50 +525,45 @@ async function deleteModApp(request, env, cors, id){
     apps = apps.filter(a => a.id !== id);
     await env.AZFW_KV.put('mod_apps:all', JSON.stringify(apps));
     return json({ ok: true }, 200, cors);
-  } catch(e){ return json({ error: e.message }, e.status || 500, cors); }
+  } catch(e){ return json({ error: e.message }, 500, cors); }
 }
 
-/* ============================================================
-   ROLES (Founder only)
-   ============================================================ */
-async function getAdminsList(env){
-  const raw = await env.AZFW_KV.get('roles:admins');
-  return raw ? JSON.parse(raw) : [];
-}
-
-async function getRole(env, tgId){
-  const list = await getAdminsList(env);
-  const found = list.find(a => Number(a.tg_id) === Number(tgId));
-  return found ? found.role : null;
-}
-
-async function listRoles(request, env, cors){
+async function adminChangePass(request, env, cors) {
   try {
-    await requireFounder(request, env, cors);
-    const list = await getAdminsList(env);
-    return json({ roles: list }, 200, cors);
-  } catch(e){ return json({ error: e.message }, e.status || 401, cors); }
-}
+    const payload = await requireAdmin(request, env, cors);
+    const { password } = await request.json();
+    if (!password || password.length < 4) return json({ error: 'Пароль слишком короткий' }, 400, cors);
 
-async function setRole(request, env, cors){
-  try {
-    await requireFounder(request, env, cors);
-    const { tg_id, role } = await request.json();
-    if(!tg_id || !['admin', 'founder'].includes(role)) throw new Error('Invalid data');
+    const login_code = await env.AZFW_KV.get('bot_id_index:' + payload.sub);
+    if (!login_code) return json({ error: 'Пользователь не найден' }, 404, cors);
 
-    const list = await getAdminsList(env);
-    const idx = list.findIndex(a => Number(a.tg_id) === Number(tg_id));
-    if(idx >= 0) list[idx].role = role;
-    else list.push({ tg_id: Number(tg_id), role });
+    const raw = await env.AZFW_KV.get('bot_user:' + login_code);
+    if (!raw) return json({ error: 'Данные не найдены' }, 404, cors);
 
-    await env.AZFW_KV.put('roles:admins', JSON.stringify(list));
+    const user = JSON.parse(raw);
+    user.password = password;
+    await env.AZFW_KV.put('bot_user:' + login_code, JSON.stringify(user));
+
     return json({ ok: true }, 200, cors);
-  } catch(e){ return json({ error: e.message }, e.status || 500, cors); }
+  } catch(e) { return json({ error: e.message }, 500, cors); }
 }
 
-/* ============================================================
-   JWT
-   ============================================================ */
+async function getSitePublic(env, cors){ const raw = await env.AZFW_KV.get('site:status'); return json(raw ? JSON.parse(raw) : { maintenance: false }, 200, cors); }
+async function getPublicConfig(env, cors){ const raw = await env.AZFW_KV.get('site:config'); return json(raw ? JSON.parse(raw) : { sections: { updates: true, news: true, community: true, moderatorForm: false } }, 200, cors); }
+async function getSite(request, env, cors){ try { await requireAdmin(request, env, cors); const raw = await env.AZFW_KV.get('site:status'); return json(raw ? JSON.parse(raw) : { maintenance: false }, 200, cors); } catch(e){ return json({ error: e.message }, e.status || 401, cors); } }
+async function setSite(request, env, cors){ try { await requireAdmin(request, env, cors); await env.AZFW_KV.put('site:status', JSON.stringify(await request.json())); return json({ ok: true }, 200, cors); } catch(e){ return json({ error: e.message }, e.status || 500, cors); } }
+async function getConfig(request, env, cors){ try { await requireAdmin(request, env, cors); const raw = await env.AZFW_KV.get('site:config'); return json(raw ? JSON.parse(raw) : { sections: { updates: true, news: true, community: true, moderatorForm: false } }, 200, cors); } catch(e){ return json({ error: e.message }, e.status || 401, cors); } }
+async function setConfig(request, env, cors){ try { await requireAdmin(request, env, cors); await env.AZFW_KV.put('site:config', JSON.stringify(await request.json())); return json({ ok: true }, 200, cors); } catch(e){ return json({ error: e.message }, e.status || 500, cors); } }
+async function listRoles(request, env, cors) { try { await requireFounder(request, env, cors); const list = await env.AZFW_KV.list({ prefix: 'bot_user:' }); const roles = []; for (const k of list.keys) { const u = JSON.parse(await env.AZFW_KV.get(k.name)); roles.push({ tg_id: u.tg_id, role: u.role === 3 ? 'founder' : 'admin' }); } return json({ roles }, 200, cors); } catch(e) { return json({ error: e.message }, e.status || 500, cors); } }
+async function setRole(request, env, cors) { try { await requireFounder(request, env, cors); const { tg_id, role } = await request.json(); const login_code = await env.AZFW_KV.get('bot_id_index:' + tg_id); if (login_code) { const raw = await env.AZFW_KV.get('bot_user:' + login_code); const u = JSON.parse(raw); u.role = role === 'founder' ? 3 : 2; await env.AZFW_KV.put('bot_user:' + login_code, JSON.stringify(u)); } return json({ ok: true }, 200, cors); } catch(e) { return json({ error: e.message }, e.status || 500, cors); } }
+async function postsList(env, cors){ const raw = await env.AZFW_KV.get('posts:all'); return json({ posts: (raw ? JSON.parse(raw) : []).slice(-100).reverse() }, 200, cors); }
+async function postCreate(request, env, cors){ const body = await request.json(); const text = String(body.text || '').trim(); const user = body.user || {}; if(text.length < 2 || !user.id) return json({ error: 'Invalid data' }, 400, cors); const raw = await env.AZFW_KV.get('posts:all'); const posts = raw ? JSON.parse(raw) : []; posts.push({ id: Date.now(), user_id: user.id, username: user.username || 'id'+user.id, name: user.first_name || '', text, created_at: Date.now() }); await env.AZFW_KV.put('posts:all', JSON.stringify(posts.slice(-500))); return json({ ok: true }, 200, cors); }
+async function adminPostsList(request, env, cors){ try { await requireAdmin(request, env, cors); const raw = await env.AZFW_KV.get('posts:all'); return json({ posts: (raw ? JSON.parse(raw) : []).slice(-100).reverse() }, 200, cors); } catch(e){ return json({ error: e.message }, 500, cors); } }
+async function adminPostDelete(request, env, cors, id){ try { await requireAdmin(request, env, cors); const raw = await env.AZFW_KV.get('posts:all'); let posts = raw ? JSON.parse(raw) : []; posts = posts.filter(p => String(p.id) !== String(id)); await env.AZFW_KV.put('posts:all', JSON.stringify(posts)); return json({ ok: true }, 200, cors); } catch(e){ return json({ error: e.message }, 500, cors); } }
+async function createModApp(request, env, cors){ const body = await request.json(); const id = Date.now().toString(36); const raw = await env.AZFW_KV.get('mod_apps:all'); const apps = raw ? JSON.parse(raw) : []; apps.push({ ...body, id, created_at: Date.now() }); await env.AZFW_KV.put('mod_apps:all', JSON.stringify(apps.slice(-200))); return json({ ok: true, id }, 200, cors); }
+async function listModApps(request, env, cors){ try { await requireAdmin(request, env, cors); const raw = await env.AZFW_KV.get('mod_apps:all'); return json({ apps: raw ? JSON.parse(raw) : [] }, 200, cors); } catch(e){ return json({ error: e.message }, 500, cors); } }
+async function deleteModApp(request, env, cors, id){ try { await requireAdmin(request, env, cors); const raw = await env.AZFW_KV.get('mod_apps:all'); let apps = raw ? JSON.parse(raw) : []; apps = apps.filter(a => a.id !== id); await env.AZFW_KV.put('mod_apps:all', JSON.stringify(apps)); return json({ ok: true }, 200, cors); } catch(e){ return json({ error: e.message }, 500, cors); } }
+
 async function signJwt(payload, secret){
   const header = { alg: 'HS256', typ: 'JWT' };
   const b64 = obj => btoa(JSON.stringify(obj)).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
@@ -559,42 +587,4 @@ async function verifyJwt(token, secret){
     if(payload.exp * 1000 < Date.now()) return null;
     return payload;
   } catch(e){ return null; }
-}
-
-/* ============================================================
-   TELEGRAM SEND
-   ============================================================ */
-async function sendTelegramMessage(env, chatId, text){
-  // Используем прокси, если задан, иначе напрямую
-  const base = env.TG_API_BASE || 'https://api.telegram.org';
-  const url = `${base}/bot${env.BOT_TOKEN}/sendMessage`;
-  const r = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'HTML', disable_web_page_preview: true })
-  });
-  if(!r.ok){
-    const err = await r.text();
-    console.error('TG send failed:', err);
-  }
-}
-
-/* ============================================================
-   TG WEBHOOK
-   ============================================================ */
-async function tgWebhook(request, env, cors) {
-  const update = await request.json().catch(() => null);
-  if (!update || !update.message) return json({ ok: true }, 200, cors);
-
-  const msg = update.message;
-  const text = (msg.text || '').trim();
-  const chatId = msg.chat.id;
-  const from = msg.from || {};
-
-  if (text === '/start') {
-    await sendTelegramMessage(env, chatId,
-      'Привет! Я — бот сайта <b>Arizona Faraway — 26</b>.\n\n' +
-      'Если ты хочешь получить доступ к админке, обратись к основателю.');
-  }
-  return json({ ok: true }, 200, cors);
 }
