@@ -229,6 +229,39 @@
     will-change:transform;
   }
 
+  /* ===== ВИДЖЕТ ОНЛАЙНА ===== */
+  .online-widget {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(11, 30, 61, 0.7);
+    border: 1px solid rgba(52, 211, 153, 0.4);
+    border-radius: 999px;
+    padding: 8px 20px 8px 14px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3), inset 0 0 15px rgba(52, 211, 153, 0.1);
+    backdrop-filter: blur(10px);
+  }
+  .ow-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-right: 1px solid rgba(255,255,255,0.1);
+    padding-right: 16px;
+  }
+  .ow-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #34d399;
+    box-shadow: 0 0 10px #34d399;
+    animation: pulse-dot 2s infinite;
+  }
+  .ow-dot.offline { background: #f87171; box-shadow: 0 0 10px #f87171; animation: none; }
+  .ow-dot.loading { background: #fbbf24; box-shadow: 0 0 10px #fbbf24; }
+  .ow-text { font-size: 13px; font-weight: 700; color: #e8effa; text-transform: uppercase; letter-spacing: 0.5px; }
+  .ow-players { font-size: 15px; color: #7d93b5; font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+  .ow-players b { color: #34d399; font-weight: 800; font-size: 18px; }
+
     /* ===== СТИЛИ КРАСНОГО БАННЕРА ===== */
   .promo-banner {
     display: block;
@@ -250,7 +283,6 @@
     box-shadow: 0 15px 50px rgba(218, 2, 218, 0.6), inset 0 0 0 1px rgba(255,255,255,0.2);
   }
 
-  /* Твоя картинка с Imgur */
   .promo-banner::before {
     content: '';
     position: absolute;
@@ -952,7 +984,16 @@
   <header class="hero">
     <div class="server-badge"><span class="dot"></span>Сервер проекта Arizona RP</div>
 
-      <!-- ===== КРАСНЫЙ БАННЕР С ТАЙМЕРОМ ===== -->
+        <div class="online-widget" id="onlineWidget">
+      <div class="ow-status">
+        <span class="ow-dot loading" id="owDot"></span>
+        <span class="ow-text" id="owText">Загрузка онлайна...</span>
+      </div>
+      <div class="ow-players">
+        <b id="owPlayers">0</b> <span>/ <span id="owMax">1000</span></span>
+      </div>
+    </div>
+
   <a href="https://www.youtube.com/watch?v=ng3B2qi3b-w" target="_blank" class="promo-banner">
     <div class="promo-content">
       <span class="promo-badge">🧟 ГЛАВНОЕ СОБЫТИЕ ХЭЛЛОУИНА 👻</span>
@@ -1374,7 +1415,45 @@ document.getElementById('modAppForm')?.addEventListener('submit', async (e) => {
     if(user){ renderUserChip(); updateLoginCard(); }
   })();
 
+(function() {
+  const API_BASE = "https://azfw26-api.eduardusmaker.workers.dev";
+  
+  async function fetchServerStatus() {
+    const dot = document.getElementById('owDot');
+    const text = document.getElementById('owText');
+    const playersEl = document.getElementById('owPlayers');
+    const maxEl = document.getElementById('owMax');
+    
+    if(!dot) return;
 
+    try {
+      const res = await fetch(API_BASE + '/api/server-status?t=' + Date.now());
+      const data = await res.json();
+
+      if (data.online && data.players > 0) {
+        dot.className = 'ow-dot';
+        text.textContent = 'Сервер онлайн';
+        playersEl.textContent = data.players;
+        maxEl.textContent = data.maxplayers;
+        playersEl.style.color = '#34d399'; // Зеленый
+      } else {
+        dot.className = 'ow-dot offline';
+        text.textContent = 'Сервер оффлайн';
+        playersEl.textContent = '0';
+        maxEl.textContent = data.maxplayers || 1000;
+        playersEl.style.color = '#f87171'; // Красный
+      }
+    } catch (e) {
+      dot.className = 'ow-dot offline';
+      text.textContent = 'Нет связи';
+      playersEl.textContent = '?';
+      playersEl.style.color = '#f87171';
+    }
+  }
+
+  fetchServerStatus();
+  setInterval(fetchServerStatus, 60000);
+})();
 </script>
 
 <script src="theme.js"></script>
