@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Обновления · Arizona Faraway — 26</title>
+<link rel="icon" href="logo.jpg" type="image/png">
 <meta name="description" content="Обновления мода, новости игрового сервера и посты сообщества Arizona Faraway — 26.">
 <link rel="stylesheet" href="theme.css">
 <style>
@@ -69,11 +70,24 @@
   .nav-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:22px}
   .brand{display:flex;align-items:center;gap:11px;font-weight:700;font-size:15px;text-decoration:none;color:var(--text)}
   .brand .logo{
-    width:38px;height:38px;
-    background:var(--card-2);
-    border:1px solid var(--border-2);
-    border-radius:11px;display:grid;place-items:center;font-size:19px;
-    transition:.3s;
+  width:38px;height:38px;
+  border-radius:11px;
+  overflow:hidden;
+  display:grid;place-items:center;
+  background:color-mix(in srgb, var(--accent) 12%, var(--card-2));
+  border:1px solid var(--border-2);
+  transition:.3s;
+  flex-shrink:0;
+  }
+  .brand .logo img{
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;
+  }
+  .brand:hover .logo{
+  transform:rotate(-5deg) scale(1.04);
+  border-color:var(--accent);
+  box-shadow:0 0 18px color-mix(in srgb, var(--accent) 35%, transparent);
   }
   .brand:hover .logo{transform:rotate(-5deg) scale(1.04); border-color: var(--accent);}
   .brand-text{display:flex;flex-direction:column;line-height:1.15}
@@ -412,7 +426,7 @@
 <nav class="nav">
   <div class="nav-inner">
     <a class="brand" href="index.html">
-      <span class="logo">⚡</span>
+      <span class="logo"><img src="logo.jpg" alt="Arizona Faraway 26"></span>
       <span class="brand-text">
         <span class="t">Arizona Faraway — 26</span>
         <span class="s">обновления · новости · сообщество</span>
