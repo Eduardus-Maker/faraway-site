@@ -464,3 +464,50 @@
       }
     }).catch(e => console.log('Version error:', e));
 })();
+
+(function() {
+  const timerEl = document.getElementById('countdown-timer');
+  if (!timerEl) return;
+
+  function updateTimer() {
+    // Текущее время в UTC
+    const now = new Date();
+    
+    // Вычисляем время 20:30 по Москве (UTC+3) на сегодня
+    // Для этого берем текущую дату в UTC, добавляем 3 часа (МСК), 
+    // устанавливаем 20:30 и возвращаем обратно в UTC.
+    const mskOffset = 3 * 60 * 60 * 1000; // 3 часа в миллисекундах
+    const nowMsk = new Date(now.getTime() + mskOffset);
+    
+    let targetMsk = new Date(nowMsk);
+    targetMsk.setUTCHours(20, 30, 0, 0); // Ставим 20:30 по МСК (в UTC это 17:30)
+    
+    // Если время уже прошло, ставим на завтра
+    if (nowMsk > targetMsk) {
+      targetMsk.setUTCDate(targetMsk.getUTCDate() + 1);
+    }
+
+    // Переводим цель обратно в UTC для сравнения с текущим временем
+    const targetUtc = new Date(targetMsk.getTime() - mskOffset);
+    const diff = targetUtc - now;
+
+    if (diff <= 0) {
+      timerEl.textContent = "Время пришло!";
+      return;
+    }
+
+    // Переводим миллисекунды в часы, минуты и секунды
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    // Форматируем (добавляем нули)
+    const pad = (num) => String(num).padStart(2, '0');
+    
+    timerEl.textContent = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+  }
+
+  // Запускаем сразу и обновляем каждую секунду
+  updateTimer();
+  setInterval(updateTimer, 1000);
+})();
