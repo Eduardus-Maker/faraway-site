@@ -1,0 +1,1131 @@
+{
+  "id": "2026-11-01",
+  "date": "2026-11-01",
+  "title": "Обновление от 2026-11-01",
+  "summary": "01.11.2026 на PC Arizona RP вышли обновления кеша, frontend и предметов: добавлены Halloween-эффекты 2026 и webm-ассеты, обновлены data/карты/модели/аудио/CEF/ASI, обновлялся frontend, менялся items.zip; каталог предметов пополнен Halloween, WILD NIGHT, панк- и всадническими наборами, тюнингом и скинами; обновлён трекер предметов (описания, таймеры, цены акций); вечером уменьшен arizona.asi.",
+  "items": [
+    {
+      "id": "cache-2026-11-01-0558-halloween-effects",
+      "title": "Добавлены Halloween-эффекты 2026",
+      "type": "add",
+      "category": "accessory",
+      "desc": "Добавлены папки /frontend/effects/halloween_2026 [12.10 MB], fx_event_scream [26.72 KB], fx_event_nosignal [2.32 MB], fx_event_blood_go_away [1.44 MB], fx_event_blood_he_is_here [1.51 MB], fx_event_eyes [463.68 KB], fx_event_scream_soft [19.75 KB], fx_event_blood_dont_look [1.54 MB]; файлы scream.webm, nosignal.webm, go_away.webm, he_is_here.webm, black-tunnel-loop.webm [4.79 MB], eyes.webm, scream.webm [19.75 KB], dont_look.webm."
+    },
+    {
+      "id": "cache-2026-11-01-0558-frontend-webm",
+      "title": "Добавлены webm-ассеты frontend/svelte_js",
+      "type": "add",
+      "category": "other",
+      "desc": "Добавлены webm-ассеты в /frontend/svelte_js/assets, включая bf3e8642c933864b4842.webm [13.35 MB], 9cc4cb966838a385de56.webm [8.06 MB], 0379ab85d1d4d23ba3db.webm [17.03 MB], 3c6daaa1e524a5bbed73.webm [24.01 MB], 8efbc434214c9ddaf8f4.webm [16.60 MB], 4210258de9866bfdc2f9.webm [16.23 MB] и другие."
+    },
+    {
+      "id": "cache-2026-11-01-0558-binaries",
+      "title": "Обновлены ASI/DLL и launcher-файлы",
+      "type": "change",
+      "category": "other",
+      "desc": "Обновлены /samp.dll [1.15 MB (-22.23 KB)], /_chat.asi [1.26 MB (+16.50 KB)], /arizona.asi [6.90 MB (+6.50 KB)], /core.asi [2.07 MB (+72.50 KB)], /libcef.asi [261.50 KB (-20.72 KB) в снимке кеша; в другом снимке 286.71 KB (+25.21 KB)], /cef/cef_host.exe [2.57 MB (+106.00 KB)], /cef/libcef.dll [220.67 MB (-24.29 KB)], /GameSyms.dll [2.40 MB (-1.31 MB)], /crashlog.dll [444.72 KB (+19.50 KB)], /crashes.asi [263.00 KB (-17.72 KB)], /SilentPatchSA.asi [415.50 KB (+16.00 KB)], /bass.dll [133.90 KB (-5.88 KB)], /bassmix.dll [30.44 KB (-2.22 KB)], /fixFTH.asi [173.12 KB (-600 B)], /vorbisFile.dll [1.50 MB (-512 B)], /arizona_configurator.asi [2.91 MB (+19.00 KB)] и др."
+    },
+    {
+      "id": "cache-2026-11-01-0558-data-maps",
+      "title": "Обновлены data-конфиги и карты",
+      "type": "change",
+      "category": "other",
+      "desc": "Обновлены /data/handling.cfg [205.23 KB (+1.96 KB)], /data/weapons.ide [6.02 KB (+1.47 KB)], /data/carmods.dat [7.47 KB (-5.02 KB)], /data/weapon.dat [54.91 KB (+12.63 KB)], /data/gtasa_weapon_config.dat [28.11 KB (+2.62 KB)], /data/maps/streamer_interiors.bin [5.09 MB (+233.56 KB)], /data/maps/streamer_exteriors.bin [2.33 MB (+101.48 KB)], /data/maps/streamer_interiors_VC.bin [4.56 MB (+45.84 KB)] и др."
+    },
+    {
+      "id": "cache-2026-11-01-0558-models-audio",
+      "title": "Обновлены модели, аудио и TXD",
+      "type": "change",
+      "category": "other",
+      "desc": "Обновлены /models/vehs_8.img [187.45 MB (+13.73 MB)], /models/accessories.img [374.69 MB (+59.22 MB)], /models/gamemods.img [215.47 MB (+11.66 MB)], /models/peds_2.img [241.54 MB (+14.32 MB)], /models/effects.fxp [4.28 MB (+1.13 MB)], /audio/SFX/ARIZONA [80.34 MB (+2.26 MB)], /audio/SFX/FEET [468.76 KB (+123.04 KB)], /models/txd/item_number.txd [41.40 MB (+3.75 MB)] и др."
+    },
+    {
+      "id": "cache-2026-11-01-0558-totals",
+      "title": "Итоги обновления кеша в 05:58",
+      "type": "change",
+      "category": "other",
+      "desc": "Добавлено файлов на +285.56 MB; изменённые файлы занимают места на +175.72 MB больше; полное обновление составляет 7.24 GB."
+    },
+    {
+      "id": "game-data-extra",
+      "title": "Дополнительные изменения игровых данных",
+      "type": "change",
+      "category": "value",
+      "desc": "Дополнительно изменены: data/animgrp.dat (+368 B), data/carmods_s.dat (+5.90 KB), data/vehicles.ide (+585 B), anim/ped.ifp (+540.07 KB), audio/SFX/ARIZONA (+2.26 MB), models/vehs_8.img (+13.73 MB), models/accessories.img (+59.22 MB), models/vehs_2.img (-12.92 MB), models/gamemods.img (+11.66 MB), models/peds_2.img (+14.32 MB), models/tuning.img (+3.56 MB), models/effects.fxp (+1.13 MB), models/effectsPC.txd (+448.50 KB), frontend.zip (+75.37 MB), arizona/items.zip (+4.32 MB), arizona/NamedModels.json (-94.74 KB)."
+    },
+    {
+      "id": "frontend-2026-11-01-0558-summary",
+      "title": "Обновлён frontend (общая статистика)",
+      "type": "change",
+      "category": "other",
+      "desc": "Сравнение frontend: 1 коммит, 1212 изменённых файлов, 551941 добавление, 511666 удалений."
+    },
+    {
+      "id": "frontend-2026-11-01-0558-halloween-effects",
+      "title": "Добавлены новые Halloween-эффекты в frontend",
+      "type": "add",
+      "category": "other",
+      "desc": "В frontend/effects/halloween_2026 добавлены новые HTML/CSS/JS файлы: basement-blackout.html, basement-light-on.html, black-tunnel.html, black-veins.html, fx_event_blood_dont_look, fx_event_blood_go_away, fx_event_blood_he_is_here, fx_event_eyes, fx_event_nosignal, fx_event_scream, fx_event_scream_soft, fx_ghost_frost, fx_ghost_hands, fx_ghost_pulse130, fx_ghost_pulse60, fx_ghost_pulse90, fx_ghost_silhouette1, fx_ghost_silhouette2, fx_ghost_silhouette3, fx_ghost_vignette, fx_ghost_whisper_cold, fx_ghost_whisper_do_you_hear, fx_ghost_whisper_dont_turn_around, fx_ghost_whisper_stay, fx_ghost_whisper_we_see_you, past-effect.html, square-teleport.html."
+    },
+    {
+      "id": "frontend-2026-11-01-0558-cosmo-man",
+      "title": "Обновлены эффекты cosmo_man",
+      "type": "change",
+      "category": "other",
+      "desc": "Изменены frontend/effects/cosmo_man/index.html и style.css (перестановка строк, незначительные правки)."
+    },
+    {
+      "id": "frontend-2026-11-01-0558-cosmo-race",
+      "title": "Обновлены эффекты cosmo_race",
+      "type": "change",
+      "category": "other",
+      "desc": "Изменены файлы в frontend/effects/cosmo_race: fuel, repair, timer, turbo, win (index.html, style.css, position*.html)."
+    },
+    {
+      "id": "frontend-2026-11-01-0558-other-effects",
+      "title": "Обновлены прочие эффекты frontend",
+      "type": "change",
+      "category": "other",
+      "desc": "Изменены east_portal, easter_portal_2026, effect_fast_reload, effect_hit, effect_portal, effect_speed_fire, flashka, holiday_events, holiday_spawn, hospital_epidemic, hospital_flu, knife_attack, lockdown_protocol, new_year_2026, q5_house, reflection_arizona, vehicles, zombie_event."
+    },
+    {
+      "id": "frontend-2026-11-01-0558-svelte-assets",
+      "title": "Обновлены ассеты svelte_js",
+      "type": "change",
+      "category": "other",
+      "desc": "Множество файлов в frontend/svelte_js/assets добавлены, удалены или изменены: SVG, WebP, MP3, шрифты (woff, ttf, eot). Также изменены app.icon файлы."
+    },
+    {
+      "id": "frontend-2026-11-01-0558-svelte-main",
+      "title": "Обновлены main.bundle.js и main.css",
+      "type": "change",
+      "category": "other",
+      "desc": "В frontend/svelte_js/main.bundle.js внесено 516947 добавлений и 485410 удалений; в main.css — 13199 добавлений и 8740 удалений."
+    },
+    {
+      "id": "frontend-2026-11-01-0558-svelte-index",
+      "title": "Обновлён index.html svelte_js",
+      "type": "change",
+      "category": "other",
+      "desc": "Изменён frontend/svelte_js/index.html: обновлены preload-ссылки на шрифты и другие ресурсы (161 добавление, 161 удаление)."
+    },
+    {
+      "id": "frontend-2026-11-01-0558-last-version",
+      "title": "Обновлён last_version.txt",
+      "type": "change",
+      "category": "other",
+      "desc": "Хеш в last_version.txt изменён.",
+      "diffs": [
+        {
+          "field": "last_version.txt",
+          "old": "a48dfc8f5d97393998f08cc97177d28664f3e8cbd3bf59e1811bbe503d1eeaac",
+          "new": "66d27f4b76ca49c6d153ed72bf54cfaf07de514d99d06ae8c7f026d7a4bdb9ff"
+        }
+      ]
+    },
+    {
+      "id": "items-2026-11-01-0558",
+      "title": "Замечено первое обновление предметов",
+      "type": "change",
+      "category": "other",
+      "desc": "Замечено обновление предметов."
+    },
+    {
+      "id": "frontend-2026-11-01-0726",
+      "title": "Обновлён frontend повторно",
+      "type": "change",
+      "category": "other",
+      "desc": "Замечено повторное обновление frontend."
+    },
+    {
+      "id": "cache-2026-11-01-0726-webm",
+      "title": "Добавлены два webm-ассета frontend",
+      "type": "add",
+      "category": "other",
+      "desc": "Добавлены /frontend/svelte_js/assets/bc87fba50ff8deb3a6cb.webm [31.86 MB] и /frontend/svelte_js/assets/826e81f4155a2ed9c9af.webm [27.96 MB]; изменён /frontend.zip [281.22 MB (+0.00 B)]; полное обновление составляет 341.04 MB."
+    },
+    {
+      "id": "cache-2026-11-01-0751-items-zip",
+      "title": "Обновлён arizona/items.zip",
+      "type": "change",
+      "category": "other",
+      "desc": "Изменён /arizona/items.zip [62.50 MB (+10.00 B)]; изменённые файлы занимают на +10.00 B больше; полное обновление составляет 62.50 MB."
+    },
+    {
+      "id": "items-2026-11-01-0751",
+      "title": "Обновлены предметы",
+      "type": "change",
+      "category": "other",
+      "desc": "Замечено обновление предметов."
+    },
+    {
+      "id": "items-2026-11-01-1014-added",
+      "title": "Добавлены игровые предметы ID 10477–10893",
+      "type": "add",
+      "category": "other",
+      "desc": "Добавлены предметы, включая Амулет полнолуния, Череп, Сердце оборотня, Маска Silver Hunter, Ожерелье охотника, плазмы (белая/зелёная/синяя/фиолетовая/красная), Spirit Pack, сертификаты Rot Liner/E36 Ember Fang/Toyota GR GT/Chevrolet Camaro ZL1 1LE, детали GR GT и Camaro ZL1 1LE, наборы всадника и панка (хлам/обычный/легендарный), стимпак, антидот, металлоискатели, демонические маски/рюкзаки/гитары, механические крылья, тюнинг-комплекты, скины AK-47/M4/SOFF/UZI/Tec-9/Deagle, номерные рамки, лошадиные аксессуары, БП WILD NIGHT; часть ID помечена DELETED."
+    },
+    {
+      "id": "items-2026-11-01-1014-renamed",
+      "title": "Переименованы предметы",
+      "type": "change",
+      "category": "text",
+      "desc": "Переименованы предметы ID 8103 и 10272.",
+      "diffs": [
+        {
+          "field": "ID 8103",
+          "old": "Клык Хайда",
+          "new": "DELETED"
+        },
+        {
+          "field": "ID 10272",
+          "old": "БП: Double-Gang",
+          "new": "БП: WILD NIGHT"
+        }
+      ]
+    },
+    {
+      "id": "cache-2026-11-01-2359-arizona-asi",
+      "title": "Обновлён arizona.asi",
+      "type": "change",
+      "category": "other",
+      "desc": "Изменён /arizona.asi [3.79 MB (-3.11 MB)]; изменённые файлы занимают на -3.11 MB меньше; полное обновление составляет 3.79 MB.",
+      "diffs": [
+        {
+          "field": "Размер arizona.asi",
+          "old": "6.90 MB",
+          "new": "3.79 MB"
+        }
+      ]
+    },
+    {
+      "id": "frontend-2026-11-01-461990ed-auth-registration-video-assets",
+      "title": "Видеофоны авторизации и регистрации",
+      "type": "change",
+      "category": "other",
+      "desc": "В main.bundle.js изменены пути к видеофонам: auth_video.webm и registration_video.webm получили новые хеши ассетов.",
+      "diffs": [
+        {
+          "field": "auth_video.webm",
+          "old": "assets/9d1d5862fd782dd654ec.webm",
+          "new": "assets/826e81f4155a2ed9c9af.webm"
+        },
+        {
+          "field": "registration_video.webm",
+          "old": "assets/b9a423791933f20bc44c.webm",
+          "new": "assets/bc87fba50ff8deb3a6cb.webm"
+        }
+      ]
+    },
+    {
+      "id": "frontend-2026-11-01-461990ed-svelte-app-version",
+      "title": "Хеш версии Svelte-приложения",
+      "type": "change",
+      "category": "value",
+      "desc": "Обновлён хеш версии приложения, отправляемый клиенту через onSvelteAppVersion и используемый в debug-логе.",
+      "diffs": [
+        {
+          "field": "Версия приложения",
+          "old": "be1204da",
+          "new": "81bcf3d5"
+        }
+      ]
+    },
+    {
+      "id": "frontend-2026-11-01-461990ed-last-version-hash",
+      "title": "Хеш last_version.txt фронтенда",
+      "type": "change",
+      "category": "value",
+      "desc": "Обновлён хеш версии фронтенда в last_version.txt.",
+      "diffs": [
+        {
+          "field": "last_version.txt",
+          "old": "66d27f4b76ca49c6d153ed72bf54cfaf07de514d99d06ae8c7f026d7a4bdb9ff",
+          "new": "461990ed220c130dc1e78eea110ef95e38e5f7492eed0884b33c63c70387c2bb"
+        }
+      ]
+    },
+    {
+      "id": "frontend-2026-11-01-461990ed-preload-fonts-list",
+      "title": "Список preload-шрифтов",
+      "type": "change",
+      "category": "other",
+      "desc": "В index.html переупорядочен и изменён список preload-шрифтов: часть файлов удалена, часть добавлена, порядок ссылок изменён.",
+      "diffs": [
+        {
+          "field": "Список preload-шрифтов",
+          "old": "старый набор и порядок ссылок",
+          "new": "обновлённый набор и порядок ссылок"
+        }
+      ]
+    },
+    {
+      "id": "stocks-price-early",
+      "title": "Акции проекта ARIZONA GAMES (ID 1080)",
+      "type": "change",
+      "category": "value",
+      "desc": "Текущая стоимость акций в банке изменилась.",
+      "diffs": [
+        {
+          "field": "Стоимость в банке",
+          "old": "$2323",
+          "new": "$2491"
+        }
+      ]
+    },
+    {
+      "id": "ceo-payday",
+      "title": "Легендарная одежда: CEO (ID 10231)",
+      "type": "change",
+      "category": "text",
+      "desc": "Изменён период выплаты дивидендов: вместо каждого PayDay — каждый получасовой PayDay.",
+      "diffs": [
+        {
+          "field": "Период дивидендов",
+          "old": "каждый PayDay",
+          "new": "каждый получасовой PayDay"
+        }
+      ]
+    },
+    {
+      "id": "number-frames-desc",
+      "title": "Описания номерных рамок (ID 10289–10349)",
+      "type": "change",
+      "category": "text",
+      "desc": "Обновлены описания номерных рамок: добавлен шанс особой подсветки, изменён формат бонусов, уточнены характеристики.",
+      "diffs": [
+        {
+          "field": "Формат описания",
+          "old": "Бонус качества: +{}/320(MAX)",
+          "new": "Текущий бонус качества: +0 ед. (максимальный бонус +320 ед. качества)"
+        }
+      ]
+    },
+    {
+      "id": "taxi-tips-coins-early",
+      "title": "Чаевые Таксиста и Монета Таксиста (ID 10428–10429)",
+      "type": "change",
+      "category": "value",
+      "desc": "Изменено время до следующей награды.",
+      "diffs": [
+        {
+          "field": "Следующая награда",
+          "old": "50 минут",
+          "new": "24 минуты"
+        }
+      ]
+    },
+    {
+      "id": "mileage-reset",
+      "title": "Обнуление пробега для авто (ID 5299)",
+      "type": "change",
+      "category": "value",
+      "desc": "Изменён эффект скручивания пробега: теперь до 25% от текущего пробега, а не до 25 км.",
+      "diffs": [
+        {
+          "field": "Скручивание пробега",
+          "old": "до 25 км",
+          "new": "до 25% от текущего пробега"
+        }
+      ]
+    },
+    {
+      "id": "guard-demonic-slot",
+      "title": "Сертификаты охранников: демоническое качество",
+      "type": "change",
+      "category": "text",
+      "desc": "Во многие сертификаты охранников добавлена информация о 4 слотах под характеристики для охранников демонического качества.",
+      "diffs": [
+        {
+          "field": "Слоты для демонического качества",
+          "old": "отсутствовало",
+          "new": "4 слота под нераспознанные характеристики"
+        }
+      ]
+    },
+    {
+      "id": "bmw-m5-mansory-source",
+      "title": "Тюнинг-пак BMW M5 Mansory (ID 9773)",
+      "type": "change",
+      "category": "text",
+      "desc": "Добавлен источник получения: кейс Case Anarchy.",
+      "diffs": [
+        {
+          "field": "Источник получения",
+          "old": "боевой пропуск сезона Код 26",
+          "new": "боевой пропуск сезона Код 26, кейс Case Anarchy"
+        }
+      ]
+    },
+    {
+      "id": "crocodile-gene-pilot",
+      "title": "Сертификат Крокодил Гена 003 (ID 8830)",
+      "type": "buff",
+      "category": "bonus",
+      "desc": "Увеличен бонус к зарплате пилота с +65% до +75%.",
+      "diffs": [
+        {
+          "field": "Бонус к ЗП пилота",
+          "old": "+65%",
+          "new": "+75%"
+        }
+      ]
+    },
+    {
+      "id": "bellatti-verona-image",
+      "title": "Временная машина Bellatti Verona (ID 7626)",
+      "type": "change",
+      "category": "other",
+      "desc": "Изменено изображение предмета.",
+      "diffs": [
+        {
+          "field": "Изображение",
+          "old": "img/7626.webp",
+          "new": "img/6973.webp"
+        }
+      ]
+    },
+    {
+      "id": "street-collection-certs",
+      "title": "Сертификаты коллекции Street",
+      "type": "add",
+      "category": "accessory",
+      "desc": "Добавлены сертификаты: C35 Power Slide (10433), FC 326 Power (10434), Soar Angel Drift (10435). Получить можно из «Случайное авто коллекции Street» или купить на центральном рынке. Каждый автомобиль имеет 10 тюнинг-компонентов, дающих +3000 HP, вечное нитро, увеличенный багажник, лазерные фары и др.",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10433–10435"
+        }
+      ]
+    },
+    {
+      "id": "street-tuning-parts",
+      "title": "Детали тюнинга коллекции Street",
+      "type": "add",
+      "category": "accessory",
+      "desc": "Добавлены детали тюнинга для C35 Power Slide (10436–10444), FC 326 Power (10445–10453), Soar Angel Drift (10454–10462), а также правые крылья (10470–10472). Каждая деталь даёт бонусы к HP, скорости, разгону, багажнику или уникальные свойства.",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10436–10462, 10470–10472"
+        }
+      ]
+    },
+    {
+      "id": "random-street-car",
+      "title": "Случайное авто коллекции Street (ID 10463)",
+      "type": "add",
+      "category": "other",
+      "desc": "При использовании даёт случайный автомобиль из коллекции Street: C35 Power Slide, FC 326 Power или Soar Angel Drift.",
+      "diffs": [
+        {
+          "field": "ID предмета",
+          "old": "—",
+          "new": "10463"
+        }
+      ]
+    },
+    {
+      "id": "cute-911-iron-horse",
+      "title": "Сертификаты Cute 911 и Iron Horse 95 (ID 10464–10465)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "Легендарные автомобили с 4000 HP, увеличенным багажником, встроенным цветным нитро и лазерными фарами. Обладают эффектом ослепления полицейских в радиусе 100 м на 10 сек (КД 5 мин).",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10464–10465"
+        }
+      ]
+    },
+    {
+      "id": "queen-macqueen-frames",
+      "title": "Номерные рамки Queen и MacQueen (ID 10466–10467)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "Уникальные рамки с бонусами: +10% таксометр, +500 HP, +10 км/ч, +5% тормоза.",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10466–10467"
+        }
+      ]
+    },
+    {
+      "id": "chad-stacy-skins",
+      "title": "Скины Чед и Стейси (ID 10468–10469)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "Легендарная одежда из наборов Campus Royalty: RED и PINK. Дают бонусы к защите, урону, HP, броне и отражению урона.",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10468–10469"
+        }
+      ]
+    },
+    {
+      "id": "trait-removal-instructions",
+      "title": "Инструкции для снятия коллекционных характеристик (ID 10473–10475)",
+      "type": "add",
+      "category": "other",
+      "desc": "Золотая инструкция (100% успех), обычная инструкция (20% успех) и Набор коллекционных характеристик для переноса свойств между аксессуарами.",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10473–10475"
+        }
+      ]
+    },
+    {
+      "id": "sportik-skin",
+      "title": "Спортик (ID 10476)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "Скин с бегом CJ. Даёт +2 урона, +5 HP, +5% шанс оглушения и +1 ресурс при добыче на обычной шахте.",
+      "diffs": [
+        {
+          "field": "ID предмета",
+          "old": "—",
+          "new": "10476"
+        }
+      ]
+    },
+    {
+      "id": "silver-hunter-necklace",
+      "title": "Маска Silver Hunter и Ожерелье охотника (ID 10480–10481)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "Награды за мероприятие «Охота на оборотней». Маска даёт +10 HP, +3 урона, +3 защиты и х2 монеты охотника. Ожерелье: +2 урона, +4 защиты, -2% отражения, +20 брони.",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10480–10481"
+        }
+      ]
+    },
+    {
+      "id": "plasma-colors",
+      "title": "Плазмы (ID 10482–10486)",
+      "type": "add",
+      "category": "other",
+      "desc": "Белая, зелёная, синяя, фиолетовая и красная плазмы. Используются для крафта на праздничном верстаке в разделе «Эпицентр Зла». Лимит переноса: 20 ед. (с Spirit Pack — 60 ед.).",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10482–10486"
+        }
+      ]
+    },
+    {
+      "id": "empty-spirit-pack",
+      "title": "Spirit pack (пустой) (ID 10487)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "Основа для крафта аксессуара Spirit Pack. Увеличивает лимит переноса плазмы с 20 до 60 ед.",
+      "diffs": [
+        {
+          "field": "ID предмета",
+          "old": "—",
+          "new": "10487"
+        }
+      ]
+    },
+    {
+      "id": "rot-liner-e36-grgt-camaro",
+      "title": "Сертификаты Rot Liner, E36 Ember Fang, Toyota GR GT, Chevrolet Camaro ZL1 1LE (ID 10488–10491)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "Rot Liner — автобус с «Мобильной фермой» на 10 видеокарт. E36 Ember Fang — 4500 HP, вечное чёрное нитро, гидравлика, защита колёс. Toyota GR GT — 2000 HP, 9 деталей Raijin, режимы Track Mode. Chevrolet Camaro ZL1 1LE — случайное качество при активации.",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10488–10491"
+        }
+      ]
+    },
+    {
+      "id": "punk-boy-girl",
+      "title": "Скины Punk Boy и Punk Girl (ID 10499–10500)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "Скины с механикой смены облика White/Black. Дают различные бонусы к защите, урону, удаче, HP, броне, шансу оглушения, возврату ресурсов при крафте и др. Резонанс с полным сэтом Punk усиливает характеристики.",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10499–10500"
+        }
+      ]
+    },
+    {
+      "id": "demonic-horses",
+      "title": "Демонические лошади (ID 10501–10504)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "Сертификаты охранников: Пепел Смерти, Пламя Войны, Чумогрив, Бездна Голода. Имеют 2000 HP, 15% защита, 30% перехват урона, высокую скорость и уникальные свойства (воскрешение, стрельба верхом, дань Мора, увеличенные сумки и др.).",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10501–10504"
+        }
+      ]
+    },
+    {
+      "id": "gr-gt-camaro-parts",
+      "title": "Детали тюнинга GR GT и Camaro ZL1 1LE (ID 10505–10518, 10768–10769, 10809)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "Детали для Toyota GR GT (капот, выхлоп, бамперы, крыша, спойлер, юбки, диски, винил) и Chevrolet Camaro ZL1 1LE (капот, выхлоп, бамперы, завихрители, спойлер, юбки). Дают бонусы к HP, скорости, разгону, багажнику, лазерные фары, гидравлику и т.д.",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10505–10518, 10768–10769, 10809"
+        }
+      ]
+    },
+    {
+      "id": "dead-sheriff-skin",
+      "title": "Мёртвый Шериф (ID 10519)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "Легендарный скин с механикой связи с сэтом Cowboy. Даёт бонусы к лечению, защите от холодного оружия, выносливости, голоду и зарплате. Усиливается при надевании сэта Cowboy.",
+      "diffs": [
+        {
+          "field": "ID предмета",
+          "old": "—",
+          "new": "10519"
+        }
+      ]
+    },
+    {
+      "id": "cowboy-set",
+      "title": "Коллекционный сэт Cowboy (ID 10520–10563)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "11 аксессуаров (шляпа, наручь, шарф, наплечники, плащ, ремень, бронежилет, револьвер, сапоги L/R, нимб) в качествах Хлам, Редкий, Легендарный, а также запечатанные версии. Дают бонусы к HP, броне, скорости галопа, выносливости лошади и др. Выпадают из Case Dead West.",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10520–10563"
+        }
+      ]
+    },
+    {
+      "id": "punk-set",
+      "title": "Коллекционный сэт Punk (ID 10564–10651)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "11 аксессуаров (кепка, наруч, чёкер, наплечник, рюкзак, клатч, бронежилет, бита, обувь L/R, нимб) в цветах Black и White, качества Хлам/Редкий/Легендарный, а также запечатанные версии. Дают бонусы к HP, броне, шансу кейса Anarchy. Перекрашиваются баллончиком Punk.",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10564–10651"
+        }
+      ]
+    },
+    {
+      "id": "medical-items",
+      "title": "Медицинские предметы (ID 10652–10668)",
+      "type": "add",
+      "category": "other",
+      "desc": "Стимпак, Антидот, Набор средств хим.защиты, Экспресс-тест, Противогриппозные таблетки, Энергоосколок, Клык Хайда, Зелье оживления, Песок времени, Шкатулка тьмы, Палатка для заявок, Пожарная сигнализация, Накопитель темной энергии, Хрономонета, Катализатор темной энергии.",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10652–10668"
+        }
+      ]
+    },
+    {
+      "id": "spirit-packs-colored",
+      "title": "Цветные Spirit Pack (ID 10669–10673, 10855)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "Spirit Pack синий, жёлтый, красный, фиолетовый, белый, розовый. Дают различные бонусы к HP, защите, урону, удаче. Крафтятся на праздничном верстаке.",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10669–10673, 10855"
+        }
+      ]
+    },
+    {
+      "id": "guardian-essences",
+      "title": "Эссенции и аксессуары для охранников (ID 10674–10680, 10687–10693, 10726–10731, 10810–10834)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "Аксессуары Taxguard (шанс доп. предмета из тайников), Twinner (шанс сохранить точку), Guidance (длительность эликсиров). Имеют цвета от Серого до Красного. Запечатанные эссенции дают случайный цвет.",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10674–10680, 10687–10693, 10726–10731, 10810–10834"
+        }
+      ]
+    },
+    {
+      "id": "demonic-items",
+      "title": "Демонические предметы (ID 10681–10686, 10701–10718)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "Демоническая гитара, маска, рюкзак, демон в клетке (по 6 вариантов каждый). Используются для изменения внешнего вида.",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10681–10686, 10701–10718"
+        }
+      ]
+    },
+    {
+      "id": "metal-detectors",
+      "title": "Металлоискатели (ID 10694–10700)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "Ледяной шёпот, Демонический, Око Медиума, Кровавый резонатор, Сумеречный зов, Костяной щуп, Фонарь Джека. Дают бонусы к радиусу выкапывания клада, шансу доп. наград, скорости копания и уникальные эффекты.",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10694–10700"
+        }
+      ]
+    },
+    {
+      "id": "profession-accessories",
+      "title": "Аксессуары профессий (ID 10719–10725)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "Мешок гоблина, Маска медика, Рюкзак медика, Мешок банкира, Рюкзак пожарного, Шлем пожарного, Маска Лисы.",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10719–10725"
+        }
+      ]
+    },
+    {
+      "id": "mechanical-wings",
+      "title": "Механические крылья (ID 10732–10738)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "7 вариантов механических крыльев для изменения внешнего вида.",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10732–10738"
+        }
+      ]
+    },
+    {
+      "id": "bmw-m5-g90-tuning",
+      "title": "Тюнинг-комплект BMW M5 G90 (ID 10739)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "Даёт +1000 HP, +18 км/ч, +5% разгон и уникальное свойство «Фантомный рывок» (10 сек сквозь транспорт, КД 3 мин).",
+      "diffs": [
+        {
+          "field": "ID предмета",
+          "old": "—",
+          "new": "10739"
+        }
+      ]
+    },
+    {
+      "id": "fishing-halloween",
+      "title": "Рыбы и Подкова удачи (ID 10740–10743)",
+      "type": "add",
+      "category": "other",
+      "desc": "Мертвозуб, Призрачная вуалехвостка, Клыкорог Преисподней — легендарные рыбы для обмена на Case Dead West. Подкова удачи даёт +5% к шансу крафта (25% шанс).",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10740–10743"
+        }
+      ]
+    },
+    {
+      "id": "misc-consumables",
+      "title": "Разные расходники (ID 10744–10753)",
+      "type": "add",
+      "category": "other",
+      "desc": "Осколок упрямства, NFT Жетон, Карманный доктор, Чёрный жребий, Спортивный напиток, Аптечный инъектор, Присадка для двигателя, Сухой бак, Фильтр дата-центра, Билет в «Зловещую экспедицию».",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10744–10753"
+        }
+      ]
+    },
+    {
+      "id": "cases-anarchy-deadwest",
+      "title": "Кейсы Case Anarchy и Case Dead West (ID 10754–10755)",
+      "type": "add",
+      "category": "other",
+      "desc": "Кейсы с тематическими наградами. Case Anarchy — повышенный шанс в 2 раза. Case Dead West — награды Хэллоуина.",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10754–10755"
+        }
+      ]
+    },
+    {
+      "id": "zombie-banker-cert",
+      "title": "Сертификат охранника Зомби Банкир (ID 10756)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "Легендарный охранник с 1700 HP, 12% защитой, 10% перехватом урона. Уникальные свойства: +12% доход с депозита, снятие без комиссии, -50% комиссия переводов, доступ к банку в любой точке.",
+      "diffs": [
+        {
+          "field": "ID предмета",
+          "old": "—",
+          "new": "10756"
+        }
+      ]
+    },
+    {
+      "id": "rare-frame-skin",
+      "title": "Редкая рамка для номера и Редкий скин для АК-47 (ID 10757–10758)",
+      "type": "add",
+      "category": "other",
+      "desc": "Предметы с неописанными свойствами (информация отсутствует).",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10757–10758"
+        }
+      ]
+    },
+    {
+      "id": "wild-boxes",
+      "title": "Суперпризы WILD BOX (ID 10759–10761)",
+      "type": "add",
+      "category": "other",
+      "desc": "WILD BOX SILVER (180 ур.), GOLD (360 ур.), LEGEND (ТОП-10). Открываются после 20.12.2026, содержат эксклюзивные награды сезона.",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10759–10761"
+        }
+      ]
+    },
+    {
+      "id": "skins-goblin-cash-stalker",
+      "title": "Скины Гоблин, Cash, Stalker Green, Зомби Банкир, Табакошка, Shawn Blue (ID 10762–10767)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "Различные скины. Cash: накопление силы за убийства, награды каждые 2 часа. Stalker Green: усиливает поиск кладов, охоту и фермерство. Shawn Blue: бег CJ.",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10762–10767"
+        }
+      ]
+    },
+    {
+      "id": "cybertruck-parts",
+      "title": "Детали тюнинга Tesla Cybertruck (ID 10800–10807)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "Капот, передний и задний бамперы, сфера в багажник, спойлер, боковые юбки, диски, винил Хеллуин.",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10800–10807"
+        }
+      ]
+    },
+    {
+      "id": "forum-glove",
+      "title": "Форумная перчатка (ID 10808)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "Аксессуар для изменения внешнего вида.",
+      "diffs": [
+        {
+          "field": "ID предмета",
+          "old": "—",
+          "new": "10808"
+        }
+      ]
+    },
+    {
+      "id": "punk-paint",
+      "title": "Баллончик перекраски Punk (ID 10835)",
+      "type": "add",
+      "category": "other",
+      "desc": "Используется для смены цвета сэта Punk (Black/White) или обновления окраса. Один баллончик перекрашивает весь сэт.",
+      "diffs": [
+        {
+          "field": "ID предмета",
+          "old": "—",
+          "new": "10835"
+        }
+      ]
+    },
+    {
+      "id": "mercedes-mclaren-tuning",
+      "title": "Тюнинг-комплекты Mercedes CLS 63 AMG и McLaren 570s Carbon (ID 10836–10837)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "Mercedes: +500 HP, +12 км/ч, +5% разгон, «Фантомный рывок» 5 сек. McLaren: +25 км/ч, +4% разгон, «Фантомный рывок» 15 сек.",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10836–10837"
+        }
+      ]
+    },
+    {
+      "id": "vehicle-objects",
+      "title": "Объекты на транспорт (ID 10838–10847, 10856–10859)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "Радиоактивные бочки, гроб на крышу, пончик, парашют, адский нагнетатель, отбойники, неоновая вывеска, ухмыляющийся полумесяц, анимированное Око Преисподней, цилиндр Шляпника, надгробия.",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10838–10847, 10856–10859"
+        }
+      ]
+    },
+    {
+      "id": "rot-liner-shard",
+      "title": "Осколок сертификата Rot Liner (ID 10848)",
+      "type": "add",
+      "category": "other",
+      "desc": "5 осколков + 100 000 000$ = сертификат Rot Liner.",
+      "diffs": [
+        {
+          "field": "ID предмета",
+          "old": "—",
+          "new": "10848"
+        }
+      ]
+    },
+    {
+      "id": "mor-tamer",
+      "title": "Укротитель Мора (ID 10849)",
+      "type": "add",
+      "category": "other",
+      "desc": "Ловушка для лошади, сбрасывающая всадника. Выдаётся во время квестов Хэллоуина 2026.",
+      "diffs": [
+        {
+          "field": "ID предмета",
+          "old": "—",
+          "new": "10849"
+        }
+      ]
+    },
+    {
+      "id": "horse-cert-hay",
+      "title": "Сертификат охранника Гнедая и Сено для лошади (ID 10850–10851)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "Гнедая — обычная лошадь (1000 HP, 35 км/ч, 5 ячеек). Сено восстанавливает сытость, здоровье и выносливость лошади.",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10850–10851"
+        }
+      ]
+    },
+    {
+      "id": "f16-bodo-ogre",
+      "title": "Сертификаты F-16 Spyder, Bodo, Огр помощник (ID 10852–10854)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "F-16 Spyder — самолёт с 5000 HP, бонус пилота +65%, перелёт в Vice City. Bodo — авто с 5500 HP, авторемонт, без налогов. Огр помощник — охранник с бездонным мешком (до 35 ячеек).",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10852–10854"
+        }
+      ]
+    },
+    {
+      "id": "weapon-skins",
+      "title": "Скины оружия (ID 10860–10873)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "AK-47, M4, SOFF, UZI, Tec-9, Deagle в вариантах «Мятный туман», «Кровавые вены», «Шипастый жнец», «Адское пламя». Дают бонусы к HP, броне, зарплате, шансам и т.д.",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10860–10873"
+        }
+      ]
+    },
+    {
+      "id": "halloween-frames",
+      "title": "Номерные рамки Хэллоуина (ID 10874–10882)",
+      "type": "add",
+      "category": "accessory",
+      "desc": "Склеп, Крылья вампира, Око Бездны, Замок вампира, Ведьмин котёл, Полночное кладбище, Проклятые игрушки, Ночь свечей, Призрачная чаща. Дают бонусы к такси, HP, скорости, тормозам.",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10874–10882"
+        }
+      ]
+    },
+    {
+      "id": "horse-equipment",
+      "title": "Детали для крафта лошади (ID 10883–10888)",
+      "type": "add",
+      "category": "other",
+      "desc": "Подковы, Седло, Уздечка, Попона, Стремена, Родословная. Соберите все 6 и скрафтите лошадь «Гнедая».",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10883–10888"
+        }
+      ]
+    },
+    {
+      "id": "battlepass-wild-night-items",
+      "title": "Предметы Battle Pass WILD NIGHT (ID 10889–10893)",
+      "type": "add",
+      "category": "other",
+      "desc": "БП: WILD NIGHT (Premium), (Premium Plus), (10 EXP), БП: Эпицентр Зла (10 EXP), WILD NIGHT PREMIUM+ BOX — подарок за 150+ уровень прошлого сезона.",
+      "diffs": [
+        {
+          "field": "ID предметов",
+          "old": "—",
+          "new": "10889–10893"
+        }
+      ]
+    },
+    {
+      "id": "taxi-tips-timer-late",
+      "title": "Чаевые Таксиста (ID 10428)",
+      "type": "change",
+      "category": "value",
+      "desc": "Уменьшено время до следующей награды.",
+      "diffs": [
+        {
+          "field": "Следующая награда",
+          "old": "24 минут",
+          "new": "18 минут"
+        }
+      ]
+    },
+    {
+      "id": "taxi-coin-timer-late",
+      "title": "Монета Таксиста (ID 10429)",
+      "type": "change",
+      "category": "value",
+      "desc": "Уменьшено время до следующей награды.",
+      "diffs": [
+        {
+          "field": "Следующая награда",
+          "old": "24 минут",
+          "new": "18 минут"
+        }
+      ]
+    },
+    {
+      "id": "stocks-price-late",
+      "title": "Акции проекта ARIZONA GAMES (ID 1080)",
+      "type": "change",
+      "category": "value",
+      "desc": "Стоимость акций в банке снизилась.",
+      "diffs": [
+        {
+          "field": "Стоимость в банке",
+          "old": "$2491",
+          "new": "$2432"
+        }
+      ]
+    },
+    {
+      "id": "wild-night-premium-box-condition",
+      "title": "WILD NIGHT PREMIUM+ BOX (ID 10893)",
+      "type": "change",
+      "category": "text",
+      "desc": "Изменено условие получения подарка.",
+      "diffs": [
+        {
+          "field": "Условие выдачи",
+          "old": "достигли 150+ уровня в сезоне боевого пропуска Double Gang",
+          "new": "выполнили условие гонки в сезоне боевого пропуска Double Gang"
+        }
+      ]
+    },
+    {
+      "id": "police-armor-timer",
+      "title": "Списанный полицейский бронежилет (ID 7788)",
+      "type": "change",
+      "category": "value",
+      "desc": "Уменьшено оставшееся время действия предмета.",
+      "diffs": [
+        {
+          "field": "Оставшееся время",
+          "old": "23:46",
+          "new": "18:09"
+        }
+      ]
+    },
+    {
+      "id": "weapon-tent-timer",
+      "title": "Оружейная палатка (ID 7929)",
+      "type": "change",
+      "category": "value",
+      "desc": "Уменьшено оставшееся время действия предмета.",
+      "diffs": [
+        {
+          "field": "Оставшееся время",
+          "old": "23:46",
+          "new": "18:09"
+        }
+      ]
+    },
+    {
+      "id": "items-last-version-ff3d5e26",
+      "title": "Хеш last_version.txt трекера предметов",
+      "type": "change",
+      "category": "other",
+      "desc": "Обновлён хеш версии трекера предметов.",
+      "diffs": [
+        {
+          "field": "last_version.txt",
+          "old": "b073779a6a5b7a20844c9039cc9bb797c9e3fc5706f428b0ba7144e1d0526ab3",
+          "new": "ff3d5e26a5b29b5217f6e725a112f0d674b3ba9e3bea141e1bd864c5641b5365"
+        }
+      ]
+    }
+  ]
+}
